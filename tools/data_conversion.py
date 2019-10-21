@@ -28,7 +28,7 @@ def add_stack(idx_name, time_step, channel, tiff_file, offset = [0,0,0]):
     img = io.imread(tiff_file)
     MSG("Adding %s to idx file %s" % (split(tiff_file)[-1],idx_name))   
     # Now make sure that the dimensions match
-    global_box = dataset.getBox()
+    global_box = dataset.getLogicBox()
     local_box = np.flip(np.array(img.shape))
     
     # Remember that the local shape will change by the offset which
@@ -49,21 +49,25 @@ def add_stack(idx_name, time_step, channel, tiff_file, offset = [0,0,0]):
         data = img[Z,:,:]
         
         # Now compute the target location
-        bottom = NdPoint.one(int(offset[0]*Z),int(offset[1]*Z),Z)
-        top    = NdPoint.one(int(offset[0]*Z+local_box[0]),int(offset[1]*Z+local_box[1]),Z+1)
+        bottom = PointNi(int(offset[0]*Z),int(offset[1]*Z),Z)
+        top    = PointNi(int(offset[0]*Z+local_box[0]),int(offset[1]*Z+local_box[1]),Z+1)
         print(bottom[0], bottom[1], bottom[2], " -- ", top[0], top[1], top[2])
         
-        target_box = NdBox(bottom,top)
+        target_box = BoxNi(bottom,top)
         # Get an internal descriptor for where we want the slice to go
         #target_box=dataset.getBox().getZSlab(Z,Z+1)
 
         # Create a write ('w') query for this part of the data          
-        query = Query(dataset,ord('w')) 
+        query = BoxQuery(dataset,dataset.getDefaultField(),time_step,ord('w')) 
         # We care about our target box
-        query.position = Position(target_box)
+        query.logic_box = target_box
         # And the given field
         query.field = field
-        ASSERT(dataset.beginQuery(query))
+        
+        
+        dataset.beginQuery(query)
+        if not query.isRunning():
+            raise Exception("Begin query failed")
 
         # Assign the data. Note the shared memory piece
         query.buffer = Array.fromNumPy(data,bShareMem=True)
@@ -72,7 +76,7 @@ def add_stack(idx_name, time_step, channel, tiff_file, offset = [0,0,0]):
         ASSERT(dataset.executeQuery(access,query))  
     
     
-def make_idx(tiff_channels, idx_name, offset=[0,0,0]):
+def make_idx(tiff_channels, idx_name, offset=[0,0,0], timesteps=[0,1,1]):
     from skimage import io
    
 
@@ -94,15 +98,21 @@ def make_idx(tiff_channels, idx_name, offset=[0,0,0]):
           
     # Make the idx file 
     idx_file = IdxFile()
-    idx_file.box=NdBox(NdPoint(0,0,0),NdPoint.one(int(dim[2]),int(dim[1]),int(dim[0])))
+    idx_file.logic_box=BoxNi(PointNi(0,0,0),PointNi(int(dim[2]),int(dim[1]),int(dim[0])))
     for i in range(len(channels)):
         idx_file.fields.push_back(Field('channel%d' % i,DType.fromString("uint16")))
 
+    idx_file.timesteps.addTimesteps(*timesteps)
+    idx_file.time_template="time_%02d/"
     success = idx_file.save(idx_name)
     ASSERT(success)
 
     dataset = LoadDataset(idx_name)
- 
+    if not dataset: raise Exception("Cannot load idx")
+                
+    access = dataset.createAccess()
+    if not access: raise Exception("Cannot create access")
+   
     
 
 if __name__ == '__main__':
@@ -121,10 +131,13 @@ if __name__ == '__main__':
     idx_name='/Data/LLSM/Test/015_macrophage_Ecoli.idx'
     offset = np.array([5,0,0])
 
-    make_idx(tiff_files,idx_name,offset)
+    make_idx(tiff_files,idx_name,offset,[0,5,1])
 
     for i,f in enumerate(tiff_files):
-        add_stack(idx_name,0,"channel%d" % i,f,offset)
+        add_stack(idx_name,2,"channel%d" % i,f,offset)
 
-    IdxModule.detach()
+    #IdxModule.detach()
     print("Done with conversion")
+    
+    dataset = LoadDataset(idx_name)
+
