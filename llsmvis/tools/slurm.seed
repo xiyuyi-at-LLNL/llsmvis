@@ -1,0 +1,23 @@
+#!/bin/bash
+##### These lines are for Slurm
+#SBATCH -N 1
+#SBATCH -p pbatch
+#SBATCH -t 10:00:00
+#SBATCH -A mmbp
+
+##### These are shell commands
+echo 'startig time'
+date
+
+echo '================ system output of the executable starts here ================'
+
+srun -n1 [EXECUTABLE]
+
+echo '================ system output of the executable ends here ================'
+echo 'finish time'
+date
+
+##### Notes #####
+# in a future upgrade, should make the requested resources to match the size of the dataset.
+
+

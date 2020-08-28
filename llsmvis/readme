@@ -1,0 +1,14 @@
+note to setup the conda environment for llsm
+
+1. Install anaconda:
+   on LC:
+   After login onto LC, go to the path of anaconda installers:
+   >> cd /collab/usr/gapps/python/$SYS_TYPE/conda
+   install anaconda3: 
+   >> bash ./Anaconda3-2019.10-Linux-x86_64.sh
+   Follow the prompted instructions to activate anaconda, and initialize conda.
+
+   reference: https://hpc.llnl.gov/software/development-environment-software/python
+ 
+2. Create a virtual environment for llsm under folder llsmvis:	
+   >> bash setup
