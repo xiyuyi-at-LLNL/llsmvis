@@ -1,4 +1,4 @@
-note to setup the conda environment for llsm
+### setup the conda environment for llsm
 
 1. Install anaconda:
    on LC:
@@ -12,3 +12,14 @@ note to setup the conda environment for llsm
  
 2. Create a virtual environment for llsm under folder llsmvis:	
    >> bash setup
+
+#### Processing
+To process all the raw ata after an imaging session with multiple stacks and various imaging conditions.
+1. activate the llsmv conda environment 
+    >> conda activate llsm 
+2. copy ./tools/getdsk into the data file folder and run it.
+    >> ./getdsk  
+
+answer the prompted questions accordingly, and you'll find the results under folder 'results_dsk'
+
+Find developing notes [here](./documents/docs_main.md).

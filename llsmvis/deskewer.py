@@ -12,15 +12,26 @@ class Deskewer:
         self.path_o = parser.fpath + '/results_dsk/' + self.p.fname_head + '_deskewed'
         print("Deskewing dataset:\n    " + self.p.fpath + "/" + self.p.fname_head)
         try:
+            if not os.path.exists(parser.fpath+'/results_dsk'):
+                os.mkdir(parser.fpath+'/results_dsk')
+                print("\n results_dsk folder for the collection of datasets created:")
+                print(parser.fpath+'/results_dsk')
+            else:
+                print("\n results_dsk folder for the collection of datasets already exists:")
+                print(parser.fpath + '/results_dsk')
+        except OSError:
+            print("\n  Failed to create the results_dsk folder for the datasets")
+
+        try:
             if not os.path.exists(self.path_o):
                 os.mkdir(self.path_o)
-                print("  Output path for deskewed tiffs created:")
+                print("\n  Output path for deskewed tiffs created:")
                 print("    "+self.path_o)
             else:
-                print("  Output path for deskewed tiffs already exists:")
+                print("\n  Output path for deskewed tiffs already exists:")
                 print("    "+self.path_o)
         except OSError:
-            print("  Failed to create the output path for deskewed tiffs")
+            print("\n  Failed to create the output path for deskewed tiffs")
 
         #  define default definition of background component, can add different options in the future.
         self.bg_opt= 'mean of a tiff stack'
@@ -36,6 +47,7 @@ class Deskewer:
         self.x_additional = np.int32(np.ceil(np.abs((self.x_shift * self.s[0] / self.xy_res))))
         self.nx_mod = self.s[2] + self.x_additional
         self.mip_TiffWriter_objs = list()
+        self.label_MIPs=False
 
     def deskew_one_tiff(self, tif_dict):
         image_name = tif_dict['path of tiff']
@@ -54,7 +66,7 @@ class Deskewer:
         arr_mod = np.zeros((self.s[0], self.s[1], self.nx_mod), dtype='uint16')
 
         print('    Deskewing time step ' + str(tif_dict['time step']) + '/' + str(self.p.tsteps_n-1)
-                  + "; channel index " + str(tif_dict['channel index']) + '/' + str(self.p.channel_n-1))
+                  + "; channel " + str(tif_dict['channel index']) + '/' + str(self.p.channel_n-1))
 
         for i in range(arr.shape[0]):
             x_start = np.int32(np.round(i * self.x_shift / self.xy_res))
@@ -64,7 +76,7 @@ class Deskewer:
 
         # write the XY-MIP to the corresponding MIP tiff file.
         mip0 = np.max(arr_mod, axis=0)
-        mip0[30:35,30:110] = np.max(mip0.ravel())
+        mip0[30:35, 30:110] = np.max(mip0.ravel())
         mip1 = np.max(arr_mod, axis=1)
         mip2 = np.max(arr_mod, axis=2)
 
