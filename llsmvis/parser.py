@@ -16,7 +16,18 @@ class LLSMParser:
         self.tsteps_n = np.nan
         self.fpath = fpath
         self.fname_head = fname_head
-        self.all_tiffs = glob.glob(self.fpath + "/" + self.fname_head + "*.tif")
+        try:
+            self.all_tiffs = glob.glob(self.fpath + "/" + self.fname_head + "_ch*.tif")
+        except OSError:
+            pass
+
+        try:
+            self.deskewed_tiffs = glob.glob(self.fpath + "/results_dsk/" + self.fname_head + "_deskewed/Deskewed_"+self.fname_head+"*.tif")
+            if VERBOSE:
+                print(self.deskewed_tiffs)
+        except OSError:
+            pass
+
         self.dict_tiffs = list()
         with open(fpath + "/" + fname_head + "_Settings.txt", "r") as f:
             self.configs = f.readlines()
@@ -61,7 +72,10 @@ class LLSMParser:
         :return: tsteps_n: the total number of time steps.
         """
         subs = self.fname_head + "_ch0_stack"
-        self.tsteps_n = sum(subs in s for s in self.all_tiffs)
+        if len(self.all_tiffs) > len(self.deskewed_tiffs):
+            self.tsteps_n = sum(subs in s for s in self.all_tiffs)
+        else:
+            self.tsteps_n = sum(subs in s for s in self.deskewed_tiffs)
         return self.tsteps_n
 
     def sort_tiff_dict(self):
@@ -71,13 +85,28 @@ class LLSMParser:
         """
         # prepare for time stamps
         self.parse_specs()
-        ssec = self.all_tiffs[0].split(self.fname_head + "_")[1].split("_")[1]
+        if VERBOSE:
+            print('length of all tiffs is' + str(len(self.all_tiffs)))
+
+        try:
+            if len(self.all_tiffs) > 0:
+                ssec = self.all_tiffs[0].split(self.fname_head + "_")[1].split("_")[1]
+            elif len(self.deskewed_tiffs) > 0:
+                # use deskewed tiffs instead to parse the information.
+                ssec = self.deskewed_tiffs[0].split("Deskewed_"+self.fname_head + "_")[1].split("_")[1]
+
+        except OSError:
+            pass
         zfilln = len(ssec) - 5  # number of digits with zero-fill for the stack numbers.
         self.dict_tiffs = list()
         for chi in np.arange(0,self.channel_n):
             for ti in np.arange(0, self.tsteps_n):
                 subs = self.fname_head + "_ch" + str(chi) + "_stack" + str(ti).zfill(zfilln) + "_"
-                f = [s for s in self.all_tiffs if subs in s]
+                if len(self.deskewed_tiffs) < len(self.all_tiffs):
+                    f = [s for s in self.all_tiffs if subs in s]
+                else:
+                    f = [s for s in self.deskewed_tiffs if subs in s]
+
                 if len(f) == 1:
                     t_stamp=np.float(f[0].split('_')[-2].split('msec')[0]) # time stamp of the tiff file (ms)
                     curr_time = self.datetime_acq_start + timedelta(seconds=t_stamp/1000)
@@ -167,60 +196,28 @@ class LLSMParser:
 
         return None
 
-    def info(self):
-        """
-        print out some basic information about this object
-        :return: none
-        """
-        print("\n\n")
-        print("file name prefix: \"" + self.fname_head+"\"")
-        print("file path: " + self.fpath)
-        print("channel number: " + str(self.channel_n))
-        print("number of time steps: " + str(self.tsteps_n))
-        print("")
-        print("example tiffs dictionary item:\n")
-        pprint.pprint(self.dict_tiffs[0])
-        print('\n============================================\n')
-        print("ATTRIBUTES:")
-        for key, value in self.__dict__.items():
-            if key is "dict_tiffs":
-                print("self." + key + ":  [hidden], a list of all the tiffs, with one element being a dictionary containing info"
-                            " of one tiff")
-                print('Example:')
-                pprint.pprint(self.dict_tiffs[0])
-                print('\n')
-            elif key is "all_tiffs":
-                print("self." + key + ":  [hidden], a list of all the tiffs, with one element being the string of the path of one"
-                            "tiff")
-                print('Example:')
-                print(self.all_tiffs[0])
-                print('\n')
-            elif key is "configs":
-                print("self." + key + ":  [hidden], a list of configurations, str lines from the txt file")
-                print('Example:')
-                print(self.configs[3])
-                print('\n')
-            elif key is "data_properties":
-                print("self." + key + ":  [hidden], pandas.DataFrame, a small table with data properties")
-            else:
-                print("self." + key + ":  " + str(value))
-
     def get_data_properties(self):
         exp = str(self.camera_expo_ms) + ' ms'
         acqT_per_stack = str(self.estimated_acqT_per_stack) + ' s/V/C'
         # find the average time interval between time steps. use the first channel to estimate.
         for t in self.dict_tiffs:
-            if t['time step'] == self.tsteps_n - 1:
+            if t['time step'] == 0:
                 if t['channel index'] == 0:
-                    t2 = t['time stamp (ms)']
-            elif t['time step'] == 0:
-                if t['channel index'] == 0:
+                    if VERBOSE: print('setting t1')
                     t1 = t['time stamp (ms)']
+                    totaldt = 0
+            elif t['time step'] == self.tsteps_n - 1:
+                if t['channel index'] == 0:
+                    if VERBOSE: print('setting t2')
+                    t2 = t['time stamp (ms)']
+                    totaldt = t2 - t1
 
-        totaldt = t2 - t1
         interval = totaldt / 1000 / self.tsteps_n
         tint='{:.2f} s'.format(interval)
-        cycle_hz = '{:02.3f}'.format(1/interval) + ' Hz'
+        if interval > 0:
+            cycle_hz = '{:02.3f}'.format(1/interval) + ' Hz'
+        else:
+            cycle_hz = 'nan'
         cycle_s = '{:.3f}'.format(self.estimated_stack_cycle_seconds) + ' s/V'
         df = pd.DataFrame()
         df['data properties'] = ['file name',
@@ -249,4 +246,58 @@ class LLSMParser:
                         ]
         self.data_properties = df
         return None
+
+    def info(self):
+        """
+        print out some basic information about this object
+        :return: none
+        """
+        print("\n\n")
+        print("file name prefix: \"" + self.fname_head + "\"")
+        print("file path: " + self.fpath)
+        print("channel number: " + str(self.channel_n))
+        print("number of time steps: " + str(self.tsteps_n))
+        print("")
+        print("example tiffs dictionary item:\n")
+        pprint.pprint(self.dict_tiffs[0])
+        print('\n============================================\n')
+        print("ATTRIBUTES:")
+        for key, value in self.__dict__.items():
+            if key is "dict_tiffs":
+                print(
+                    "self." + key + ":  [hidden], a list of all the tiffs, with one element being a dictionary containing info"
+                                    " of one tiff")
+                print('Example:')
+                pprint.pprint(self.dict_tiffs[0])
+                print('\n')
+            elif key is "all_tiffs":
+                print(
+                    "self." + key + ":  [hidden], a list of all the tiffs, with one element being the string of the path of one"
+                                    "tiff")
+                if len(self.all_tiffs) > len(self.deskewed_tiffs):
+                    print('Example:')
+                    print(self.all_tiffs[0])
+                    print('\n')
+                else:
+                    print('\n raw data was partially or completely deleted, look at self.deskewed_tiffs instead\n')
+            elif key is "deskewed_tiffs":
+                print(
+                    "self." + key + ":  [hidden], a list of all the deskewed tiffs, with one element being the string of the path of one"
+                                    "tiff")
+                if len(self.deskewed_tiffs) > 0:
+                    print('Example:')
+                    print(self.deskewed_tiffs[0])
+                    print('\n')
+                else:
+                    print('\n no data is deskewed as of yet\n')
+            elif key is "configs":
+                print("self." + key + ":  [hidden], a list of configurations, str lines from the txt file")
+                print('Example:')
+                print(self.configs[3])
+                print('\n')
+            elif key is "data_properties":
+                print("self." + key + ":  [hidden], pandas.DataFrame, a small table with data properties")
+            else:
+                print("self." + key + ":  " + str(value))
+
 

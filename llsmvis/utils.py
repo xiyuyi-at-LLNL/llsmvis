@@ -43,15 +43,18 @@ def wpad2square(imraw):
     impad[0:imraw.shape[0], 0:imraw.shape[1]] = imraw
     return impad
 
-def frameXYmip(im, imname, reldT, absdT, savepath, lower=0, upper=1):
+def frameXYmip(im, imname, reldT, absdT, savepath, lower=0, upper=1, data_info='None'):
     # this function is to generate a single frame of the labeled MIP movie in the XY plane.
 
     fig = plt.figure(figsize=(15, 15), dpi=80)
     ax = plt.imshow(im, cmap=cm.Greys_r, vmin=lower, vmax=upper)
     pos1_f = 1 + 0.05 * np.max(im.shape) / im.shape[0]
     pos2_f = 1 + 0.1 * np.max(im.shape) / im.shape[0]
+    pos3_f = 1 + 0.15 * np.max(im.shape) / im.shape[0]
+
     plt.text(im.shape[1] * 0.01, im.shape[0] * pos1_f, reldT + '(hh:mm:ss.ss)         scale bar: 8um', fontsize=24, color='k')
     plt.text(im.shape[1] * 0.01, im.shape[0] * pos2_f, absdT, fontsize=24, color='k')
+    plt.text(im.shape[1] * 0.01, im.shape[0] * pos3_f, data_info, fontsize=24, color='k')
     ax.axes.get_xaxis().set_visible(False)
     ax.axes.get_yaxis().set_visible(False)
     ax.axes.spines['right'].set_visible(False)
@@ -62,25 +65,30 @@ def frameXYmip(im, imname, reldT, absdT, savepath, lower=0, upper=1):
     plt.close()
     return None
 
-def getLabeledXYmip_MP4(p, lb, ub):
+
+def getLabeledXYmip_MP4(p, lb, ub, reference_frame_index = 0, channel_inds=None):
     # p is the parser
     # this function can only be used after deskew is finished and all the mip stacks are available.
     # take out the initial date time
     t0=datetime.strptime(p.acquisition_startT,'%m/%d/%Y %I:%M:%S %p')
     # loop over all t steps for all channels
-    for cind in np.arange(0,len(p.channel_names)): # loop over all channels.
+    if channel_inds is None:
+        channel_inds=np.arange(0,len(p.channel_names))
+
+    for cind in channel_inds:
         c=p.channel_names[cind]
         # find the correct file name for the MIP project in XY of this channel.
         fname=p.fpath+'/results_dsk/'+p.fname_head + '_deskewed'+'/MIP_'+c+'_XY.tif'
         vidp=p.fpath+'/results_dsk/'+p.fname_head + '_deskewed'
+        info=p.fname_head + '    channel: '+c
         writer = skvideo.io.FFmpegWriter(vidp+'/MyRep_MIP_'+c+'_wLabels.mp4',outputdict={"-pix_fmt":"yuv420p"})
         print(fname)
         try:
             imstack=skimage.external.tifffile.imread(fname).astype('float')
         except IOError:
             print('failed to open file: \n'+fname)
-        peak=np.max(imstack[0,:,:].ravel());
-        base=np.min(imstack[0,:,:].ravel());
+        peak=np.max(imstack[reference_frame_index,:,:].ravel());
+        base=np.min(imstack[reference_frame_index,:,:].ravel());
         imstack=(imstack-base)/(peak-base)
         print('maximum is:' +str(np.max(imstack.ravel())))
         #imstack=(imstack*256).astype('uint8')
@@ -107,9 +115,9 @@ def getLabeledXYmip_MP4(p, lb, ub):
                         absdTstr=tc['time (datetime)'].strftime('%m/%d/%Y %I:%M:%S %p')
             # frame this mip image with correct labels, save as png.
             if len(imstack.shape)==2:
-                frameXYmip(im=imstack, imname=str(i)+'.png', reldT=reldTstr, absdT=absdTstr, savepath=f, lower=lb, upper=ub)
+                frameXYmip(im=imstack, imname=str(i)+'.png', reldT=reldTstr, absdT=absdTstr, savepath=f, lower=lb, upper=ub, data_info=info)
             else:
-                frameXYmip(im=imstack[i,:,:], imname=str(i)+'.png', reldT=reldTstr, absdT=absdTstr, savepath=f, lower=lb, upper=ub)
+                frameXYmip(im=imstack[i,:,:], imname=str(i)+'.png', reldT=reldTstr, absdT=absdTstr, savepath=f, lower=lb, upper=ub, data_info=info)
         # loop over all frames again and export as .mp4
         for i in np.arange(0,stackN): # loop over all tsteps again
             im=skimage.io.imread(f+'/'+str(i)+'.png')

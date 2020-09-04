@@ -18,6 +18,14 @@ scp *.txt ./results_dsk
 pythonpath=$(echo $(which python) | sed 's/\//\\\//g')
 homepath=$(echo $(echo ~) | sed 's/\//\\\//g')
 
+echo generate .mp4 files for mip movies? \(y/[n]\)
+read v
+if [[ $v == "y" ]]
+then
+  mp4flag="yes"
+else
+  mp4flag="no"
+fi
 ##### identify and prepare single node jobs using sbatch for each file head
 slurms=()
 for i in $(ls *.txt) # check all txt files
@@ -46,6 +54,11 @@ do
     # prepare the corresponding executable python script
     sed -e "s/FPATH/\"$fpath\"/g" -e "s/FHEAD/\"$filehead\"/g" \
     -e "s/\[WHICHPYTHON\]/$pythonpath/g" -e "s/\[HOME\]/\"$homepath\"/g" $seedpy > $foutpy
+    if [[ $mp4flag == "yes" ]]
+    then
+      echo "[fig, ax] = utils.render_mpl_table(p, p.data_properties, header_columns=0, col_width=7.0)" >> $foutpy
+      echo "utils.getLabeledXYmip_MP4(p, 0, 1, channel_inds=None)" >> $foutpy
+      fi
 
     # prepare the corresponding slurm
     sed "s/\[EXECUTABLE\]/$fpath\/jobs_dsk\/deskew4D_"$filehead".py/g" $seedsl > $foutsl

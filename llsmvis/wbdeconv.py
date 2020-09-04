@@ -1,5 +1,6 @@
 import numpy as np
 from skimage import io
+import skimage
 from llsmvis.globals import *
 import copy
 import os
@@ -9,12 +10,12 @@ class WBDeconv:
 # Guo M, Li Y, Su Y, Lambert T, Dalle Nogare D, Moyle MW, Duncan LH, Ikegami R, Santella A, Rey-Suarez I,
 # Green D. Accelerating iterative deconvolution and multiview fusion by orders of magnitude. BioRxiv. 2019 Jan 1:647370.
 #
-# The matlab code package was kindly provided by the authors.
+#  The matlab code package was kindly provided by the authors.
 #
-# [change to the journal after the manuscript is publisehd online...]
+#  [change to the journal after the manuscript is publisehd online...]
 #
-# notes for future polish:
-# at some point need to make all attributes static, no more no less in future development.. [figure that out later].
+#  notes for future polish:
+#  at some point need to make all attributes static, no more no less in future development.. [figure that out later].
 #
     def __init__(self, p):
         self.classname = 'WBDeconv'
@@ -39,6 +40,9 @@ class WBDeconv:
 
         # define full path to a tiff stack that contains a centered PSF stack.
         self.psf_path = '/Users/yi10/Desktop/Research/LDRD_LLSM_rendering/openvisustools/demo_data/Demo_claires/psf2.tif'
+
+        # define the folder path to keep all the deconvolved stacks.
+        self.deconv_folder = '/Users/yi10/Desktop/Research/LDRD_LLSM_rendering/openvisustools/demo_data/Demo_claires'
 
         # get a place holder for a 3D observation stack (as opposed to PSF stack).
         self.current_stack = np.float32(io.imread(self.deskewed_path))
@@ -189,7 +193,7 @@ class WBDeconv:
             #
             if VERBOSE:
                 print(['Cutoff gain of forward projector:' + str(self.beta_fpx) + ' x ' +  str(self.beta_fpy) +
-                    ' x ' + str(self.beta_fpz) + ', Average = ' + str(beta_fp)])
+                    ' x ' + str(self.beta_fpz) + ', Average = ' + str(self.beta_fp)])
 
             return
 
@@ -300,6 +304,7 @@ class WBDeconv:
         #   Need acceleration.
         #
         #------------------------------------
+        print("deconvolve one stack")
         stack[stack<self.small_value] = self.small_value
         if self.itN == 1:
             stack_estimate = stack
@@ -315,6 +320,22 @@ class WBDeconv:
             stack_estimate[stack_estimate<self.small_value]=self.small_value
 
         self.stack_estimate = stack_estimate
+        print(' save out this deconvolved stack.')
+        deconv_result_fname = self.deconv_folder + '/deconved_stack.tif'
+        deconv_mip = self.deconv_folder + '/deconved_stack_mip.tif'
+
+        f = skimage.external.tifffile.TiffWriter(deconv_result_fname)
+        l = self.stack_estimate.astype('uint16')
+        for i in np.arange(0, l.shape[0]):
+            f.save(l[i, :, :], compress=0)
+
+        f.close()
+
+        f = skimage.external.tifffile.TiffWriter(deconv_mip)
+        k=np.max(l, axis=0)
+        f.save(k,compress=0)
+        f.close()
+        return None
 
     def WBDeconv_all(self):
         # ------------------------------------
@@ -326,6 +347,7 @@ class WBDeconv:
         #   need a simulation stack to test for time-lapse deconvolution.
         #
         # ------------------------------------
+        print("deconvolve all")
         self.WBDeconv_1stack(self.current_stack)
         return
 

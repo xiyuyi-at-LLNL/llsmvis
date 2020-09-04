@@ -1,4 +1,4 @@
 # define all the global variables here.
-VERBOSE = False
+VERBOSE = True
 LLSMVIS_Enable_OpenVisus = False
 WARNINGS_OFF = True

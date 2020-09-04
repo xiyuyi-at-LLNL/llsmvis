@@ -3,6 +3,7 @@ import numpy as np
 import os
 import skimage.external.tifffile
 from llsmvis.globals import *
+import pickle
 
 class Deskewer:
     def __init__(self, parser):
@@ -30,6 +31,10 @@ class Deskewer:
             else:
                 print("\n  Output path for deskewed tiffs already exists:")
                 print("    "+self.path_o)
+            # save the parser
+            with open("{}/MyParser_{}.parser".format(self.path_o, self.p.fname_head), "wb") as f:
+                pickle.dump(self.p, f, pickle.HIGHEST_PROTOCOL)
+                print("Successfully saved the parser to directory.")
         except OSError:
             print("\n  Failed to create the output path for deskewed tiffs")
 
