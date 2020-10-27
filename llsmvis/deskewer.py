@@ -11,6 +11,7 @@ class Deskewer:
         self.p = parser
         #  create output path for deskewed tiffs
         self.path_o = parser.fpath + '/results_dsk/' + self.p.fname_head + '_deskewed'
+        self.singleslices = False
         print("Deskewing dataset:\n    " + self.p.fpath + "/" + self.p.fname_head)
         try:
             if not os.path.exists(parser.fpath+'/results_dsk'):
@@ -50,7 +51,14 @@ class Deskewer:
         self.z_res = self.sample_z_shift*np.cos(self.angle)
         self.x_shift = self.sample_z_shift * np.sin(self.angle)
         self.x_additional = np.int32(np.ceil(np.abs((self.x_shift * self.s[0] / self.xy_res))))
-        self.nx_mod = self.s[2] + self.x_additional
+        if len(self.s)==2:
+            self.s = np.array([1,self.s[0],self.s[1]])
+            self.nx_mod = self.s[2] + self.x_additional
+            self.singleslices = True
+        # else:
+        #     self.singleslices = False
+        #     self.nx_mod=self.x_additional
+
         self.mip_TiffWriter_objs = list()
         self.label_MIPs=False
 
@@ -72,22 +80,27 @@ class Deskewer:
 
         print('    Deskewing time step ' + str(tif_dict['time step']) + '/' + str(self.p.tsteps_n-1)
                   + "; channel " + str(tif_dict['channel index']) + '/' + str(self.p.channel_n-1))
-
-        for i in range(arr.shape[0]):
-            x_start = np.int32(np.round(i * self.x_shift / self.xy_res))
-            arr_mod[i, :, x_start:x_start + self.s[2]] = arr[i, :, :]
+        if self.singleslices is False:
+            for i in range(arr.shape[0]):
+                x_start = np.int32(np.round(i * self.x_shift / self.xy_res))
+                arr_mod[i, :, x_start:x_start + self.s[2]] = arr[i, :, :]
+        else:
+            arr_mod = arr
 
         io.imsave(self.path_o + '/Deskewed_' + image_name.split('/')[-1], arr_mod)
 
         # write the XY-MIP to the corresponding MIP tiff file.
-        mip0 = np.max(arr_mod, axis=0)
-        mip0[30:35, 30:110] = np.max(mip0.ravel())
-        mip1 = np.max(arr_mod, axis=1)
-        mip2 = np.max(arr_mod, axis=2)
+        if self.singleslices is False:
+            mip0 = np.max(arr_mod, axis=0)
+            mip0[30:35, 30:110] = np.max(mip0.ravel())
+            mip1 = np.max(arr_mod, axis=1)
+            mip2 = np.max(arr_mod, axis=2)
 
-        self.mip_TiffWriter_objs[tif_dict['channel index']][0].save(mip0, compress=0)
-        self.mip_TiffWriter_objs[tif_dict['channel index']][1].save(mip1, compress=0)
-        self.mip_TiffWriter_objs[tif_dict['channel index']][2].save(mip2, compress=0)
+            self.mip_TiffWriter_objs[tif_dict['channel index']][0].save(mip0, compress=0)
+            self.mip_TiffWriter_objs[tif_dict['channel index']][1].save(mip1, compress=0)
+            self.mip_TiffWriter_objs[tif_dict['channel index']][2].save(mip2, compress=0)
+        else:
+            self.mip_TiffWriter_objs[tif_dict['channel index']][0].save(arr_mod, compress=0)
 
     def deskew_all_tiffs(self):
         # go through all tiffs, and deskew one after another
