@@ -3,7 +3,7 @@
 #SBATCH -N 1
 #SBATCH -p pbatch
 #SBATCH -t 10:00:00
-#SBATCH -A mmbp
+#SBATCH -A dynimag
 
 ##### These are shell commands
 echo 'startig time'

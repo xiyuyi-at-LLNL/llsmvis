@@ -5,9 +5,9 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         envfile="./envs/env_darwin.yml"
 fi
 
-if echo "$(conda info --envs)" | grep -q "llsm"
+if echo "$(conda info --envs)" | grep -q "llsmvis"
 then
-  echo conda environment 'llsm' already exists, update? \(yes/no\)
+  echo conda environment 'llsmvis' already exists, update? \(yes/no\)
   read v
   if [[ $v == 'yes' ]]
   then
@@ -17,6 +17,6 @@ then
   echo -- no action performed.
   fi
 else
-  echo creating conda environment 'llsm'
+  echo creating conda environment 'llsmvis'
   conda env create -f $envfile
 fi

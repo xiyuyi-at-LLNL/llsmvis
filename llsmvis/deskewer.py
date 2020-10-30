@@ -44,6 +44,7 @@ class Deskewer:
         self.threslist_tstep0 = ['']*self.p.channel_n  # prepare a list of thresholds of tstep=0 for each channel.
         image_name = self.p.dict_tiffs[0]['path of tiff']
         arr = io.imread(image_name)
+        print(arr.shape)
         self.s = arr.shape  # stack size
         self.sample_z_shift = self.p.sample_z_shift  # this value comes from the paser
         self.angle = 58.2 * np.pi / 180.0
@@ -53,11 +54,11 @@ class Deskewer:
         self.x_additional = np.int32(np.ceil(np.abs((self.x_shift * self.s[0] / self.xy_res))))
         if len(self.s)==2:
             self.s = np.array([1,self.s[0],self.s[1]])
-            self.nx_mod = self.s[2] + self.x_additional
+            self.nx_mod = self.s[2]
             self.singleslices = True
-        # else:
-        #     self.singleslices = False
-        #     self.nx_mod=self.x_additional
+        else:
+            self.singleslices = False
+            self.nx_mod=self.s[2] + self.x_additional
 
         self.mip_TiffWriter_objs = list()
         self.label_MIPs=False

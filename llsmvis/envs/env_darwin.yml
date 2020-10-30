@@ -1,4 +1,4 @@
-name: llsm
+name: llsmvis
 channels:
   - defaults
 dependencies:
