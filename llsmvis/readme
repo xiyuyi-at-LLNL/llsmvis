@@ -10,13 +10,13 @@
 
    reference: https://hpc.llnl.gov/software/development-environment-software/python
  
-2. Create a virtual environment for llsm under folder llsmvis:	
-   >> bash setup
+2. Create a virtual environment for llsmvis under folder llsmvis:	
+   >> bash llsmvis-setup
 
 #### Processing
 To process all the raw ata after an imaging session with multiple stacks and various imaging conditions.
 1. activate the llsmv conda environment 
-    >> conda activate llsm 
+    >> conda activate llsmvis 
 2. copy ./tools/getdsk into the data file folder and run it.
     >> ./getdsk  
 

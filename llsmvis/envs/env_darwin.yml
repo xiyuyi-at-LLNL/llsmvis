@@ -1,4 +1,4 @@
-name: test
+name: llsmvis
 channels:
   - dsdale24
   - conda-forge
@@ -54,6 +54,7 @@ dependencies:
   - pandas=1.0.3=py37h6c726b0_0
   - pcre=8.43=h0a44026_0
   - pillow=7.0.0=py37h4655f20_0
+  - pip=20.2.2
   - pyparsing=2.4.6=py_0
   - python=3.7.3=h359304d_0
   - python-dateutil=2.8.1=py_0

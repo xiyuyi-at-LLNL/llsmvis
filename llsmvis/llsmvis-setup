@@ -11,7 +11,7 @@ then
   read v
   if [[ $v == 'yes' ]]
   then
-    echo updating existing llsm environment
+    echo updating existing llsmvis environment
     conda env update -f $envfile
   else
   echo -- no action performed.
