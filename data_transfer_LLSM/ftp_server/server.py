@@ -30,8 +30,8 @@ def main():
     address = (IP, PORT)
     server = FTPServer(address, handler)
 
-    server.max_cons = 1
-    server.max_cons_per_ip = 1
+    server.max_cons = 10
+    server.max_cons_per_ip = 2
 
     server.serve_forever()
 

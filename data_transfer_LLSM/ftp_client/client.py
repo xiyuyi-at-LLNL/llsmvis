@@ -6,13 +6,28 @@ import logging
 import logging.handlers
 from ftpsync.util import set_pyftpsync_logger
 import os
+import yaml
 
-path_local = r"C:\Users\miao1\Development\llsmvis\data_transfer_LLSM\ftp_client\sync_target"
+def read_config():
+    config_path = os.path.join(os.getcwd(), "config.yaml")
+    print(config_path)
+    with open(config_path, "r") as f: 
+        return yaml.safe_load(f)
 
-# logging
+#FTP Configuration
+config_ftp = read_config().get("FTP")
+TARGET_DIRECTORY = config_ftp.get("TARGET_DIRECTORY")
+PORT = config_ftp.get("PORT")
+IP = config_ftp.get("IP")
+FTP_USER = config_ftp.get("FTP_USER")
+FTP_PASSWORD = config_ftp.get("FTP_PASSWORD")
+
+#SYNC Configuration
+config_sync = read_config().get("SYNC")
+WAIT_SECONDS = config_sync.get("WAIT")
 
 custom_logger = logging.getLogger("pyftpsync")
-log_path = os.path.join(path_local, "data_sync.log")
+log_path = os.path.join(TARGET_DIRECTORY, "data_sync.log")
 handler = logging.handlers.WatchedFileHandler(log_path)
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 handler.setFormatter(formatter)
@@ -21,10 +36,8 @@ set_pyftpsync_logger(custom_logger)
 custom_logger.setLevel(logging.DEBUG)
 
 #ftp client setup
-local = FsTarget(path_local)
-user ="myuser"
-passwd = "myuser"
-remote = FtpTarget("", "192.168.0.123", username=user, password=passwd, tls=False, port=2121)
+local = FsTarget(TARGET_DIRECTORY)
+remote = FtpTarget("", IP, username=FTP_USER, password=FTP_PASSWORD, tls=False, port=PORT)
 # opts={"verbose": 5, "force": True, "match": "file*.txt" }
 opts={"verbose": 5, "force": True}
 s = DownloadSynchronizer(local, remote, opts)
@@ -36,11 +49,7 @@ while True:
     custom_logger.info("*** sync stats ***")
     custom_logger.info(s.get_stats())
 
-    u = "abc_äöü_¿ß"
-    s = u.encode("utf-8")
-    remote.write_text(log_path, s)
-
     custom_logger.info("=========== download finished ===========")
-    sleep(5 - time() % 5)
+    sleep(WAIT_SECONDS - time() % WAIT_SECONDS)
 
 s.close()
