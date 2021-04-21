@@ -1,45 +1,39 @@
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
+import yaml
+import os
 
-
-# The port the FTP server will listen on.
-# This must be greater than 1023 unless you run this script as root.
-FTP_PORT = 2121
-
-# The name of the FTP user that can log in.
-FTP_USER = "myuser"
-
-# The FTP user's password.
-FTP_PASSWORD = "myuser"
-
-# The directory the FTP user will have full read/write access to.
-FTP_DIRECTORY = r"C:\Users\miao1\Development\data_transfer_LLSM\ftp_server\public"
-
+def read_config():
+    config_path = os.path.join(os.getcwd(), "config.yaml")
+    print(config_path)
+    with open(config_path, "r") as f: 
+        return yaml.safe_load(f)
 
 def main():
-    authorizer = DummyAuthorizer()
+    config_ftp = read_config().get("FTP")
+    
+    PORT = config_ftp.get("PORT")
+    IP = config_ftp.get("IP")
+    FTP_USER = config_ftp.get("FTP_USER")
+    FTP_PASSWORD = config_ftp.get("FTP_PASSWORD")
+    SERVERNAME=config_ftp.get("SERVERNAME")
+    FTP_DIRECTORY = config_ftp.get("FTP_DIRECTORY")
 
-    # Define a new user having full r/w permissions.
+    authorizer = DummyAuthorizer()
     authorizer.add_user(FTP_USER, FTP_PASSWORD, FTP_DIRECTORY, perm='elradfmw')
 
     handler = FTPHandler
     handler.authorizer = authorizer
+    handler.banner = SERVERNAME
 
-    # Define a customized banner (string returned when client connects)
-    handler.banner = "pyftpdlib based ftpd ready."
-
-    # Optionally specify range of ports to use for passive connections.
-    #handler.passive_ports = range(60000, 65535)
-
-    address = ('127.0.0.2", FTP_PORT)
+    address = (IP, PORT)
     server = FTPServer(address, handler)
 
-    server.max_cons = 256
-    server.max_cons_per_ip = 5
+    server.max_cons = 1
+    server.max_cons_per_ip = 1
 
     server.serve_forever()
-
 
 if __name__ == '__main__':
     main()
