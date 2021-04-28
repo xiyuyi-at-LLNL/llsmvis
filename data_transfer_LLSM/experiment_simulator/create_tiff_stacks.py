@@ -8,9 +8,9 @@ target=r"C:\Users\miao1\Development\llsmvis\data_transfer_LLSM\ftp_server\public
 channels = 10
 acquisition_name = "image"
 for channel in range(channels):
-    sx = 1000
-    sy = 1000
-    sz = 1000
+    sx = 600
+    sy = 600
+    sz = 600
 
     seed = [int(sx / 2), int(sy / 2), int(sz / 2)]
 
@@ -36,6 +36,6 @@ for channel in range(channels):
 
     imsave(tiff_path, arr)
     print("saved " + file_name)
-    sleep(30 - time() % 30)
+    sleep(15 - time() % 15)
 
 

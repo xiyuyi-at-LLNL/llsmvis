@@ -8,4 +8,4 @@ FTP:
   FTP_USER: myuser
   FTP_PASSWORD: myuser
   SERVERNAME: Fiddlesticks LLSM FTP SERVER
-  FTP_DIRECTORY: C:\Users\miao1\Development\llsmvis\data_transfer_LLSM\ftp_server\public
+  FTP_DIRECTORY: C:\Users\miao1\Development\demo_data\sync_source
