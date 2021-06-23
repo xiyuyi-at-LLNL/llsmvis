@@ -1,0 +1,14 @@
+APP:
+  VERBOSE: True
+  #add settings here
+
+FTP: 
+  PORT: 2121
+  IP: 192.168.0.129
+  FTP_USER: myuser
+  FTP_PASSWORD: myuser
+  TARGET_DIRECTORY: C:\Users\miao1\Development\demo_data\sync_target
+
+SYNC:
+  WAIT: 5 #seconds
+  
