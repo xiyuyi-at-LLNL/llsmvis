@@ -1,4 +1,4 @@
-### setup the conda environment for llsm
+### setup the conda environment for llsmvis
 
 1. Install anaconda:
    on LC:
@@ -13,7 +13,7 @@
 2. Create a virtual environment for llsmvis under folder llsmvis:	
    >> bash llsmvis-setup
 
-#### Processing
+### Processing
 To process all the raw ata after an imaging session with multiple stacks and various imaging conditions.
 1. activate the llsmv conda environment 
     >> conda activate llsmvis 

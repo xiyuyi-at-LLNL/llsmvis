@@ -333,7 +333,7 @@ class WBDeconv:
 
         f = skimage.external.tifffile.TiffWriter(deconv_mip)
         k=np.max(l, axis=0)
-        f.save(k,compress=0)
+        f.save(k, compress=0)
         f.close()
         return None
 

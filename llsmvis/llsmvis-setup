@@ -13,10 +13,17 @@ then
   then
     echo updating existing llsmvis environment
     conda env update -f $envfile
+    echo "now activating llsmvis and add the kernel spec to jupyter notebook"
+    conda activate llsmvis
+    ipython kernel install --user --name=llsmvis
+
   else
   echo -- no action performed.
   fi
 else
   echo creating conda environment 'llsmvis'
   conda env create -f $envfile
+    echo "now activating llsmvis and add the kernel spec to jupyter notebook"
+    conda activate llsmvis
+    ipython kernel install --user --name=llsmvis
 fi
