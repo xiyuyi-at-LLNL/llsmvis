@@ -4,25 +4,23 @@ import os
 import skimage.external.tifffile
 from llsmvis.globals import *
 import pickle
-from scipy import interpolate
-import sys
 
 class Deskewer:
     def __init__(self, parser):
         # attach parser to the Deskewer
         self.p = parser
         #  create output path for deskewed tiffs
-        self.path_o = os.path.join(parser.fpath, 'results_dsk', self.p.fname_head + '_deskewed')
+        self.path_o = parser.fpath + '/results_dsk/' + self.p.fname_head + '_deskewed'
         self.singleslices = False
         print("Deskewing dataset:\n    " + self.p.fpath + "/" + self.p.fname_head)
         try:
-            if not os.path.exists(os.path.join(parser.fpath,'results_dsk')):
-                os.mkdir(os.path.join(parser.fpath, 'results_dsk'))
+            if not os.path.exists(parser.fpath+'/results_dsk'):
+                os.mkdir(parser.fpath+'/results_dsk')
                 print("\n results_dsk folder for the collection of datasets created:")
-                print(os.path.join(parser.fpath, 'results_dsk'))
+                print(parser.fpath+'/results_dsk')
             else:
                 print("\n results_dsk folder for the collection of datasets already exists:")
-                print(os.path.join(parser.fpath, 'results_dsk'))
+                print(parser.fpath + '/results_dsk')
         except OSError:
             print("\n  Failed to create the results_dsk folder for the datasets")
 
@@ -49,12 +47,12 @@ class Deskewer:
         print(arr.shape)
         self.s = arr.shape  # stack size
         self.sample_z_shift = self.p.sample_z_shift  # this value comes from the paser
-        self.angle = 58.5 * np.pi / 180.0
-        self.xy_res = 0.100  # measured pixel size in xy
-        self.z_res = self.sample_z_shift * np.cos(self.angle)
+        self.angle = 58.2 * np.pi / 180.0
+        self.xy_res = 0.1016  # measured pixel size in xy
+        self.z_res = self.sample_z_shift*np.cos(self.angle)
         self.x_shift = self.sample_z_shift * np.sin(self.angle)
         self.x_additional = np.int32(np.ceil(np.abs((self.x_shift * self.s[0] / self.xy_res))))
-        if len(self.s) == 2:
+        if len(self.s)==2:
             self.s = np.array([1,self.s[0],self.s[1]])
             self.nx_mod = self.s[2]
             self.singleslices = True
@@ -85,17 +83,12 @@ class Deskewer:
                   + "; channel " + str(tif_dict['channel index']) + '/' + str(self.p.channel_n-1))
         if self.singleslices is False:
             for i in range(arr.shape[0]):
-                x_start = np.int32(np.floor(i * self.x_shift / self.xy_res))
-                # arr_mod[i, :, x_start:x_start + self.s[2]] = arr[i, :, :]
-                arr_mod[i, :, x_start:x_start + self.s[2]] = self.deskew_a_slice(image_name, i)
+                x_start = np.int32(np.round(i * self.x_shift / self.xy_res))
+                arr_mod[i, :, x_start:x_start + self.s[2]] = arr[i, :, :]
         else:
             arr_mod = arr
-        if sys.platform.startswith('win'):
-            print('windows system')
-            io.imsave(self.path_o + '/Deskewed_' + image_name.split('\\')[-1], arr_mod)
-        else:
-            print('not a windows system')
-            io.imsave(self.path_o + '/Deskewed_' + image_name.split('/')[-1], arr_mod)
+
+        io.imsave(self.path_o + '/Deskewed_' + image_name.split('/')[-1], arr_mod)
 
         # write the XY-MIP to the corresponding MIP tiff file.
         if self.singleslices is False:
@@ -138,25 +131,8 @@ class Deskewer:
     def deskew_a_slice(self, stackname, zi):
         #  return the deskewed slice without saving it, to feed into idx_converter.
         #  use it for idx converter
-        # read out a slice
         arr = skimage.external.tifffile.imread(stackname, pages=[zi])
-        # prepare an empty slice to store the modified slice
-        deskewed = np.zeros((self.s[1], self.s[2]), dtype='uint16')
-        # find out the x_start
-        x_start_real = zi * self.x_shift / self.xy_res
-        x_start = np.int32(np.floor(x_start_real))
-        dx = x_start_real - x_start
-        # print(dx)
-        locs1 = np.arange(0, arr.shape[0])
-        locs2 = np.arange(0, arr.shape[1])
-        # find interpolation coordinates based on the sub-pixel shifts
-        locs1new = locs1[1:locs1.size - 1]
-        locs2new = locs2[1:locs2.size - 1] - dx
-
-        # define interpolation function
-        f = interpolate.interp2d(locs2, locs1, arr, kind='cubic')
-        arr_sps = f(locs2new, locs1new)
-        # now interpolate the arr to match the grid precisly.
-        deskewed[1:self.s[1]-1, 1:self.s[2]-1] = arr_sps
+        deskewed = np.zeros((self.s[1], self.nx_mod), dtype='uint16')
+        x_start = np.int32(np.round(zi * self.x_shift / self.xy_res))
+        deskewed[:, x_start:x_start + self.s[2]] = arr
         return deskewed
-

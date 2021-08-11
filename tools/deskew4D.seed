@@ -1,0 +1,30 @@
+#![WHICHPYTHON]
+import sys
+sys.path.append([HOME])
+from llsmvis import *
+from llsmvis import utils
+import skvideo.io
+import warnings; warnings.simplefilter('ignore')
+if WARNINGS_OFF:
+    import warnings
+    warnings.filterwarnings("ignore")
+
+print('\n\n====================  deskew =======================')
+
+# define fpath and name_head [should modify from bash]
+fpath = FPATH
+fname_head = FHEAD
+
+# get a parser:
+p = LLSMParser(fpath, fname_head)
+
+if VERBOSE:
+    print('check basic info of this parser')
+    p.info()
+
+# define the deskewer
+d = Deskewer(p)
+
+# deskew all the tiffs
+d.deskew_all_tiffs()
+
