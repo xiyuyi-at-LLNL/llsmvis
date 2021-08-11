@@ -90,11 +90,13 @@ class Deskewer:
                 arr_mod[i, :, x_start:x_start + self.s[2]] = self.deskew_a_slice(image_name, i)
         else:
             arr_mod = arr
+
         if sys.platform.startswith('win'):
             print('windows system')
             io.imsave(self.path_o + '/Deskewed_' + image_name.split('\\')[-1], arr_mod)
         else:
             print('not a windows system')
+
             io.imsave(self.path_o + '/Deskewed_' + image_name.split('/')[-1], arr_mod)
 
         # write the XY-MIP to the corresponding MIP tiff file.
