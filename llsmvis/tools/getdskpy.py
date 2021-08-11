@@ -105,10 +105,10 @@ for file in os.listdir(os.getcwd()): # check all txt files
         with open(seedpy, "rt") as fin:
             with open(foutpy, "wt") as fout:
                 for line in fin:
-                    fout.write(line.replace('FPATH', "\""+fpath+"\""
-                                            ).replace('FHEAD',"\""+filehead+"\""
+                    fout.write(line.replace('FPATH', "r\""+fpath+"\""
+                                            ).replace('FHEAD',"r\""+filehead+"\""
                                             ).replace('[WHICHPYTHON]',pythonpath
-                                            ).replace('[HOME]',"\""+homepath+"\""))
+                                            ).replace('[HOME]',"r\""+homepath+"\""))
 
         fin.close()
         fout.close()
