@@ -5,6 +5,7 @@ import skimage.external.tifffile
 from llsmvis.globals import *
 import pickle
 from scipy import interpolate
+import sys
 
 class Deskewer:
     def __init__(self, parser):
@@ -90,7 +91,10 @@ class Deskewer:
         else:
             arr_mod = arr
 
-        io.imsave(self.path_o + '/Deskewed_' + image_name.split('/')[-1], arr_mod)
+        if sys.platform.startswith('win'):
+            io.imsave(self.path_o + '/Deskewed_' + image_name.split('\\')[-1], arr_mod)
+        else:
+            io.imsave(self.path_o + '/Deskewed_' + image_name.split('/')[-1], arr_mod)
 
         # write the XY-MIP to the corresponding MIP tiff file.
         if self.singleslices is False:
