@@ -1,0 +1,87 @@
+#!/bin/bash
+# This bash script checks, organizes, generates and submits slurm jobs to deskew and calcualte the MIPs for all the
+# tiff files under the current directory.
+#
+# To be specific, it checks the *_Setting.txt files generate by the LLSM instrument, and prepares
+# the corresponding executable python scripts for deskew and MIP calculations.
+# Each *_Setting.txt file describes the specifics on one dataset containing the volumetric acquisition
+# of all the channels and time steps.
+#
+# The resultant python and slurm scripts are placed in the '' folder under the current directory.
+
+echo 'startig time'
+echo date
+mkdir jobs_dsk
+mkdir results_dsk
+scp *.txt ./results_dsk
+
+pythonpath=$(echo $(which python) | sed 's/\//\\\//g')
+homepath=$(echo $(echo ~) | sed 's/\//\\\//g')
+
+echo generate .mp4 files for mip movies? \(y/[n]\)
+read v
+if [[ $v == "y" ]]
+then
+  mp4flag="yes"
+else
+  mp4flag="no"
+fi
+##### identify and prepare single node jobs using sbatch for each file head
+slurms=()
+for i in $(ls *.txt) # check all txt files
+do
+    if [[ $i == *_Settings.txt ]] # consider only the Setting.txt files, each corresponds to one 4D dataset.
+    then
+
+    # get the file head of the 4D datasete
+    echo prep for $i
+
+    # define filehead string
+    filehead=${i:0:${#i}-13}
+
+    # define path string, handle the special characters "/" in the path.
+    fpath=$(echo $(pwd) | sed 's/\//\\\//g')
+
+    # define seed file path for the executabllse python script and the slurm (shell)
+    seedpy=$(echo ~/llsmvis/tools/deskew4D.seed)
+    if [ -f $seedpy ]; then :; else echo $seedpy not found; fi
+    seedsl=$(echo ~/llsmvis/tools/slurm.seed)
+    if [ -f $seedsl ]; then :; else echo $seedsl not found; fi
+
+    # define output file path for the executable python script and the slurm (shell)
+    foutpy="./jobs_dsk/deskew4D_"$filehead".py"
+    foutsl="./jobs_dsk/slurm_"$filehead
+    # prepare the corresponding executable python script
+    sed -e "s/FPATH/\"$fpath\"/g" -e "s/FHEAD/\"$filehead\"/g" \
+    -e "s/\[WHICHPYTHON\]/$pythonpath/g" -e "s/\[HOME\]/\"$homepath\"/g" $seedpy > $foutpy
+    if [[ $mp4flag == "yes" ]]
+    then
+      echo "[fig, ax] = utils.render_mpl_table(p, p.data_properties, header_columns=0, col_width=7.0)" >> $foutpy
+      echo "utils.getLabeledXYmip_MP4(p, 0, 1, channel_inds=None)" >> $foutpy
+      fi
+
+    # prepare the corresponding slurm
+    sed "s/\[EXECUTABLE\]/$fpath\/jobs_dsk\/deskew4D_"$filehead".py/g" $seedsl > $foutsl
+    chmod u+rwx $foutpy
+    chmod u+rwx $foutsl
+    slurms+=(slurm_$filehead)
+    fi
+done
+
+#### Launch single node jobs using sbatch for each
+echo submit all jobs? \(y/[n]\)
+read v
+if [[ $v == "y" ]]
+then
+  cd jobs_dsk
+  for s in ${slurms[@]}
+  do
+    echo submitting $s
+    sbatch $s
+  done
+  cd ..
+  echo all job submitted.
+else
+  echo all job are prepared in ./jobs_dsk
+  echo
+fi

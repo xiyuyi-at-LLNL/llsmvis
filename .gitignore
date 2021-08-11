@@ -1,0 +1,14 @@
+# exclude test folder and the data folder
+.idea
+.DS_Store
+.*~
+.*#
+*~
+*#
+/.tests
+/__pycache__
+/workbench
+../.DS_Store
+/test
+tests
+curr.yml
