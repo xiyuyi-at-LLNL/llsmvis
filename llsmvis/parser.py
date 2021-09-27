@@ -4,6 +4,7 @@ import pprint
 from datetime import datetime, timedelta
 from llsmvis.globals import *
 import pandas as pd
+import os
 
 
 class LLSMParser:
@@ -338,6 +339,7 @@ class LLSMGroupParser1s1t:
 
     def __init__(self, fpath, fname_head):
         self.fname_head = fname_head
+        self.fpath = fpath
         # 1. get all the _Settings.txt file with the csubs
         self.all_settings_fname = [x for x in os.listdir(fpath) if x.endswith('.txt') and x.startswith(fname_head)]
         # 2. a regular parser for all these stacks
@@ -353,7 +355,7 @@ class LLSMGroupParser1s1t:
         """
         self.indiv_parsers = []
         for n in self.indiv_fname_heads:
-            p = LLSMParser(fpath, n, prefer_deskewed=False)
+            p = LLSMParser(self.fpath, n, prefer_deskewed=False)
             self.indiv_parsers.append(p)
         return
 
@@ -380,7 +382,7 @@ class LLSMGroupParser1s1t:
     def sort_parsers_by_time(self):
         self.time_sorted_indiv_parsers = []
         for ind in self.sorted_time_n_inds[:, 1]:
-            self.time_sorted_indiv_parsers.append(gp.indiv_parsers[ind])
+            self.time_sorted_indiv_parsers.append(self.indiv_parsers[ind])
 
     def datetime_to_integer(self, t):
         return np.int(1e12 * t.year + 1e10 * t.month + 1e8 * t.day + 1e6 * t.hour + 1e4 * t.minute + 1e2 * t.second)

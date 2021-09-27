@@ -52,10 +52,10 @@ def wpad2square(imraw):
     return impad
 
 
-def frameXYmip(im, imname, reldT, absdT, savepath, lower=0, upper=1, data_info='None'):
+def frameXYmip(im, imname, reldT, absdT, savepath, lower=0, upper=1, data_info='None', figsize0=15, figsize1=15):
     # this function is to generate a single frame of the labeled MIP movie in the XY plane.
 
-    fig = plt.figure(figsize=(15, 15), dpi=80)
+    fig = plt.figure(figsize=(figsize0, figsize1), dpi=80)
     ax = plt.imshow(im, cmap=cm.Greys_r, vmin=lower, vmax=upper)
     pos1_f = 1 + 0.05 * np.max(im.shape) / im.shape[0]
     pos2_f = 1 + 0.1 * np.max(im.shape) / im.shape[0]
@@ -135,7 +135,7 @@ def getLabeledXYmip_MP4(p, lb, ub, reference_frame_index = 0, channel_inds=None)
     return None
 
 
-def getLabeledXYmip_MP4_fromGparser(g, lb, ub, reference_frame_index=0, channel_inds=None):
+def getLabeledXYmip_MP4_fromGparser(g, lb, ub, reference_frame_index=0, channel_inds=None, figsize0=15, figsize1=15):
     # p is the group parser
     # this function can only be used after deskew is finished and all the mip stacks are available.
     ptlist = gp.time_sorted_indiv_parsers  # a list of parsers with time order
@@ -217,7 +217,8 @@ def getLabeledXYmip_MP4_fromGparser(g, lb, ub, reference_frame_index=0, channel_
 
             # Frame this mip image with correct labels, save as png.
             frameXYmip(im=imstack, imname=str(i) + '.png', reldT=reldTstr, \
-                       absdT=absdTstr, savepath=f, lower=lb, upper=ub, data_info=info)
+                       absdT=absdTstr, savepath=f, lower=lb, upper=ub, data_info=info,\
+                       figsize0=figsize0, figsize1=figsize1)
 
         # Loop over all frames again and export as .mp4
         for i in np.arange(0, stackN):  # Loop over all tsteps again
