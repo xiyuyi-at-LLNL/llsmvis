@@ -1,3 +1,4 @@
+# This script is developed from a script from Timo (bremer5) with very minor modifications on format only.
 from os import listdir
 from os.path import isfile, join, split
 from skimage import io
