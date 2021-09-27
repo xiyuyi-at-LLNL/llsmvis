@@ -1,3 +1,5 @@
+# this scritp is modified from what Ted (laurence2) had developed with minimum modifications - Xiyu
+# changed the interpolation when shifting the slices with non-integer pixel widths. - Xiyu
 from skimage import io
 import numpy as np
 import os
@@ -64,6 +66,31 @@ class Deskewer:
 
         self.mip_TiffWriter_objs = list()
         self.label_MIPs=False
+
+    def deskew_a_slice(self, stackname, zi):
+        #  return the deskewed slice without saving it, to feed into idx_converter.
+        #  use it for idx converter
+        # read out a slice
+        arr = skimage.external.tifffile.imread(stackname, pages=[zi])
+        # prepare an empty slice to store the modified slice
+        deskewed = np.zeros((self.s[1], self.s[2]), dtype='uint16')
+        # find out the x_start
+        x_start_real = zi * self.x_shift / self.xy_res
+        x_start = np.int32(np.floor(x_start_real))
+        dx = x_start_real - x_start
+        # print(dx)
+        locs1 = np.arange(0, arr.shape[0])
+        locs2 = np.arange(0, arr.shape[1])
+        # find interpolation coordinates based on the sub-pixel shifts
+        locs1new = locs1[1:locs1.size - 1]
+        locs2new = locs2[1:locs2.size - 1] - dx
+
+        # define interpolation function
+        f = interpolate.interp2d(locs2, locs1, arr, kind='cubic')
+        arr_sps = f(locs2new, locs1new)
+        # now interpolate the arr to match the grid precisly.
+        deskewed[1+2:self.s[1]-1-2, 1+2:self.s[2]-1-2] = arr_sps[2:-2,2:-2]
+        return deskewed
 
     def deskew_one_tiff(self, tif_dict):
         image_name = tif_dict['path of tiff']
@@ -137,28 +164,5 @@ class Deskewer:
 
         print("    DONE\n")
 
-    def deskew_a_slice(self, stackname, zi):
-        #  return the deskewed slice without saving it, to feed into idx_converter.
-        #  use it for idx converter
-        # read out a slice
-        arr = skimage.external.tifffile.imread(stackname, pages=[zi])
-        # prepare an empty slice to store the modified slice
-        deskewed = np.zeros((self.s[1], self.s[2]), dtype='uint16')
-        # find out the x_start
-        x_start_real = zi * self.x_shift / self.xy_res
-        x_start = np.int32(np.floor(x_start_real))
-        dx = x_start_real - x_start
-        # print(dx)
-        locs1 = np.arange(0, arr.shape[0])
-        locs2 = np.arange(0, arr.shape[1])
-        # find interpolation coordinates based on the sub-pixel shifts
-        locs1new = locs1[1:locs1.size - 1]
-        locs2new = locs2[1:locs2.size - 1] - dx
 
-        # define interpolation function
-        f = interpolate.interp2d(locs2, locs1, arr, kind='cubic')
-        arr_sps = f(locs2new, locs1new)
-        # now interpolate the arr to match the grid precisly.
-        deskewed[1+2:self.s[1]-1-2, 1+2:self.s[2]-1-2] = arr_sps[2:-2,2:-2]
-        return deskewed
 
