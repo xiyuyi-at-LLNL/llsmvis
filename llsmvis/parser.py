@@ -5,13 +5,15 @@ from datetime import datetime, timedelta
 from llsmvis.globals import *
 import pandas as pd
 
+
 class LLSMParser:
-    def __init__(self, fpath, fname_head):
+    def __init__(self, fpath, fname_head, prefer_deskewed=True):
         """
         initialize the LLSMParser.
         :param fpath: path to the set of datafile
         :param fname_head: name head of the set of datafiles.
         """
+        self.prefer_deskewed=prefer_deskewed
         self.channel_n = np.nan
         self.tsteps_n = np.nan
         self.fpath = fpath
@@ -54,8 +56,24 @@ class LLSMParser:
         self.camera_expo_ms = None
         self.stage_settle = None
         self.stage_settle_time_ms = None
-        self.data_properties=None
+        self.data_properties = None
         self.sort_tiff_dict()
+
+    def what(self):
+        """
+        To display what methods are included in this class
+        """
+        print('LLSMParser contains the following methods:')
+        print('LLSMParser.count_channel: \n \
+            Count how many channels are there associated with the  \n \
+            given fname_head, and return the channel number.  \n \
+            It also set .channel_n attribute to the LLSMParser object. \n \
+            ')
+        print('LLSMParser.count_tsteps: \n \
+            Count how many time steps are there associated with the  \n \
+            given fname_head, and return the time steps number.  \n \
+            It also set .tsteps_n attribute to the LLSMParser object. \n \
+            ')
 
     def count_channel(self):
         """
@@ -72,29 +90,35 @@ class LLSMParser:
         :return: tsteps_n: the total number of time steps.
         """
         subs = self.fname_head + "_ch0_stack"
-        if len(self.all_tiffs) > len(self.deskewed_tiffs):
-            self.tsteps_n = sum(subs in s for s in self.all_tiffs)
+        if self.prefer_deskewed:
+            if len(self.all_tiffs) > len(self.deskewed_tiffs):
+                self.tsteps_n = sum(subs in s for s in self.all_tiffs)
+            else:
+                self.tsteps_n = sum(subs in s for s in self.deskewed_tiffs)
         else:
-            self.tsteps_n = sum(subs in s for s in self.deskewed_tiffs)
+            self.tsteps_n = sum(subs in s for s in self.all_tiffs)
         return self.tsteps_n
 
     def sort_tiff_dict(self):
         """
         set the list of full-path of the tiff files corresponding to each channel and time steps.
+        always give the deskewed tiffs a higher priority
         :return:
         """
         # prepare for time stamps
         self.parse_specs()
         if VERBOSE:
-            print('length of all tiffs is' + str(len(self.all_tiffs)))
+            print('length of all tiffs is ' + str(len(self.all_tiffs)))
 
         try:
-            if len(self.all_tiffs) > 0:
+            if self.prefer_deskewed:
+                if len(self.all_tiffs) > 0:
+                    ssec = self.all_tiffs[0].split(self.fname_head + "_")[1].split("_")[1]
+                elif len(self.deskewed_tiffs) > 0:
+                    # use deskewed tiffs instead to parse the information.
+                    ssec = self.deskewed_tiffs[0].split("Deskewed_"+self.fname_head + "_")[1].split("_")[1]
+            else:
                 ssec = self.all_tiffs[0].split(self.fname_head + "_")[1].split("_")[1]
-            elif len(self.deskewed_tiffs) > 0:
-                # use deskewed tiffs instead to parse the information.
-                ssec = self.deskewed_tiffs[0].split("Deskewed_"+self.fname_head + "_")[1].split("_")[1]
-
         except OSError:
             pass
         zfilln = len(ssec) - 5  # number of digits with zero-fill for the stack numbers.
@@ -102,15 +126,19 @@ class LLSMParser:
         for chi in np.arange(0,self.channel_n):
             for ti in np.arange(0, self.tsteps_n):
                 subs = self.fname_head + "_ch" + str(chi) + "_stack" + str(ti).zfill(zfilln) + "_"
-                if len(self.deskewed_tiffs) < len(self.all_tiffs):
-                    f = [s for s in self.all_tiffs if subs in s]
+                if self.prefer_deskewed:
+                    if len(self.deskewed_tiffs) < len(self.all_tiffs):
+                        f = [s for s in self.all_tiffs if subs in s]
+                    else:
+                        f = [s for s in self.deskewed_tiffs if subs in s]
                 else:
-                    f = [s for s in self.deskewed_tiffs if subs in s]
+                    f = [s for s in self.all_tiffs if subs in s]
 
                 if len(f) == 1:
                     t_stamp=np.float(f[0].split('_')[-2].split('msec')[0]) # time stamp of the tiff file (ms)
                     curr_time = self.datetime_acq_start + timedelta(seconds=t_stamp/1000)
                     d = {
+                      "fname_head":self.fname_head,
                       "channel name": self.channel_names[chi],
                       "channel index": chi,
                       "time step": ti,
@@ -301,3 +329,58 @@ class LLSMParser:
                 print("self." + key + ":  " + str(value))
 
 
+class LLSMGroupParser1s1t:
+    """
+    when a time series belong to the same feature, but each stack has its own _Settings.txt file.
+    Use this group parser and use the parsers for the individual stacks as input (organized as a list)
+    1s1t: this means 1 *_Settings.txt file per one time step, but may contain multiple channels
+    """
+
+    def __init__(self, fpath, fname_head):
+        self.fname_head = fname_head
+        # 1. get all the _Settings.txt file with the csubs
+        self.all_settings_fname = [x for x in os.listdir(fpath) if x.endswith('.txt') and x.startswith(fname_head)]
+        # 2. a regular parser for all these stacks
+        # 2.1 get fname_head for each specific *Settings.txt file
+        self.indiv_fname_heads = [];  # indiviudal fname_heads for each *_Setting.txt
+        for n in self.all_settings_fname:
+            self.indiv_fname_heads.append(n[:-13])
+        return
+
+    def get_indiv_parsers(self):
+        """
+        get individual parsers for all the _Setting.txt file.
+        """
+        self.indiv_parsers = []
+        for n in self.indiv_fname_heads:
+            p = LLSMParser(fpath, n, prefer_deskewed=False)
+            self.indiv_parsers.append(p)
+        return
+
+    def valid_check(self):
+        # go through all the parsers and makes ure there is only one .tiff stack involved.
+        self.valid = True
+        for p in self.indiv_parsers:
+            if len(p.dict_tiffs) != len(p.channel_names):
+                self.valid = False
+        return self.valid
+
+    def get_parser_time_indexes(self):
+        # group all the parsers based on time for the first channel_indx
+        # first, go through all parsers and take out the time and index as a np.ndarray
+        time_n_inds = np.ndarray([len(self.indiv_parsers), 2], dtype='int')
+        for ind, p in enumerate(self.indiv_parsers):
+            time_n_inds[ind, 0] = self.datetime_to_integer(p.datetime_acq_start);
+            time_n_inds[ind, 1] = ind;
+        self.time_n_inds = time_n_inds;
+        a = time_n_inds;
+        self.sorted_time_n_inds = a[a[:, 0].argsort(), :]
+        return self.sorted_time_n_inds
+
+    def sort_parsers_by_time(self):
+        self.time_sorted_indiv_parsers = []
+        for ind in self.sorted_time_n_inds[:, 1]:
+            self.time_sorted_indiv_parsers.append(gp.indiv_parsers[ind])
+
+    def datetime_to_integer(self, t):
+        return np.int(1e12 * t.year + 1e10 * t.month + 1e8 * t.day + 1e6 * t.hour + 1e4 * t.minute + 1e2 * t.second)

@@ -73,7 +73,7 @@ def getLabeledXYmip_MP4(p, lb, ub, reference_frame_index = 0, channel_inds=None)
     t0=datetime.strptime(p.acquisition_startT,'%m/%d/%Y %I:%M:%S %p')
     # loop over all t steps for all channels
     if channel_inds is None:
-        channel_inds=np.arange(0,len(p.channel_names))
+        channel_inds=np.arange(0, len(p.channel_names))
 
     for cind in channel_inds:
         c=p.channel_names[cind]
@@ -124,4 +124,5 @@ def getLabeledXYmip_MP4(p, lb, ub, reference_frame_index = 0, channel_inds=None)
             writer.writeFrame(im)
         writer.close()
     return None
+
 
