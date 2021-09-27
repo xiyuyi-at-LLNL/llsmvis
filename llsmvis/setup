@@ -1,0 +1,22 @@
+#!/bin/bash
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+        envfile="./envs/env_linux.yml"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+        envfile="./envs/env_darwin.yml"
+fi
+
+if echo "$(conda info --envs)" | grep -q "llsmvis"
+then
+  echo conda environment 'llsmvis' already exists, update? \(yes/no\)
+  read v
+  if [[ $v == 'yes' ]]
+  then
+    echo updating existing llsm environment
+    conda env update -f $envfile
+  else
+  echo -- no action performed.
+  fi
+else
+  echo creating conda environment 'llsmvis'
+  conda env create -f $envfile
+fi
