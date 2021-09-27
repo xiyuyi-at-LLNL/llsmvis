@@ -159,6 +159,6 @@ class Deskewer:
         f = interpolate.interp2d(locs2, locs1, arr, kind='cubic')
         arr_sps = f(locs2new, locs1new)
         # now interpolate the arr to match the grid precisly.
-        deskewed[1:self.s[1]-1, 1:self.s[2]-1] = arr_sps
+        deskewed[1+2:self.s[1]-1-2, 1+2:self.s[2]-1-2] = arr_sps[2:-2,2:-2]
         return deskewed
 
