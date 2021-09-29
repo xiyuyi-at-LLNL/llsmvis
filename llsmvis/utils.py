@@ -138,7 +138,7 @@ def getLabeledXYmip_MP4(p, lb, ub, reference_frame_index = 0, channel_inds=None)
 def getLabeledXYmip_MP4_fromGparser(g, lb, ub, reference_frame_index=0, channel_inds=None, figsize0=15, figsize1=15):
     # p is the group parser
     # this function can only be used after deskew is finished and all the mip stacks are available.
-    ptlist = gp.time_sorted_indiv_parsers  # a list of parsers with time order
+    ptlist = g.time_sorted_indiv_parsers  # a list of parsers with time order
     # take out the initial date time from the first parser
     t0 = datetime.strptime(ptlist[0].acquisition_startT, '%m/%d/%Y %I:%M:%S %p')
 
