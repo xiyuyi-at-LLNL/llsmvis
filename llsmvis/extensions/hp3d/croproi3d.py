@@ -81,7 +81,7 @@ def set_3d_mask_n_trim_stack(stack, locs0, locs1, locs2):
     b = [[np.min(inds[i]), np.max(inds[i])] for i in np.arange(0, 3)]
     # trim the stack
     trimmed_s = stack * m
-    trimmed_s = np.uint16([trimmed_s[b[0][0]:b[0][1], b[1][0]:b[1][1], b[2][0]:b[2][1]]]);
+    trimmed_s = np.uint16(trimmed_s[b[0][0]:b[0][1], b[1][0]:b[1][1], b[2][0]:b[2][1]])
     return [m, b, trimmed_s]
 
 
