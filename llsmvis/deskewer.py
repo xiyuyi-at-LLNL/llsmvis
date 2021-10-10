@@ -14,17 +14,17 @@ class Deskewer:
         # attach parser to the Deskewer
         self.p = parser
         #  create output path for deskewed tiffs
-        self.path_o = os.path.join(parser.fpath, 'results_dsk', self.p.fname_head + '_deskewed')
+        self.path_o = parser.fpath + '/results_dsk/' + self.p.fname_head + '_deskewed'
         self.singleslices = False
         print("Deskewing dataset:\n    " + self.p.fpath + "/" + self.p.fname_head)
         try:
-            if not os.path.exists(os.path.join(parser.fpath,'results_dsk')):
-                os.mkdir(os.path.join(parser.fpath, 'results_dsk'))
+            if not os.path.exists(parser.fpath+'/results_dsk'):
+                os.mkdir(parser.fpath+'/results_dsk')
                 print("\n results_dsk folder for the collection of datasets created:")
-                print(os.path.join(parser.fpath, 'results_dsk'))
+                print(parser.fpath+'/results_dsk')
             else:
                 print("\n results_dsk folder for the collection of datasets already exists:")
-                print(os.path.join(parser.fpath, 'results_dsk'))
+                print(parser.fpath + '/results_dsk')
         except OSError:
             print("\n  Failed to create the results_dsk folder for the datasets")
 
@@ -119,11 +119,8 @@ class Deskewer:
             arr_mod = arr
 
         if sys.platform.startswith('win'):
-            print('windows system')
             io.imsave(self.path_o + '/Deskewed_' + image_name.split('\\')[-1], arr_mod)
         else:
-            print('not a windows system')
-
             io.imsave(self.path_o + '/Deskewed_' + image_name.split('/')[-1], arr_mod)
 
         # write the XY-MIP to the corresponding MIP tiff file.
