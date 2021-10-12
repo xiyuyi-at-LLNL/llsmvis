@@ -8,7 +8,7 @@ import numpy as np
 import copy
 from scipy.signal import argrelextrema
 
-def find_threshold_saddle_point(k, pvrange=[50,1000], pvbin=5, show_plots=False, search_range=[200,700], debug=False):
+def find_threshold_saddle_point(k, pvrange=[50,1000], pvbin=5, show_plots=False, search_range=[200,700], debug=False, minbins=5):
     """
     find the mass center of an 3D volume
     :param k: 3D stack, np.ndarray
@@ -74,19 +74,31 @@ def find_threshold_saddle_point(k, pvrange=[50,1000], pvbin=5, show_plots=False,
     threshold_ind = peaks  # this is the index of the voxel value
     bin_centers = (b[1:] + b[:-1]) / 2  # this are the centers of the bin
     phist_counts = a  # histogram counts
+
+    # now find the upper_bound - the first bin that has counts lower than minbins, and after the threshold bin.
+    upper_bound_inds = np.where(phist_counts < minbins)[0]
+    upper_bound_inds = upper_bound_inds[np.where(upper_bound_inds > threshold_ind)]
+    upper_bound_ind = upper_bound_inds[0]
+    upper_bound = b[upper_bound_ind]
+
     if show_plots:
         plt.figure(figsize=(3, 3))
         plt.plot((b[1:] + b[:-1]) / 2, (a + 1) ** 0.1)
         plt.plot(b[peaks], (a[peaks] + 1) ** 0.1, 'o')
         plt.plot([b[search_range_inds[0]], b[search_range_inds[1]]], [(a[search_range_inds[0]] + 1) ** 0.1] * 2, '-*')
+        plt.plot(b[upper_bound_ind], (a[upper_bound_ind] + 1) ** 0.1, 'o')
         if debug:
             print('threshold is ' + str(b[peaks]))
-    return [threshold, threshold_ind, bin_centers, phist_counts]
 
 
-def findmcenter(k, thres, display_option=False):
+
+    return [threshold, threshold_ind, bin_centers, phist_counts, upper_bound, upper_bound_ind]
+
+
+def findmcenter(k, thres, thresmax=800, display_option=False):
     s=copy.deepcopy(k)
     s[np.where(s<thres)]=0
+    s[np.where(s>thresmax)]=thresmax
     c=ndimage.measurements.center_of_mass(s)
     smip = np.max(s, axis=0)
     kmip_ax0 = np.max(k, axis=0)
