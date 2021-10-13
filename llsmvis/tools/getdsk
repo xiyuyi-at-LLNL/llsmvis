@@ -13,6 +13,17 @@ echo 'startig time'
 echo date
 mkdir jobs_dsk
 mkdir results_dsk
+
+chgrp llsm ./jobs_dsk
+chmod -R g+s ./jobs_dsk
+chmod -R g+rx ./jobs_dsk
+chmod -R g-w ./jobs_dsk
+
+chgrp llsm ./results_dsk
+chmod -R g+s ./results_dsk
+chmod -R g+rx ./results_dsk
+chmod -R g-w ./results_dsk
+
 scp *.txt ./results_dsk
 
 pythonpath=$(echo $(which python) | sed 's/\//\\\//g')
