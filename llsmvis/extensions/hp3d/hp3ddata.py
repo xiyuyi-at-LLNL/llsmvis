@@ -16,7 +16,7 @@ import numpy as np
 import copy
 
 class HP3Ddata:
-    def __init__(self, fpath, dfnamehead):
+    def __init__(self, fpath, dfnamehead, initialize=False):
         # first initialize the datafile path
         print('Try to create the following file path:')
         print(fpath)
@@ -29,45 +29,60 @@ class HP3Ddata:
                 print('make' + fpath + 'failed')
                 pass
 
-        # Initialize the hdf5 file
-        if os.path.isfile(os.path.join(fpath, dfnamehead + '.hdf5')):
-            print('deleting existing hdf5 file')
-            fname = os.path.join(fpath, dfnamehead + '.hdf5')
-            print(fname)
-            os.remove(fname)
-            time.sleep(1)
+        if initialize is True:
+            # Initialize the hdf5 file
+            if os.path.isfile(os.path.join(fpath, dfnamehead + '.hdf5')):
+                print('deleting existing hdf5 file')
+                fname = os.path.join(fpath, dfnamehead + '.hdf5')
+                print(fname)
+                os.remove(fname)
+                time.sleep(1)
 
-        try:
-            f = h5py.File(os.path.join(fpath, dfnamehead + '.hdf5'), 'w')
-        except:
-            print('creating the file object for h5py file failed, file exists')
-            pass
+            try:
+                f = h5py.File(os.path.join(fpath, dfnamehead + '.hdf5'), 'w')
+                self.h5f = f
+            except:
+                print('creating the file object for h5py file failed, file exists')
+                pass
 
-        self.h5f = f
+        if initialize is False:
+            if os.path.isfile(os.path.join(fpath, dfnamehead + '.hdf5')):
+                print('found the hdf5 file:')
+                fname = os.path.join(fpath, dfnamehead + '.hdf5')
+                print(fname)
 
-        # create groups for different properties
-        self.h5fhist_bc = self.h5f.create_group("[G01] voxel value bin centers")
-        self.h5fhist_ct = self.h5f.create_group("[G02] voxel value histogram counts")
+            try:
+                f = h5py.File(os.path.join(fpath, dfnamehead + '.hdf5'), 'a')
+                self.h5f = f
+                print('successfully opened the hp3d data object and the associated hdf5 file')
+            except:
+                print('opening the hp3d hdf5 file failed')
+                pass
 
-        # create groups for stack mip images in 3 different planes without cropping by the thres hold
-        self.h5fkmip0 = self.h5f.create_group("[G03] stack XY mips before cropping")
-        self.h5fkmip1 = self.h5f.create_group("[G04] stack YZ mips before cropping")
-        self.h5fkmip2 = self.h5f.create_group("[G05] stack XZ mips before cropping")
+        if initialize is True:
+            # create groups for different properties
+            self.h5fhist_bc = self.h5f.create_group("[G01] voxel value bin centers")
+            self.h5fhist_ct = self.h5f.create_group("[G02] voxel value histogram counts")
 
-        # create groups for stack mip images in 3 different planes with cropping by the thres hold
-        self.h5fsmip0 = self.h5f.create_group("[G06] stack XY mips after cropping")
-        self.h5fsmip1 = self.h5f.create_group("[G07] stack YZ mips after cropping")
-        self.h5fsmip2 = self.h5f.create_group("[G08] stack XZ mips after cropping")
+            # create groups for stack mip images in 3 different planes without cropping by the thres hold
+            self.h5fkmip0 = self.h5f.create_group("[G03] stack XY mips before cropping")
+            self.h5fkmip1 = self.h5f.create_group("[G04] stack YZ mips before cropping")
+            self.h5fkmip2 = self.h5f.create_group("[G05] stack XZ mips before cropping")
 
-        # create groups for stack mip images in 3 different planes with cropping by the thres hold
-        self.h5fdmip0 = self.h5f.create_group("[G09] stack XY mips after cropping - lower bound to saddle point")
-        self.h5fdmip1 = self.h5f.create_group("[G10] stack YZ mips after cropping - lower bound to saddle point")
-        self.h5fdmip2 = self.h5f.create_group("[G11] stack XZ mips after cropping - lower bound to saddle point")
+            # create groups for stack mip images in 3 different planes with cropping by the thres hold
+            self.h5fsmip0 = self.h5f.create_group("[G06] stack XY mips after cropping")
+            self.h5fsmip1 = self.h5f.create_group("[G07] stack YZ mips after cropping")
+            self.h5fsmip2 = self.h5f.create_group("[G08] stack XZ mips after cropping")
 
-        # create groups for stack mip images in 3 different planes with cropping by the thres hold
-        self.h5fbmip0 = self.h5f.create_group("[G12] stack XY mips after cropping - zero to saddle point")
-        self.h5fbmip1 = self.h5f.create_group("[G13] stack YZ mips after cropping - zero to saddle point")
-        self.h5fbmip2 = self.h5f.create_group("[G14] stack XZ mips after cropping - zero to saddle point")
+            # create groups for stack mip images in 3 different planes with cropping by the thres hold
+            self.h5fdmip0 = self.h5f.create_group("[G09] stack XY mips after cropping - lower bound to saddle point")
+            self.h5fdmip1 = self.h5f.create_group("[G10] stack YZ mips after cropping - lower bound to saddle point")
+            self.h5fdmip2 = self.h5f.create_group("[G11] stack XZ mips after cropping - lower bound to saddle point")
+
+            # create groups for stack mip images in 3 different planes with cropping by the thres hold
+            self.h5fbmip0 = self.h5f.create_group("[G12] stack XY mips after cropping - zero to saddle point")
+            self.h5fbmip1 = self.h5f.create_group("[G13] stack YZ mips after cropping - zero to saddle point")
+            self.h5fbmip2 = self.h5f.create_group("[G14] stack XZ mips after cropping - zero to saddle point")
 
         return
 
