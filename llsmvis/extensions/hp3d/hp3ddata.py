@@ -212,7 +212,6 @@ class HP3Ddata:
         return
 
 
-
 def check_histogram_thresholding(hp3ddata_h, Tind, zoffset, show_bounds=True):
     f=hp3ddata_h
     bin_centers=np.asarray(f.h5f["[G01] voxel value bin centers/T"+str(Tind)])
