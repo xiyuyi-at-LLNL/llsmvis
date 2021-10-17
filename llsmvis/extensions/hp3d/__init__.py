@@ -16,3 +16,9 @@ try:
 except:
     print('extensions.hp3d module: importing masscenter failed')
     pass
+
+try:
+    from llsmvis.extensions.hp3d import hp3ddata
+except:
+    print('extensions.hp3d module: importing hp3ddata failed')
+    pass
