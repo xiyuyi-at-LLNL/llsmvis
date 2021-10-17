@@ -15,8 +15,11 @@ from skimage import io
 import numpy as np
 import copy
 
+
 class HP3Ddata:
     def __init__(self, fpath, dfnamehead, initialize=False):
+        self.fpath=fpath
+        self.dfnamehead=dfnamehead
         # first initialize the datafile path
         print('Try to create the following file path:')
         print(fpath)
@@ -226,6 +229,27 @@ class HP3Ddata:
 
         return
 
+    def show_data_structure(self):
+        for name in self.h5f:
+            print(name)
+        return 0
+
+    def plot_mass_center_trajectory(self):
+        plot_mass_center_trajectory(hp3ddata_h=self, ttstr=self.dfnamehead)
+        return 0
+
+    def inspect_threshold(self):
+        inspect_threshold(hp3ddata_h=self)
+        return 0
+
+    def check_mass_center_on_smip(self, projp='XY'):
+        check_mass_center_on_smip(hp3ddata_h=self, projp=projp)
+        return 0
+
+    def inspect_rgbas(self, groupkey, cmap):
+        [rgbas, mip_rgbas]=inspect_rgbas(hp3ddata_h=self, groupkey=groupkey, cmap=cmap)
+        return [rgbas, mip_rgbas]
+
 
 def check_histogram_thresholding(hp3ddata_h, Tind, zoffset, show_bounds=True):
     f=hp3ddata_h
@@ -242,7 +266,6 @@ def check_histogram_thresholding(hp3ddata_h, Tind, zoffset, show_bounds=True):
         plt.plot(thres_lb, (counts[thres_lbi]+1)**0.1+zoffset, 'ro')
         plt.plot(thres_sp, (counts[thres_spi]+1)**0.1+zoffset, 'bo')
         plt.plot(thres_ub, (counts[thres_ubi]+1)**0.1+zoffset, 'go')
-
 
 
 def plot_mass_center_trajectory(hp3ddata_h, ttstr):
@@ -281,15 +304,17 @@ def check_mass_center_on_smip(hp3ddata_h, projp='XY'):
     s1 = hp3ddata_h.h5f[groupkey+"/T0"].shape
     s1 = s1 / np.max(s1) * 5
     tag = 0
-    plt.figure(figsize=(s1[1] * 2 * 0.98, s1[0]))
+    plt.figure(figsize=(s1[1] * 2, s1[0]))
 
     # findout colume n
     column_n=np.int(TimeN/5)+1
     for timei in np.arange(TimeN):
         tag += 1
-        smip0 = hp3ddata_h.h5f[groupkey+"/T" + str(timei)]
+        smip0 = np.asarray(hp3ddata_h.h5f[groupkey+"/T" + str(timei)])
         c = hp3ddata_h.h5f["[D1] mass centers"][timei]
         ax1 = plt.subplot(5, column_n, tag)
+        if timei == 0:
+            smip0[20:40, 10:90] = np.max(smip0)
         fig = plt.imshow(smip0)
         if projp is "XY":
             plt.plot(c[2], c[1], 'ro', markersize=4)
@@ -305,7 +330,7 @@ def check_mass_center_on_smip(hp3ddata_h, projp='XY'):
         ax1.set_yticklabels([])
         plt.subplots_adjust(wspace=0, hspace=0)
     plt.show()
-
+    print('scale bars are 8 um')
 
 def inspect_threshold(hp3ddata_h):
     # find out total time point for the dataset at current
@@ -351,19 +376,24 @@ def get_rgba_one_stack(hp3ddata_h, groupkey, timetag, cmap, total_time_N):
     c_rgba[np.where(c_rgba<0)]=0
     return c_rgba
 
+
 def get_rgba_all_stacks(hp3ddata_h, groupkey, cmap):
-    total_time_N=len(list(hp3ddata_h.h5f["[G06] stack XY mips after cropping - saddle point to upper bound"].__iter__()))
+    total_time_N=\
+        len(list(hp3ddata_h.h5f["[G06] stack XY mips after cropping - saddle point to upper bound"].__iter__()))
     rgbas=[]
     for tind in np.arange(total_time_N):
-        c_rgba=get_rgba_one_stack(hp3ddata_h=hp3ddata_h, groupkey=groupkey, timetag=tind, cmap=cmap, total_time_N=total_time_N)
+        c_rgba=\
+            get_rgba_one_stack(hp3ddata_h=hp3ddata_h, groupkey=groupkey, \
+                               timetag=tind, cmap=cmap, total_time_N=total_time_N)
         rgbas.append(c_rgba)
 
     return rgbas
 
+
 def inspect_rgbas(hp3ddata_h, groupkey, cmap):
-    total_time_N=len(list(hp3ddata_h.h5f["[G06] stack XY mips after cropping - saddle point to upper bound"].__iter__()))
-    #m=hp3d.hp3ddata.get_rgba_all_stacks(hp3ddata_h=l2, groupkey=groupkey, cmap = cm.get_cmap('cool', 256))
-    rgbas=get_rgba_all_stacks(hp3ddata_h=hp3ddata_h, groupkey=groupkey, cmap = cm.get_cmap('cool', 256))
+    total_time_N=\
+        len(list(hp3ddata_h.h5f["[G06] stack XY mips after cropping - saddle point to upper bound"].__iter__()))
+    rgbas=get_rgba_all_stacks(hp3ddata_h=hp3ddata_h, groupkey=groupkey, cmap=cmap)
     s1 = rgbas[0].shape
     s1 = s1 / np.max(s1) * 5
     tag = 0
@@ -372,7 +402,12 @@ def inspect_rgbas(hp3ddata_h, groupkey, cmap):
     for timei in np.arange(total_time_N):
         tag += 1
         ax1 = plt.subplot(5, column_n, tag)
-        fig = plt.imshow(rgbas[timei])
+        if timei==0:
+            im2show = copy.deepcopy(rgbas[timei])
+            im2show[20:40, 10:90, :] = np.max(im2show)
+        else:
+            im2show=rgbas[timei]
+        fig = plt.imshow(im2show)
         plt.axis('off')
         fig.axes.get_xaxis().set_visible(False)
         fig.axes.get_yaxis().set_visible(False)
@@ -381,6 +416,13 @@ def inspect_rgbas(hp3ddata_h, groupkey, cmap):
         plt.subplots_adjust(wspace=0, hspace=0)
     plt.show()
     mip_rgbas=np.max(np.asarray(rgbas), axis=0)
-    plt.figure(figsize=(5,5))
-    plt.imshow(mip_rgbas)
+    plt.figure(figsize=(5, 5))
+    im2show=copy.deepcopy(mip_rgbas)
+    im2show[10:15, 10:90, :]=np.max(im2show)
+    fig = plt.imshow(im2show)
+    fig.axes.get_xaxis().set_visible(False)
+    fig.axes.get_yaxis().set_visible(False)
+    ax1.set_xticklabels([])
+    ax1.set_yticklabels([])
+    print("scale bars are 8 um")
     return [rgbas, mip_rgbas]
