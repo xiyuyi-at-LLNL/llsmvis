@@ -70,9 +70,9 @@ class HP3Ddata:
             self.h5fkmip2 = self.h5f.create_group("[G05] stack XZ mips before cropping")
 
             # create groups for stack mip images in 3 different planes with cropping by the thres hold
-            self.h5fsmip0 = self.h5f.create_group("[G06] stack XY mips after cropping")
-            self.h5fsmip1 = self.h5f.create_group("[G07] stack YZ mips after cropping")
-            self.h5fsmip2 = self.h5f.create_group("[G08] stack XZ mips after cropping")
+            self.h5fsmip0 = self.h5f.create_group("[G06] stack XY mips after cropping - saddle point to upper bound")
+            self.h5fsmip1 = self.h5f.create_group("[G07] stack YZ mips after cropping - saddle point to upper bound")
+            self.h5fsmip2 = self.h5f.create_group("[G08] stack XZ mips after cropping - saddle point to upper bound")
 
             # create groups for stack mip images in 3 different planes with cropping by the thres hold
             self.h5fdmip0 = self.h5f.create_group("[G09] stack XY mips after cropping - lower bound to saddle point")
@@ -259,7 +259,6 @@ def plot_mass_center_trajectory(hp3ddata_h, ttstr):
     ax = fig.gca(projection='3d')
     col = tt
     ax.plot(x, y, z,'k')
-    ax.legend()
     ax.scatter(x,y,z, marker='o', c=col, s=150, cmap='cool',edgecolors='k',alpha=0.8)
     plt.title('Mass center trajectory - '+ttstr,fontsize=20)
     plt.show()
@@ -268,13 +267,13 @@ def plot_mass_center_trajectory(hp3ddata_h, ttstr):
 def check_mass_center_on_smip(hp3ddata_h, projp='XY'):
     # first, determin the group name for this smip
     if projp is 'XY':
-        groupkey = "[G06] stack XY mips after cropping"
+        groupkey = "[G06] stack XY mips after cropping - saddle point to upper bound"
 
     if projp is 'YZ':
-        groupkey = "[G07] stack YZ mips after cropping"
+        groupkey = "[G07] stack YZ mips after cropping - saddle point to upper bound"
 
     if projp is 'XZ':
-        groupkey = "[G08] stack XZ mips after cropping"
+        groupkey = "[G08] stack XZ mips after cropping - saddle point to upper bound"
 
     # find out total time point for the dataset at current
     TimeN=len(list(hp3ddata_h.h5f["[G02] voxel value histogram counts"].__iter__()))
@@ -330,3 +329,58 @@ def inspect_threshold(hp3ddata_h):
         ax.set_yticklabels([])
         plt.legend(['Transformed intensity distribution','Lower bound','Saddle point','Upper bound'],
                    bbox_to_anchor=(1.04,1), loc="upper left")
+
+
+def get_rgba_one_stack(hp3ddata_h, groupkey, timetag, cmap, total_time_N):
+    # get rgba of a single stack
+    # first, get the stack c based on the miptag
+    k = cmap(np.linspace(0, 1, total_time_N))
+    c = np.asarray(hp3ddata_h.h5f[groupkey+"/T"+str(timetag)])
+    cnonzero=c[np.where(c>0)].ravel()
+    lb=np.min(cnonzero.ravel())
+    ub=np.max(cnonzero.ravel())
+    c[np.where(c<lb)] = lb
+    c[np.where(c>ub)] = ub
+    c = (c-lb)/(ub-lb)
+    c_r = c*k[timetag][0]
+    c_g = c*k[timetag][1]
+    c_b = c*k[timetag][2]
+    c_a = np.ones(c.shape)
+    c_rgba=np.stack([c_r, c_g, c_b, c_a], axis=2)
+    c_rgba[np.where(c_rgba>1)]=1
+    c_rgba[np.where(c_rgba<0)]=0
+    return c_rgba
+
+def get_rgba_all_stacks(hp3ddata_h, groupkey, cmap):
+    total_time_N=len(list(hp3ddata_h.h5f["[G06] stack XY mips after cropping - saddle point to upper bound"].__iter__()))
+    rgbas=[]
+    for tind in np.arange(total_time_N):
+        c_rgba=get_rgba_one_stack(hp3ddata_h=hp3ddata_h, groupkey=groupkey, timetag=tind, cmap=cmap, total_time_N=total_time_N)
+        rgbas.append(c_rgba)
+
+    return rgbas
+
+def inspect_rgbas(hp3ddata_h, groupkey, cmap):
+    total_time_N=len(list(hp3ddata_h.h5f["[G06] stack XY mips after cropping - saddle point to upper bound"].__iter__()))
+    #m=hp3d.hp3ddata.get_rgba_all_stacks(hp3ddata_h=l2, groupkey=groupkey, cmap = cm.get_cmap('cool', 256))
+    rgbas=get_rgba_all_stacks(hp3ddata_h=hp3ddata_h, groupkey=groupkey, cmap = cm.get_cmap('cool', 256))
+    s1 = rgbas[0].shape
+    s1 = s1 / np.max(s1) * 5
+    tag = 0
+    plt.figure(figsize=(s1[1] * 2, s1[0]))
+    column_n=np.int(total_time_N/5)+1
+    for timei in np.arange(total_time_N):
+        tag += 1
+        ax1 = plt.subplot(5, column_n, tag)
+        fig = plt.imshow(rgbas[timei])
+        plt.axis('off')
+        fig.axes.get_xaxis().set_visible(False)
+        fig.axes.get_yaxis().set_visible(False)
+        ax1.set_xticklabels([])
+        ax1.set_yticklabels([])
+        plt.subplots_adjust(wspace=0, hspace=0)
+    plt.show()
+    mip_rgbas=np.max(np.asarray(rgbas), axis=0)
+    plt.figure(figsize=(5,5))
+    plt.imshow(mip_rgbas)
+    return [rgbas, mip_rgbas]
