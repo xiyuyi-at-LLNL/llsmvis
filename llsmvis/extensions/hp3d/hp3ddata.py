@@ -246,10 +246,10 @@ class HP3Ddata:
         check_mass_center_on_smip(hp3ddata_h=self, projp=projp)
         return 0
 
-    def inspect_rgbas(self, groupkey, cmap):
-        [rgbas, mip_rgbas]=inspect_rgbas(hp3ddata_h=self, groupkey=groupkey, cmap=cmap)
-        return [rgbas, mip_rgbas]
-
+    def inspect_rgbas(self, groupkey, cmap, show_50t_tiles=False):
+        [rgbas, mip_rgbas, tiles_50t]=inspect_rgbas(hp3ddata_h=self, groupkey=groupkey, cmap=cmap,\
+                                                    show_50T_tiles=show_50t_tiles)
+        return [rgbas, mip_rgbas, tiles_50t]
 
 def check_histogram_thresholding(hp3ddata_h, Tind, zoffset, show_bounds=True):
     f=hp3ddata_h
@@ -301,13 +301,13 @@ def check_mass_center_on_smip(hp3ddata_h, projp='XY'):
     # find out total time point for the dataset at current
     TimeN=len(list(hp3ddata_h.h5f["[G02] voxel value histogram counts"].__iter__()))
 
-    s1 = hp3ddata_h.h5f[groupkey+"/T0"].shape
-    s1 = s1 / np.max(s1) * 5
+    s1 = list(hp3ddata_h.h5f[groupkey+"/T0"].shape)
+    s1 = np.asarray(s1,dtype='float32') / np.max(s1) * 5
     tag = 0
     plt.figure(figsize=(s1[1] * 2, s1[0]))
 
     # findout colume n
-    column_n=np.int(TimeN/5)+1
+    column_n=np.int(TimeN/5)
     for timei in np.arange(TimeN):
         tag += 1
         smip0 = np.asarray(hp3ddata_h.h5f[groupkey+"/T" + str(timei)])
@@ -328,7 +328,7 @@ def check_mass_center_on_smip(hp3ddata_h, projp='XY'):
         fig.axes.get_yaxis().set_visible(False)
         ax1.set_xticklabels([])
         ax1.set_yticklabels([])
-        plt.subplots_adjust(wspace=0, hspace=0)
+        plt.subplots_adjust(wspace=0.1, hspace=0.1)
     plt.show()
     print('scale bars are 8 um')
 
@@ -390,39 +390,56 @@ def get_rgba_all_stacks(hp3ddata_h, groupkey, cmap):
     return rgbas
 
 
-def inspect_rgbas(hp3ddata_h, groupkey, cmap):
+def inspect_rgbas(hp3ddata_h, groupkey, cmap, show_50T_tiles=False):
     total_time_N=\
         len(list(hp3ddata_h.h5f["[G06] stack XY mips after cropping - saddle point to upper bound"].__iter__()))
     rgbas=get_rgba_all_stacks(hp3ddata_h=hp3ddata_h, groupkey=groupkey, cmap=cmap)
     s1 = rgbas[0].shape
-    s1 = s1 / np.max(s1) * 5
+    s1 = s1 / np.max(s1) * 10
     tag = 0
-    plt.figure(figsize=(s1[1] * 2, s1[0]))
-    column_n=np.int(total_time_N/5)+1
-    for timei in np.arange(total_time_N):
-        tag += 1
-        ax1 = plt.subplot(5, column_n, tag)
-        if timei==0:
-            im2show = copy.deepcopy(rgbas[timei])
-            im2show[20:40, 10:90, :] = np.max(im2show)
-        else:
-            im2show=rgbas[timei]
+    if show_50T_tiles is False:
+        plt.figure(figsize=(s1[1] * 2, s1[0]))
+        column_n=np.int(total_time_N/5)
+        for timei in np.arange(total_time_N):
+            tag += 1
+            ax1 = plt.subplot(5, column_n, tag)
+            if timei==0:
+                im2show = copy.deepcopy(rgbas[timei])
+                im2show[20:40, 10:90, :] = np.max(im2show)
+            else:
+                im2show=rgbas[timei]
+            fig = plt.imshow(im2show)
+            plt.axis('off')
+            fig.axes.get_xaxis().set_visible(False)
+            fig.axes.get_yaxis().set_visible(False)
+            ax1.set_xticklabels([])
+            ax1.set_yticklabels([])
+            plt.subplots_adjust(wspace=0, hspace=0)
+        plt.show()
+
+    tiles_50T=[]
+    if show_50T_tiles is True:
+        plt.figure(figsize=(12, 12))
+        r1 = np.concatenate(rgbas[0:9], axis=1)
+        r2 = np.concatenate(rgbas[10:19], axis=1)
+        r3 = np.concatenate(rgbas[20:29], axis=1)
+        r4 = np.concatenate(rgbas[30:39], axis=1)
+        r5 = np.concatenate(rgbas[40:49], axis=1)
+        im2show = np.concatenate([r1, r2, r3, r4, r5], axis=0)
+        im2show[20:40, 10:90, :] = np.max(im2show)
         fig = plt.imshow(im2show)
-        plt.axis('off')
         fig.axes.get_xaxis().set_visible(False)
         fig.axes.get_yaxis().set_visible(False)
-        ax1.set_xticklabels([])
-        ax1.set_yticklabels([])
-        plt.subplots_adjust(wspace=0, hspace=0)
-    plt.show()
-    mip_rgbas=np.max(np.asarray(rgbas), axis=0)
+        tiles_50T=im2show
+
+    mip_rgbas = np.max(np.asarray(rgbas), axis=0)
     plt.figure(figsize=(5, 5))
-    im2show=copy.deepcopy(mip_rgbas)
-    im2show[10:15, 10:90, :]=np.max(im2show)
+    im2show = copy.deepcopy(mip_rgbas)
+    im2show[10:15, 10:90, :] = np.max(im2show)
     fig = plt.imshow(im2show)
     fig.axes.get_xaxis().set_visible(False)
     fig.axes.get_yaxis().set_visible(False)
-    ax1.set_xticklabels([])
-    ax1.set_yticklabels([])
+
+
     print("scale bars are 8 um")
-    return [rgbas, mip_rgbas]
+    return [rgbas, mip_rgbas, tiles_50T]
