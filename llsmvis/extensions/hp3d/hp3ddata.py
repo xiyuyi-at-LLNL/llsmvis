@@ -87,6 +87,11 @@ class HP3Ddata:
             self.h5fbmip1 = self.h5f.create_group("[G13] stack YZ mips after cropping - zero to saddle point")
             self.h5fbmip2 = self.h5f.create_group("[G14] stack XZ mips after cropping - zero to saddle point")
 
+            # create groups for stack mip images in 3 different planes with cropping for the peripheral crust
+            self.h5fcrmip0 = self.h5f.create_group("[G15] stack XY mips after cropping - peripheral lb to saddle point")
+            self.h5fcrmip1 = self.h5f.create_group("[G16] stack YZ mips after cropping - peripheral lb to saddle point")
+            self.h5fcrmip2 = self.h5f.create_group("[G17] stack XZ mips after cropping - peripheral lb to saddle point")
+
         return
 
     def process_all_time_points(self,
@@ -102,6 +107,11 @@ class HP3Ddata:
         list_bc = []
         list_counts = []
         list_c = []
+
+        # crmips, mips before cropping
+        list_crmip0 = []
+        list_crmip1 = []
+        list_crmip2 = []
 
         # kmips, mips before cropping
         list_kmip0 = []
@@ -154,7 +164,7 @@ class HP3Ddata:
             list_thres_cperilb.append(cell_peripheral_lb)
 
             # find the mass center
-            [c, smips, kmips, dmips, bmips] = masscenter.findmcenter(k,
+            [c, smips, kmips, dmips, bmips, crmips] = masscenter.findmcenter(k,
                                                                      thres=threshold,
                                                                      thresmax=upper_bound,
                                                                      thresmin=bc[lbind],
@@ -165,9 +175,15 @@ class HP3Ddata:
             list_smip0.append(smips[0])
             list_smip1.append(smips[1])
             list_smip2.append(smips[2])
+
+            list_crmip0.append(crmips[0])
+            list_crmip1.append(crmips[1])
+            list_crmip2.append(crmips[2])
+
             list_kmip0.append(kmips[0])
             list_kmip1.append(kmips[1])
             list_kmip2.append(kmips[2])
+
             list_dmip0.append(dmips[0])
             list_dmip1.append(dmips[1])
             list_dmip2.append(dmips[2])
@@ -200,6 +216,16 @@ class HP3Ddata:
 
         for i, smip2 in enumerate(list_smip2):
             self.h5fsmip2.create_dataset('T' + str(i), data=smip2, dtype='float')
+
+        # append crmips
+        for i, crmip0 in enumerate(list_crmip0):
+            self.h5fcrmip0.create_dataset('T' + str(i), data=crmip0, dtype='float')
+
+        for i, crmip1 in enumerate(list_crmip1):
+            self.h5fcrmip1.create_dataset('T' + str(i), data=crmip1, dtype='float')
+
+        for i, crmip2 in enumerate(list_crmip2):
+            self.h5fcrmip2.create_dataset('T' + str(i), data=crmip2, dtype='float')
 
         # append kmips
         for i, kmip0 in enumerate(list_kmip0):
