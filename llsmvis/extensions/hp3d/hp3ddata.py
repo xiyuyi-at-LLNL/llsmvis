@@ -18,8 +18,8 @@ import copy
 
 class HP3Ddata:
     def __init__(self, fpath, dfnamehead, initialize=False):
-        self.fpath=fpath
-        self.dfnamehead=dfnamehead
+        self.fpath = fpath
+        self.dfnamehead = dfnamehead
         # first initialize the datafile path
         print('Try to create the following file path:')
         print(fpath)
@@ -102,21 +102,26 @@ class HP3Ddata:
         list_bc = []
         list_counts = []
         list_c = []
-        list_smip0 = []
-        list_smip1 = []
-        list_smip2 = []
 
+        # kmips, mips before cropping
         list_kmip0 = []
         list_kmip1 = []
         list_kmip2 = []
 
-        list_dmip0 = []
-        list_dmip1 = []
-        list_dmip2 = []
-
+        # bmips, zero to saddle point
         list_bmip0 = []
         list_bmip1 = []
         list_bmip2 = []
+
+        # smips, saddle point to upper bound
+        list_smip0 = []
+        list_smip1 = []
+        list_smip2 = []
+
+        # dmips, lower bound to saddle point.
+        list_dmip0 = []
+        list_dmip1 = []
+        list_dmip2 = []
 
         list_thres = []
         list_thres_ub = []
@@ -132,27 +137,28 @@ class HP3Ddata:
             # find the intensity threshold
             [threshold, tind, bc, counts, upper_bound, upper_bound_ind, cell_peripheral_lb] = \
                 masscenter.find_threshold_saddle_point(k,
-                                                            pvbin=pvbin,
-                                                            pvrange=pvrange,
-                                                            show_plots=show_plots_saddle_point,
-                                                            search_range=search_range,
-                                                            debug=debug,
-                                                            minbins=minbins)
+                                                       pvbin=pvbin,
+                                                       pvrange=pvrange,
+                                                       show_plots=show_plots_saddle_point,
+                                                       search_range=search_range,
+                                                       debug=debug,
+                                                       minbins=minbins)
             list_thres.append(copy.deepcopy(threshold))
             list_thres_ind.append(copy.deepcopy(tind))
             list_thres_ub.append(upper_bound)
             list_thres_ubind.append(upper_bound_ind)
-            lbind = np.where(counts == np.max(counts))[0][0]
+            lbind = np.where(counts == np.max(counts))[0][0]  # lower bound index appear at the highest peak in the
+            # voxel value counts.
             list_thres_lbind.append(lbind)
             list_thres_lb.append(bc[lbind])
             list_thres_cperilb.append(cell_peripheral_lb)
 
             # find the mass center
             [c, smips, kmips, dmips, bmips] = masscenter.findmcenter(k,
-                                                            thres=threshold,
-                                                            thresmax=upper_bound,
-                                                            thresmin=bc[lbind],
-                                                            display_option=display_option_find_mcenter)
+                                                                     thres=threshold,
+                                                                     thresmax=upper_bound,
+                                                                     thresmin=bc[lbind],
+                                                                     display_option=display_option_find_mcenter)
             list_bc.append(bc)
             list_counts.append(counts)
             list_c.append(c)
@@ -169,7 +175,6 @@ class HP3Ddata:
             list_bmip0.append(bmips[0])
             list_bmip1.append(bmips[1])
             list_bmip2.append(bmips[2])
-
 
         self.h5f.create_dataset("[D1] mass centers", data=list_c, dtype='float')
         self.h5f.create_dataset("[D2] threshold saddle point", data=list_thres, dtype='float')
@@ -206,7 +211,7 @@ class HP3Ddata:
         for i, kmip2 in enumerate(list_kmip2):
             self.h5fkmip2.create_dataset('T' + str(i), data=kmip2, dtype='float')
 
-        # append dmips
+        # append dmips, lower bound to saddle point.
         for i, dmip0 in enumerate(list_dmip0):
             self.h5fdmip0.create_dataset('T' + str(i), data=dmip0, dtype='float')
 
@@ -225,7 +230,6 @@ class HP3Ddata:
 
         for i, bmip2 in enumerate(list_bmip2):
             self.h5fbmip2.create_dataset('T' + str(i), data=bmip2, dtype='float')
-
 
         return
 
@@ -247,43 +251,44 @@ class HP3Ddata:
         return 0
 
     def inspect_rgbas(self, groupkey, cmap, show_50t_tiles=False):
-        [rgbas, mip_rgbas, tiles_50t]=inspect_rgbas(hp3ddata_h=self, groupkey=groupkey, cmap=cmap,\
-                                                    show_50T_tiles=show_50t_tiles)
+        [rgbas, mip_rgbas, tiles_50t] = inspect_rgbas(hp3ddata_h=self, groupkey=groupkey, cmap=cmap, \
+                                                      show_50T_tiles=show_50t_tiles)
         return [rgbas, mip_rgbas, tiles_50t]
 
+
 def check_histogram_thresholding(hp3ddata_h, Tind, zoffset, show_bounds=True):
-    f=hp3ddata_h
-    bin_centers=np.asarray(f.h5f["[G01] voxel value bin centers/T"+str(Tind)])
-    counts=np.asarray(f.h5f["[G02] voxel value histogram counts/T"+str(Tind)])
-    thres_sp=np.asarray(f.h5f["[D2] threshold saddle point"])[Tind]
-    thres_spi=np.int(np.asarray(f.h5f["[D3] threshold saddle point index"])[Tind])
-    thres_ub=np.asarray(f.h5f["[D4] threshold upper bound"])[Tind]
-    thres_ubi=np.int(np.asarray(f.h5f["[D5] threshold upper bound index"])[Tind])
-    thres_lb=np.asarray(f.h5f["[D6] threshold lower bound"])[Tind]
-    thres_lbi=np.int(np.asarray(f.h5f["[D7] threshold lower bound index"])[Tind])
-    plt.plot(bin_centers, (counts+1)**0.1+zoffset)
+    f = hp3ddata_h
+    bin_centers = np.asarray(f.h5f["[G01] voxel value bin centers/T" + str(Tind)])
+    counts = np.asarray(f.h5f["[G02] voxel value histogram counts/T" + str(Tind)])
+    thres_sp = np.asarray(f.h5f["[D2] threshold saddle point"])[Tind]
+    thres_spi = np.int(np.asarray(f.h5f["[D3] threshold saddle point index"])[Tind])
+    thres_ub = np.asarray(f.h5f["[D4] threshold upper bound"])[Tind]
+    thres_ubi = np.int(np.asarray(f.h5f["[D5] threshold upper bound index"])[Tind])
+    thres_lb = np.asarray(f.h5f["[D6] threshold lower bound"])[Tind]
+    thres_lbi = np.int(np.asarray(f.h5f["[D7] threshold lower bound index"])[Tind])
+    plt.plot(bin_centers, (counts + 1) ** 0.1 + zoffset)
     if show_bounds:
-        plt.plot(thres_lb, (counts[thres_lbi]+1)**0.1+zoffset, 'ro')
-        plt.plot(thres_sp, (counts[thres_spi]+1)**0.1+zoffset, 'bo')
-        plt.plot(thres_ub, (counts[thres_ubi]+1)**0.1+zoffset, 'go')
+        plt.plot(thres_lb, (counts[thres_lbi] + 1) ** 0.1 + zoffset, 'ro')
+        plt.plot(thres_sp, (counts[thres_spi] + 1) ** 0.1 + zoffset, 'bo')
+        plt.plot(thres_ub, (counts[thres_ubi] + 1) ** 0.1 + zoffset, 'go')
 
 
 def plot_mass_center_trajectory(hp3ddata_h, ttstr):
-    list_c=list(hp3ddata_h.h5f["[D1] mass centers"])
-    x=[]
-    y=[]
-    z=[]
-    tt=np.arange(0,len(list_c))
+    list_c = list(hp3ddata_h.h5f["[D1] mass centers"])
+    x = []
+    y = []
+    z = []
+    tt = np.arange(0, len(list_c))
     for c in list_c:
         x.append(c[0])
         y.append(c[1])
         z.append(c[2])
-    fig = plt.figure(figsize=(8,8))
+    fig = plt.figure(figsize=(8, 8))
     ax = fig.gca(projection='3d')
     col = tt
-    ax.plot(x, y, z,'k')
-    ax.scatter(x,y,z, marker='o', c=col, s=150, cmap='cool',edgecolors='k',alpha=0.8)
-    plt.title('Mass center trajectory - '+ttstr,fontsize=20)
+    ax.plot(x, y, z, 'k')
+    ax.scatter(x, y, z, marker='o', c=col, s=150, cmap='cool', edgecolors='k', alpha=0.8)
+    plt.title('Mass center trajectory - ' + ttstr, fontsize=20)
     plt.show()
 
 
@@ -299,18 +304,18 @@ def check_mass_center_on_smip(hp3ddata_h, projp='XY'):
         groupkey = "[G08] stack XZ mips after cropping - saddle point to upper bound"
 
     # find out total time point for the dataset at current
-    TimeN=len(list(hp3ddata_h.h5f["[G02] voxel value histogram counts"].__iter__()))
+    TimeN = len(list(hp3ddata_h.h5f["[G02] voxel value histogram counts"].__iter__()))
 
-    s1 = list(hp3ddata_h.h5f[groupkey+"/T0"].shape)
-    s1 = np.asarray(s1,dtype='float32') / np.max(s1) * 5
+    s1 = list(hp3ddata_h.h5f[groupkey + "/T0"].shape)
+    s1 = np.asarray(s1, dtype='float32') / np.max(s1) * 5
     tag = 0
     plt.figure(figsize=(s1[1] * 2, s1[0]))
 
     # findout colume n
-    column_n=np.int(TimeN/5)
+    column_n = np.int(TimeN / 5)
     for timei in np.arange(TimeN):
         tag += 1
-        smip0 = np.asarray(hp3ddata_h.h5f[groupkey+"/T" + str(timei)])
+        smip0 = np.asarray(hp3ddata_h.h5f[groupkey + "/T" + str(timei)])
         c = hp3ddata_h.h5f["[D1] mass centers"][timei]
         ax1 = plt.subplot(5, column_n, tag)
         if timei == 0:
@@ -332,57 +337,58 @@ def check_mass_center_on_smip(hp3ddata_h, projp='XY'):
     plt.show()
     print('scale bars are 8 um')
 
+
 def inspect_threshold(hp3ddata_h):
     # find out total time point for the dataset at current
-    TimeN=len(list(hp3ddata_h.h5f["[G02] voxel value histogram counts"].__iter__()))
+    TimeN = len(list(hp3ddata_h.h5f["[G02] voxel value histogram counts"].__iter__()))
 
-    plt.figure(figsize=(10,5))
-    ax=plt.subplot(1,3,1)
+    plt.figure(figsize=(10, 5))
+    ax = plt.subplot(1, 3, 1)
     for i in np.arange(TimeN):
-        check_histogram_thresholding(hp3ddata_h=hp3ddata_h, Tind=i, zoffset=-0.5*i, show_bounds=False)
+        check_histogram_thresholding(hp3ddata_h=hp3ddata_h, Tind=i, zoffset=-0.5 * i, show_bounds=False)
     # plt.axis('off')
     ax.set_yticklabels([])
-    ax=plt.subplot(1,3,2)
+    ax = plt.subplot(1, 3, 2)
     for i in np.arange(TimeN):
-        check_histogram_thresholding(hp3ddata_h=hp3ddata_h, Tind=i, zoffset=-0.5*i, show_bounds=True)
+        check_histogram_thresholding(hp3ddata_h=hp3ddata_h, Tind=i, zoffset=-0.5 * i, show_bounds=True)
     # plt.axis('off')
     ax.set_yticklabels([])
-    ax=plt.subplot(1,3,3)
+    ax = plt.subplot(1, 3, 3)
     for i in np.arange(1):
-        check_histogram_thresholding(hp3ddata_h=hp3ddata_h, Tind=i, zoffset=-0.5*i, show_bounds=True)
-    #     ax.set_xticklabels([])
+        check_histogram_thresholding(hp3ddata_h=hp3ddata_h, Tind=i, zoffset=-0.5 * i, show_bounds=True)
+        #     ax.set_xticklabels([])
         ax.set_yticklabels([])
-        plt.legend(['Transformed intensity distribution','Lower bound','Saddle point','Upper bound'],
-                   bbox_to_anchor=(1.04,1), loc="upper left")
+        plt.legend(['Transformed intensity distribution', 'Lower bound', 'Saddle point', 'Upper bound'],
+                   bbox_to_anchor=(1.04, 1), loc="upper left")
 
 
 def get_rgba_one_stack(hp3ddata_h, groupkey, timetag, cmap, total_time_N):
     # get rgba of a single stack
     # first, get the stack c based on the miptag
     k = cmap(np.linspace(0, 1, total_time_N))
-    c = np.asarray(hp3ddata_h.h5f[groupkey+"/T"+str(timetag)])
-    cnonzero=c[np.where(c>0)].ravel()
-    lb=np.min(cnonzero.ravel())
-    ub=np.max(cnonzero.ravel())
-    c[np.where(c<lb)] = lb
-    c[np.where(c>ub)] = ub
-    c = (c-lb)/(ub-lb)
-    c_r = c*k[timetag][0]
-    c_g = c*k[timetag][1]
-    c_b = c*k[timetag][2]
+    c = np.asarray(hp3ddata_h.h5f[groupkey + "/T" + str(timetag)])
+    cnonzero = c[np.where(c > 0)].ravel()
+    lb = np.min(cnonzero.ravel())
+    ub = np.max(cnonzero.ravel())
+    c[np.where(c < lb)] = lb
+    c[np.where(c > ub)] = ub
+    c = (c - lb) / (ub - lb)
+    c_r = c * k[timetag][0]
+    c_g = c * k[timetag][1]
+    c_b = c * k[timetag][2]
     c_a = np.ones(c.shape)
-    c_rgba=np.stack([c_r, c_g, c_b, c_a], axis=2)
-    c_rgba[np.where(c_rgba>1)]=1
-    c_rgba[np.where(c_rgba<0)]=0
+    c_rgba = np.stack([c_r, c_g, c_b, c_a], axis=2)
+    c_rgba[np.where(c_rgba > 1)] = 1
+    c_rgba[np.where(c_rgba < 0)] = 0
     return c_rgba
 
 
 def get_rgba_all_stacks(hp3ddata_h, groupkey, cmap):
-    total_time_N=\
+    total_time_N = \
         len(list(hp3ddata_h.h5f["[G06] stack XY mips after cropping - saddle point to upper bound"].__iter__()))
-    rgbas=[]
+    rgbas = []
     for tind in np.arange(total_time_N):
-        c_rgba=\
+        c_rgba = \
             get_rgba_one_stack(hp3ddata_h=hp3ddata_h, groupkey=groupkey, \
                                timetag=tind, cmap=cmap, total_time_N=total_time_N)
         rgbas.append(c_rgba)
@@ -391,23 +397,23 @@ def get_rgba_all_stacks(hp3ddata_h, groupkey, cmap):
 
 
 def inspect_rgbas(hp3ddata_h, groupkey, cmap, show_50T_tiles=False):
-    total_time_N=\
+    total_time_N = \
         len(list(hp3ddata_h.h5f["[G06] stack XY mips after cropping - saddle point to upper bound"].__iter__()))
-    rgbas=get_rgba_all_stacks(hp3ddata_h=hp3ddata_h, groupkey=groupkey, cmap=cmap)
+    rgbas = get_rgba_all_stacks(hp3ddata_h=hp3ddata_h, groupkey=groupkey, cmap=cmap)
     s1 = rgbas[0].shape
     s1 = s1 / np.max(s1) * 10
     tag = 0
     if show_50T_tiles is False:
         plt.figure(figsize=(s1[1] * 2, s1[0]))
-        column_n=np.int(total_time_N/5)
+        column_n = np.int(total_time_N / 5)
         for timei in np.arange(total_time_N):
             tag += 1
             ax1 = plt.subplot(5, column_n, tag)
-            if timei==0:
+            if timei == 0:
                 im2show = copy.deepcopy(rgbas[timei])
                 im2show[20:40, 10:90, :] = np.max(im2show)
             else:
-                im2show=rgbas[timei]
+                im2show = rgbas[timei]
             fig = plt.imshow(im2show)
             plt.axis('off')
             fig.axes.get_xaxis().set_visible(False)
@@ -417,7 +423,7 @@ def inspect_rgbas(hp3ddata_h, groupkey, cmap, show_50T_tiles=False):
             plt.subplots_adjust(wspace=0, hspace=0)
         plt.show()
 
-    tiles_50T=[]
+    tiles_50T = []
     if show_50T_tiles is True:
         plt.figure(figsize=(12, 12))
         r1 = np.concatenate(rgbas[0:9], axis=1)
@@ -430,7 +436,7 @@ def inspect_rgbas(hp3ddata_h, groupkey, cmap, show_50T_tiles=False):
         fig = plt.imshow(im2show)
         fig.axes.get_xaxis().set_visible(False)
         fig.axes.get_yaxis().set_visible(False)
-        tiles_50T=im2show
+        tiles_50T = im2show
 
     mip_rgbas = np.max(np.asarray(rgbas), axis=0)
     plt.figure(figsize=(5, 5))
@@ -439,7 +445,6 @@ def inspect_rgbas(hp3ddata_h, groupkey, cmap, show_50T_tiles=False):
     fig = plt.imshow(im2show)
     fig.axes.get_xaxis().set_visible(False)
     fig.axes.get_yaxis().set_visible(False)
-
 
     print("scale bars are 8 um")
     return [rgbas, mip_rgbas, tiles_50T]

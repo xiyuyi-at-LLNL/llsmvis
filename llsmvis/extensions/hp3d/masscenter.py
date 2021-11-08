@@ -116,35 +116,40 @@ def find_threshold_saddle_point(k, pvrange=[50,1000], pvbin=5, show_plots=False,
     return [threshold, threshold_ind, bin_centers, phist_counts, upper_bound, upper_bound_ind, cell_peripheral_lb]
 
 
-def findmcenter(k, thres, thresmax=800, thresmin=100,display_option=False):
+def findmcenter(k, thres, thresmax=800, thresmin=100, display_option=False):
     s=copy.deepcopy(k)
     s[np.where(s<thres)]=0
     s[np.where(s>thresmax)]=thresmax
 
+    # for dmips, lower bound to saddle point.
     d=copy.deepcopy(k)
-    d[np.where(s>thres)]=0
-    d[np.where(s<thresmin)]=0
+    d[np.where(d>thres)]=0
+    d[np.where(d<thresmin)]=0
 
     b=copy.deepcopy(k)
-    b[np.where(s>thres)]=0
+    b[np.where(b>thres)]=0
 
     c=ndimage.measurements.center_of_mass(s)
 
+    # for kmips, mips before cropping
     kmip_ax0 = np.max(k, axis=0)
     kmip_ax1 = np.max(k, axis=1)
     kmip_ax2 = np.max(k, axis=2)
     kmips=[kmip_ax0, kmip_ax1, kmip_ax2]
 
-    smip_ax0 = np.max(s, axis=0)
+    # for smips, saddle point to upper bound
+    smip_ax0 = np.max(s, axis=0) # thres is saddle point, thresmax is upper bound; thresmin was set to be the lower bound.
     smip_ax1 = np.max(s, axis=1)
     smip_ax2 = np.max(s, axis=2)
     smips=[smip_ax0, smip_ax1, smip_ax2]
 
+    # for dmips, lower bound to saddle point.
     dmip_ax0 = np.max(d, axis=0)
     dmip_ax1 = np.max(d, axis=1)
     dmip_ax2 = np.max(d, axis=2)
     dmips = [dmip_ax0, dmip_ax1, dmip_ax2]
 
+    # for bmips, zero to saddle point
     bmip_ax0 = np.max(b, axis=0)
     bmip_ax1 = np.max(b, axis=1)
     bmip_ax2 = np.max(b, axis=2)
@@ -152,7 +157,7 @@ def findmcenter(k, thres, thresmax=800, thresmin=100,display_option=False):
 
     if display_option:
         plt.figure(figsize=(3,3))
-        plt.imshow(smip)
+        plt.imshow(smip_ax0)
         plt.plot(c[2], c[1], 'bo')
     return [c, smips, kmips, dmips, bmips]
 
