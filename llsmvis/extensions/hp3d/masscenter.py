@@ -116,10 +116,15 @@ def find_threshold_saddle_point(k, pvrange=[50,1000], pvbin=5, show_plots=False,
     return [threshold, threshold_ind, bin_centers, phist_counts, upper_bound, upper_bound_ind, cell_peripheral_lb]
 
 
-def findmcenter(k, thres, thresmax=800, thresmin=100, display_option=False):
+def findmcenter(k, thres, thresmax=800, thresmin=100, thres_perilb=100, display_option=False):
     s=copy.deepcopy(k)
     s[np.where(s<thres)]=0
     s[np.where(s>thresmax)]=thresmax
+
+    # for crmips, crust mips. peripheral crust lb to saddle point.
+    cr=copy.deepcopy(k)
+    cr[np.where(cr<thres_perilb)]=0
+    cr[np.where(s>thres)]=0
 
     # for dmips, lower bound to saddle point.
     d=copy.deepcopy(k)
@@ -131,11 +136,17 @@ def findmcenter(k, thres, thresmax=800, thresmin=100, display_option=False):
 
     c=ndimage.measurements.center_of_mass(s)
 
+    # for crmips, mips of pheripheral crust
+    crmip_ax0 = np.max(cr, axis=0)
+    crmip_ax1 = np.max(cr, axis=1)
+    crmip_ax2 = np.max(cr, axis=2)
+    crmips = [crmip_ax0, crmip_ax1, crmip_ax2]
+
     # for kmips, mips before cropping
     kmip_ax0 = np.max(k, axis=0)
     kmip_ax1 = np.max(k, axis=1)
     kmip_ax2 = np.max(k, axis=2)
-    kmips=[kmip_ax0, kmip_ax1, kmip_ax2]
+    kmips = [kmip_ax0, kmip_ax1, kmip_ax2]
 
     # for smips, saddle point to upper bound
     smip_ax0 = np.max(s, axis=0) # thres is saddle point, thresmax is upper bound; thresmin was set to be the lower bound.
@@ -159,7 +170,7 @@ def findmcenter(k, thres, thresmax=800, thresmin=100, display_option=False):
         plt.figure(figsize=(3,3))
         plt.imshow(smip_ax0)
         plt.plot(c[2], c[1], 'bo')
-    return [c, smips, kmips, dmips, bmips]
+    return [c, smips, kmips, dmips, bmips, crmips]
 
 
 def plotly_scat_3d(x,y,z):
