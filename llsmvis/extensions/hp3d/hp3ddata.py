@@ -102,7 +102,8 @@ class HP3Ddata:
                                 search_range=(150, 650),
                                 debug=False,
                                 minbins=5,
-                                display_option_find_mcenter=False):
+                                display_option_find_mcenter=False,
+                                peripheral_ratio=1):
         # loop over all time point
         list_bc = []
         list_counts = []
@@ -152,7 +153,8 @@ class HP3Ddata:
                                                        show_plots=show_plots_saddle_point,
                                                        search_range=search_range,
                                                        debug=debug,
-                                                       minbins=minbins)
+                                                       minbins=minbins,
+                                                       peripheral_ratio=peripheral_ratio)
             list_thres.append(copy.deepcopy(threshold))
             list_thres_ind.append(copy.deepcopy(tind))
             list_thres_ub.append(upper_bound)
@@ -168,6 +170,7 @@ class HP3Ddata:
                                                                      thres=threshold,
                                                                      thresmax=upper_bound,
                                                                      thresmin=bc[lbind],
+                                                                     thres_perilb=cell_peripheral_lb,
                                                                      display_option=display_option_find_mcenter)
             list_bc.append(bc)
             list_counts.append(counts)
@@ -452,11 +455,11 @@ def inspect_rgbas(hp3ddata_h, groupkey, cmap, show_50T_tiles=False):
     tiles_50T = []
     if show_50T_tiles is True:
         plt.figure(figsize=(12, 12))
-        r1 = np.concatenate(rgbas[0:9], axis=1)
-        r2 = np.concatenate(rgbas[10:19], axis=1)
-        r3 = np.concatenate(rgbas[20:29], axis=1)
-        r4 = np.concatenate(rgbas[30:39], axis=1)
-        r5 = np.concatenate(rgbas[40:49], axis=1)
+        r1 = np.concatenate(rgbas[0:10], axis=1)
+        r2 = np.concatenate(rgbas[10:20], axis=1)
+        r3 = np.concatenate(rgbas[20:30], axis=1)
+        r4 = np.concatenate(rgbas[30:40], axis=1)
+        r5 = np.concatenate(rgbas[40:50], axis=1)
         im2show = np.concatenate([r1, r2, r3, r4, r5], axis=0)
         im2show[20:40, 10:90, :] = np.max(im2show)
         fig = plt.imshow(im2show)

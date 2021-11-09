@@ -123,8 +123,8 @@ def findmcenter(k, thres, thresmax=800, thresmin=100, thres_perilb=100, display_
 
     # for crmips, crust mips. peripheral crust lb to saddle point.
     cr=copy.deepcopy(k)
-    cr[np.where(cr<thres_perilb)]=0
-    cr[np.where(s>thres)]=0
+    cr[np.where(cr<thres_perilb)]=thres_perilb
+    cr[np.where(s>thres)]=thres_perilb
 
     # for dmips, lower bound to saddle point.
     d=copy.deepcopy(k)
@@ -137,9 +137,9 @@ def findmcenter(k, thres, thresmax=800, thresmin=100, thres_perilb=100, display_
     c=ndimage.measurements.center_of_mass(s)
 
     # for crmips, mips of pheripheral crust
-    crmip_ax0 = np.max(cr, axis=0)
-    crmip_ax1 = np.max(cr, axis=1)
-    crmip_ax2 = np.max(cr, axis=2)
+    crmip_ax0 = np.sum(cr, axis=0)
+    crmip_ax1 = np.sum(cr, axis=1)
+    crmip_ax2 = np.sum(cr, axis=2)
     crmips = [crmip_ax0, crmip_ax1, crmip_ax2]
 
     # for kmips, mips before cropping
