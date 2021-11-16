@@ -4,7 +4,6 @@ except:
     print('extensions.hp3d module: importing croproi3d failed')
     pass
 
-
 try:
     from llsmvis.extensions.hp3d import selectroi
 except:

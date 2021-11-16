@@ -1,4 +1,6 @@
-import sys
+"""
+Haichao Miao @ LLNL, 2021.
+"""
 import vtk
 import numpy as np
 import os
