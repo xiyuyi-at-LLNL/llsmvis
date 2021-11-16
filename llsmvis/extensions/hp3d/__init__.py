@@ -22,3 +22,9 @@ try:
 except:
     print('extensions.hp3d module: importing hp3ddata failed')
     pass
+
+try:
+    from llsmvis.extensions.hp3d import surface_morphometrics
+except:
+    print('extensions.hp3d module: importing surface_morphometrics failed')
+    pass
