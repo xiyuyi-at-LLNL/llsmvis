@@ -23,6 +23,17 @@ class HP3Ddata:
         # first initialize the datafile path
         print('Try to create the following file path:')
         print(fpath)
+        self.mcoop=False  # plot masss center trajectory output option
+        self.mcop='./mass_center_trajectory.png'  # plot mass center trajectory output path
+        self.insptoop = False  # inspect thresholds output option
+        self.insptop = './inspect_thresholds.png'  # inspect thresholds output path
+        # check mass center on smip options
+        self.mcsmipoop = False # output option
+        self.mcsmipop = './check_mascenter_on_smip.png'  # output option
+        # inspect rgbas save options
+        self.inspect_rgbas_oop = False
+        self.inspect_rgbas_op = './inspect_rgbas.png'
+
         if os.path.isdir(fpath):
             print('the file path exists')
         else:
@@ -268,20 +279,22 @@ class HP3Ddata:
         return 0
 
     def plot_mass_center_trajectory(self):
-        plot_mass_center_trajectory(hp3ddata_h=self, ttstr=self.dfnamehead)
+        plot_mass_center_trajectory(hp3ddata_h=self, ttstr=self.dfnamehead, oop=self.mcoop, op=self.mcop)
         return 0
 
     def inspect_threshold(self):
-        inspect_threshold(hp3ddata_h=self)
+        inspect_threshold(hp3ddata_h=self, oop=self.insptoop, op=self.insptop)
         return 0
 
     def check_mass_center_on_smip(self, projp='XY'):
-        check_mass_center_on_smip(hp3ddata_h=self, projp=projp)
+        check_mass_center_on_smip(hp3ddata_h=self, projp=projp,oop=self.mcsmipoop, op=self.mcsmipop[:-4]+"_"+projp+'.png')
         return 0
 
     def inspect_rgbas(self, groupkey, cmap, show_50t_tiles=False):
-        [rgbas, mip_rgbas, tiles_50t] = inspect_rgbas(hp3ddata_h=self, groupkey=groupkey, cmap=cmap, \
-                                                      show_50T_tiles=show_50t_tiles)
+        [rgbas, mip_rgbas, tiles_50t] = inspect_rgbas(hp3ddata_h=self, groupkey=groupkey, cmap=cmap,
+                                                      show_50T_tiles=show_50t_tiles,
+                                                      oop=self.inspect_rgbas_oop,
+                                                      op=self.inspect_rgbas_op)
         return [rgbas, mip_rgbas, tiles_50t]
 
 
@@ -302,7 +315,7 @@ def check_histogram_thresholding(hp3ddata_h, Tind, zoffset, show_bounds=True):
         plt.plot(thres_ub, (counts[thres_ubi] + 1) ** 0.1 + zoffset, 'go')
 
 
-def plot_mass_center_trajectory(hp3ddata_h, ttstr):
+def plot_mass_center_trajectory(hp3ddata_h, ttstr, oop=False, op='./mass_center_traj.png'):
     list_c = list(hp3ddata_h.h5f["[D1] mass centers"])
     x = []
     y = []
@@ -318,10 +331,12 @@ def plot_mass_center_trajectory(hp3ddata_h, ttstr):
     ax.plot(x, y, z, 'k')
     ax.scatter(x, y, z, marker='o', c=col, s=150, cmap='cool', edgecolors='k', alpha=0.8)
     plt.title('Mass center trajectory - ' + ttstr, fontsize=20)
+    if oop is True:
+        plt.savefig(op,transparent=True)
     plt.show()
 
 
-def check_mass_center_on_smip(hp3ddata_h, projp='XY'):
+def check_mass_center_on_smip(hp3ddata_h, projp='XY', oop=False, op='./check_mass_center_test.png'):
     # first, determin the group name for this smip
     if projp is 'XY':
         groupkey = "[G06] stack XY mips after cropping - saddle point to upper bound"
@@ -363,15 +378,17 @@ def check_mass_center_on_smip(hp3ddata_h, projp='XY'):
         ax1.set_xticklabels([])
         ax1.set_yticklabels([])
         plt.subplots_adjust(wspace=0.1, hspace=0.1)
+    if oop is True:
+        plt.savefig(op, transparent=True)
     plt.show()
     print('scale bars are 8 um')
 
 
-def inspect_threshold(hp3ddata_h):
+def inspect_threshold(hp3ddata_h, oop=False, op='./inspect_threasholds.png'):
     # find out total time point for the dataset at current
     TimeN = len(list(hp3ddata_h.h5f["[G02] voxel value histogram counts"].__iter__()))
 
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(15, 5))
     ax = plt.subplot(1, 3, 1)
     for i in np.arange(TimeN):
         check_histogram_thresholding(hp3ddata_h=hp3ddata_h, Tind=i, zoffset=-0.5 * i, show_bounds=False)
@@ -387,9 +404,11 @@ def inspect_threshold(hp3ddata_h):
         check_histogram_thresholding(hp3ddata_h=hp3ddata_h, Tind=i, zoffset=-0.5 * i, show_bounds=True)
         #     ax.set_xticklabels([])
         ax.set_yticklabels([])
-        plt.legend(['Transformed intensity distribution', 'Lower bound', 'Saddle point', 'Upper bound'],
-                   bbox_to_anchor=(1.04, 1), loc="upper left")
-
+        plt.legend(['transformed counts', 'Lower bound', 'Saddle point', 'Upper bound'],
+                   bbox_to_anchor=(0.3, 1), loc="upper left")
+    if oop is True:
+        plt.savefig(op,transparent=True)
+    plt.show()
 
 def get_rgba_one_stack(hp3ddata_h, groupkey, timetag, cmap, total_time_N):
     # get rgba of a single stack
@@ -425,7 +444,7 @@ def get_rgba_all_stacks(hp3ddata_h, groupkey, cmap):
     return rgbas
 
 
-def inspect_rgbas(hp3ddata_h, groupkey, cmap, show_50T_tiles=False):
+def inspect_rgbas(hp3ddata_h, groupkey, cmap, show_50T_tiles=False, oop=False, op='./inspect_rgbas.png'):
     total_time_N = \
         len(list(hp3ddata_h.h5f["[G06] stack XY mips after cropping - saddle point to upper bound"].__iter__()))
     rgbas = get_rgba_all_stacks(hp3ddata_h=hp3ddata_h, groupkey=groupkey, cmap=cmap)
@@ -450,6 +469,8 @@ def inspect_rgbas(hp3ddata_h, groupkey, cmap, show_50T_tiles=False):
             ax1.set_xticklabels([])
             ax1.set_yticklabels([])
             plt.subplots_adjust(wspace=0, hspace=0)
+        if oop is True:
+            plt.savefig(op, transparent=True)
         plt.show()
 
     tiles_50T = []
@@ -466,6 +487,8 @@ def inspect_rgbas(hp3ddata_h, groupkey, cmap, show_50T_tiles=False):
         fig.axes.get_xaxis().set_visible(False)
         fig.axes.get_yaxis().set_visible(False)
         tiles_50T = im2show
+        if oop is True:
+            plt.savefig(op, transparent=True)
 
     mip_rgbas = np.max(np.asarray(rgbas), axis=0)
     plt.figure(figsize=(5, 5))
@@ -474,6 +497,8 @@ def inspect_rgbas(hp3ddata_h, groupkey, cmap, show_50T_tiles=False):
     fig = plt.imshow(im2show)
     fig.axes.get_xaxis().set_visible(False)
     fig.axes.get_yaxis().set_visible(False)
+    if oop is True:
+        plt.savefig(op[:-4]+"_overlay.png", transparent=True)
 
     print("scale bars are 8 um")
     return [rgbas, mip_rgbas, tiles_50T]
