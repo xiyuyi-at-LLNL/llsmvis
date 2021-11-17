@@ -4,7 +4,6 @@ except:
     print('extensions.hp3d module: importing croproi3d failed')
     pass
 
-
 try:
     from llsmvis.extensions.hp3d import selectroi
 except:
@@ -21,4 +20,10 @@ try:
     from llsmvis.extensions.hp3d import hp3ddata
 except:
     print('extensions.hp3d module: importing hp3ddata failed')
+    pass
+
+try:
+    from llsmvis.extensions.hp3d import surface_morphometrics
+except:
+    print('extensions.hp3d module: importing surface_morphometrics failed')
     pass
