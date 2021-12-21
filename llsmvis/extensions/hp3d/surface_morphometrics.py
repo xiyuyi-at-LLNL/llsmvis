@@ -99,6 +99,44 @@ def extract_surface(th, fpath, output_dir, morph_open=True, morph_close=True, ke
 
     return out_file
 
+def get_cone(output, center=(0,0,0), dir=(1,0,0), h=1.0, r=0.5, capping=True, resolution=6):
+    """returns a cone.
+
+    Parameters
+    ----------
+    center: center of middle axis
+
+    dir : orientation of center axis of the cone.
+
+    h : height
+
+    r : radius of base circle 
+    
+    capping : cone has a base or not
+
+    resolution : number of facets for cone sides
+
+    """
+    
+    cone = vtk.vtkConeSource()
+    cone.Update()
+
+    cone.SetCapping(capping)
+    cone.SetDirection(dir)
+    cone.SetCenter(center)
+    cone.SetHeight(h)
+    cone.SetRadius(r)
+    cone.SetResolution(resolution)
+    cone.Update()
+    
+    # Write the stl file to disk
+    stlWriter = vtk.vtkSTLWriter()
+    stlWriter.SetFileName(output)
+    stlWriter.SetInputConnection(cone.GetOutputPort())
+    stlWriter.Write()
+    
+    return cone
+
 def calc_morphometrics(fpath):
     
     reader = vtk.vtkSTLReader()
