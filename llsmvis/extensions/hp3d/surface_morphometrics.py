@@ -137,6 +137,28 @@ def get_cone(output, center=(0,0,0), dir=(1,0,0), h=1.0, r=0.5, capping=True, re
     
     return cone
 
+def get_cell_cone_intersection(cell_surface_fpath, cone_fpath, intersection_surface_fpath):
+    
+    cell = vtk.vtkSTLReader()
+    cell.SetFileName(cell_surface_fpath)
+    cell.Update()
+    
+    cone = vtk.vtkSTLReader()
+    cone.SetFileName(cone_fpath)
+    cone.Update()
+    
+    intersect = vtk.vtkBooleanOperationPolyDataFilter()
+    intersect.SetOperation(1)
+    intersect.SetInputData(0,cell.GetOutput())
+    intersect.SetInputData(1,cone.GetOutput())
+    intersect.Update()
+    
+    # Write the stl file to disk
+    stlWriter = vtk.vtkSTLWriter()
+    stlWriter.SetFileName(intersection_surface_fpath)
+    stlWriter.SetInputConnection(intersect.GetOutputPort())
+    stlWriter.Write()
+
 def calc_morphometrics(fpath):
     
     reader = vtk.vtkSTLReader()
