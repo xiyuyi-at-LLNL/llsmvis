@@ -158,6 +158,18 @@ def get_cell_cone_intersection(cell_surface_fpath, cone_fpath, intersection_surf
     stlWriter.SetFileName(intersection_surface_fpath)
     stlWriter.SetInputConnection(intersect.GetOutputPort())
     stlWriter.Write()
+    
+def get_volume(fpath):
+    
+    reader = vtk.vtkSTLReader()
+    reader.SetFileName(fpath)
+    reader.Update()
+    
+    properties = vtk.vtkMassProperties()
+    properties.SetInputConnection(reader.GetOutputPort())
+    volume = properties.GetVolume()
+    
+    return volume
 
 def calc_morphometrics(fpath):
     
