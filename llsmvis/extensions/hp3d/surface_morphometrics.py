@@ -99,7 +99,7 @@ def extract_surface(th, fpath, output_dir, morph_open=True, morph_close=True, ke
 
     return out_file
 
-def get_cone(output, center=(0,0,0), dir=(1,0,0), h=1.0, r=0.5, capping=True, resolution=6):
+def get_cone(output, center=(0,0,0), dir=(1,0,0), h=1.0, r=0.5, capping=True, resolution=72):
     """returns a cone.
 
     Parameters
@@ -128,11 +128,11 @@ def get_cone(output, center=(0,0,0), dir=(1,0,0), h=1.0, r=0.5, capping=True, re
     cone.SetRadius(r)
     cone.SetResolution(resolution)
     cone.Update()
-    
+        
     # Write the stl file to disk
     stlWriter = vtk.vtkSTLWriter()
     stlWriter.SetFileName(output)
-    stlWriter.SetInputConnection(cone.GetOutputPort())
+    stlWriter.SetInputData(cone.GetOutput())
     stlWriter.Write()
     
     return cone
@@ -158,8 +158,9 @@ def get_cell_cone_intersection(cell_surface_fpath, cone_fpath, intersection_surf
     stlWriter.SetFileName(intersection_surface_fpath)
     stlWriter.SetInputConnection(intersect.GetOutputPort())
     stlWriter.Write()
+
     
-def get_volume(fpath):
+def get_volume_surface_area(fpath):
     
     reader = vtk.vtkSTLReader()
     reader.SetFileName(fpath)
@@ -168,9 +169,136 @@ def get_volume(fpath):
     properties = vtk.vtkMassProperties()
     properties.SetInputConnection(reader.GetOutputPort())
     volume = properties.GetVolume()
+    surface_area = properties.GetSurfaceArea()
     
-    return volume
+    return [volume, surface_area]
 
+def get_cut(cell_surface_fpath, cone_fpath, cut_cell_fpath, cut_protrusion_fpath, cone_protrusion_fpath):
+    
+    cell = vtk.vtkSTLReader()
+    cell.SetFileName(cell_surface_fpath)
+    cell.Update()
+    
+    cone = vtk.vtkSTLReader()
+    cone.SetFileName(cone_fpath)
+    cone.Update()
+    
+    implicitCone = vtk.vtkImplicitPolyDataDistance()
+    implicitCone.SetInput(cone.GetOutput())
+    
+    clipper_inside = vtk.vtkClipPolyData()
+    clipper_inside.SetInputConnection(cell.GetOutputPort())
+    clipper_inside.SetClipFunction(implicitCone)
+    clipper_inside.InsideOutOn()
+    clipper_inside.SetValue(0.0)
+    clipper_inside.GenerateClippedOutputOn()
+    clipper_inside.Update()
+    
+    clipper_outside = vtk.vtkClipPolyData()
+    clipper_outside.SetInputConnection(cell.GetOutputPort())
+    clipper_outside.SetClipFunction(implicitCone)
+    clipper_outside.SetValue(0.0)
+    clipper_outside.GenerateClippedOutputOn()
+    clipper_outside.Update()
+    
+    con_cell = vtk.vtkPolyDataConnectivityFilter()
+    con_cell.SetInputData(clipper_outside.GetOutput())
+    con_cell.SetExtractionModeToLargestRegion()
+    con_cell.Update()
+    
+    n = con_cell.GetNumberOfExtractedRegions()
+    print("num of regions", n)
+    con_cell.SetExtractionModeToSpecifiedRegions()
+    con_cell.Update()
+
+    cell_polydata_list = []
+
+    largest_region_idx = 0
+    largest_region_vol = 0
+    for region in range(0, n):
+        con_cell.InitializeSpecifiedRegionList()
+        con_cell.AddSpecifiedRegion(region)
+        con_cell.Update()
+
+        p = vtk.vtkPolyData()
+        p.DeepCopy(con_cell.GetOutput())
+
+        properties = vtk.vtkMassProperties()
+        properties.SetInputData(p)
+        volume = properties.GetVolume()
+        
+        if(volume > largest_region_vol):
+            largest_region_vol = volume
+            largest_region_idx = region
+        
+        print('volume of component {} is {}'.format(region, volume))
+        
+        #output components as stl        
+        if (False): 
+            stlWriter = vtk.vtkSTLWriter()
+            path = r'C:\Users\miao1\Data\h3pd\cone test 2\cut_cell_{}.stl'.format(region)
+            stlWriter.SetFileName(path)
+            stlWriter.SetInputData(p)
+            stlWriter.Write()
+        
+        cell_polydata_list.append(p)
+
+    append_protrusion_filter = vtk.vtkAppendPolyData()
+    
+    for region in range(0, n):
+        if region == largest_region_idx:
+            continue
+        append_protrusion_filter.AddInputData(cell_polydata_list[region])
+        append_protrusion_filter.Update()
+    
+    append_protrusion_filter.AddInputConnection(clipper_inside.GetOutputPort())
+    append_protrusion_filter.Update()
+    
+    protrusion_stlWriter = vtk.vtkSTLWriter()
+    protrusion_stlWriter.SetFileName(cut_protrusion_fpath)
+    protrusion_stlWriter.SetInputConnection(append_protrusion_filter.GetOutputPort())
+    protrusion_stlWriter.Write()
+
+    cut_cell_stlWriter = vtk.vtkSTLWriter()
+    cut_cell_stlWriter.SetFileName(cut_cell_fpath)
+    cut_cell_stlWriter.SetInputData(cell_polydata_list[largest_region_idx])
+    cut_cell_stlWriter.Write()
+    
+    #get the inner cone
+    implicitCell = vtk.vtkImplicitPolyDataDistance()
+    implicitCell.SetInput(cell.GetOutput())
+    
+    clipper_cone = vtk.vtkClipPolyData()
+    clipper_cone.SetInputConnection(cone.GetOutputPort())
+    clipper_cone.SetClipFunction(implicitCell)
+    clipper_cone.InsideOutOn()
+    clipper_cone.SetValue(0.0)
+    clipper_cone.GenerateClippedOutputOn()
+    clipper_cone.Update()
+    
+    print(clipper_cone.GetOutputPointsPrecision())
+    
+    con_cone = vtk.vtkPolyDataConnectivityFilter()
+    con_cone.SetInputData(clipper_cone.GetOutput())
+    con_cone.SetExtractionModeToLargestRegion()
+    con_cone.Update()
+    
+    n = con_cone.GetNumberOfExtractedRegions()
+    print("num of regions", n)
+    con_cone.SetExtractionModeToLargestRegion()
+    con_cone.Update()
+    
+    append_all_filter = vtk.vtkAppendPolyData()
+    
+    append_all_filter.AddInputConnection(append_protrusion_filter.GetOutputPort())
+    append_all_filter.AddInputConnection(con_cone.GetOutputPort())
+    append_all_filter.Update()
+    
+    cone_protrusion_stlWriter = vtk.vtkSTLWriter()
+    cone_protrusion_stlWriter.SetFileName(cone_protrusion_fpath)
+    cone_protrusion_stlWriter.SetInputConnection(append_all_filter.GetOutputPort())
+    cone_protrusion_stlWriter.Write()
+    
 def calc_morphometrics(fpath):
     
     reader = vtk.vtkSTLReader()
@@ -193,3 +321,4 @@ def calc_morphometrics(fpath):
     # pca.Update()
     
     return [surface_area, volume]
+
