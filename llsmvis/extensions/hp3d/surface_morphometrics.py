@@ -99,7 +99,7 @@ def extract_surface(th, fpath, output_dir, morph_open=True, morph_close=True, ke
 
     return out_file
 
-def get_cone(output, center=(0,0,0), dir=(1,0,0), h=1.0, r=0.5, capping=True, resolution=72):
+def get_cone(output, center=(0,0,0), dir=(1,0,0), h=1.0, r=0.5, capping=True, resolution=64):
     """returns a cone.
 
     Parameters
@@ -128,7 +128,8 @@ def get_cone(output, center=(0,0,0), dir=(1,0,0), h=1.0, r=0.5, capping=True, re
     cone.SetRadius(r)
     cone.SetResolution(resolution)
     cone.Update()
-        
+    
+    
     # Write the stl file to disk
     stlWriter = vtk.vtkSTLWriter()
     stlWriter.SetFileName(output)
@@ -268,15 +269,18 @@ def get_cut(cell_surface_fpath, cone_fpath, cut_cell_fpath, cut_protrusion_fpath
     implicitCell = vtk.vtkImplicitPolyDataDistance()
     implicitCell.SetInput(cell.GetOutput())
     
+    subdivision_filter = vtk.vtkLinearSubdivisionFilter()
+    subdivision_filter.SetNumberOfSubdivisions(3)
+    subdivision_filter.SetInputData(cone.GetOutput())
+    subdivision_filter.Update()
+        
     clipper_cone = vtk.vtkClipPolyData()
-    clipper_cone.SetInputConnection(cone.GetOutputPort())
+    clipper_cone.SetInputConnection(subdivision_filter.GetOutputPort())
     clipper_cone.SetClipFunction(implicitCell)
     clipper_cone.InsideOutOn()
     clipper_cone.SetValue(0.0)
     clipper_cone.GenerateClippedOutputOn()
     clipper_cone.Update()
-    
-    print(clipper_cone.GetOutputPointsPrecision())
     
     con_cone = vtk.vtkPolyDataConnectivityFilter()
     con_cone.SetInputData(clipper_cone.GetOutput())

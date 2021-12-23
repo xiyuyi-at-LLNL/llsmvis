@@ -8,7 +8,7 @@ import surface_morphometrics as sm
 
 
 def test_protrusion_volume():
-    sm.get_cut(r'C:\Users\miao1\Data\h3pd\cone test 2\cell.stl', r'C:\Users\miao1\Data\h3pd\cone test 2\cone.stl', r'C:\Users\miao1\Data\h3pd\cone test 2\cut_cell.stl', r'C:\Users\miao1\Data\h3pd\cone test 2\cut_protrusion.stl', r'C:\Users\miao1\Data\h3pd\cone test 2\cone_protrusion.stl')
+    sm.get_cut(r'C:\Users\miao1\Data\h3pd\cone test 2\cell.stl', r'C:\Users\miao1\Data\h3pd\cone test 2\cone_2.stl', r'C:\Users\miao1\Data\h3pd\cone test 2\cut_cell.stl', r'C:\Users\miao1\Data\h3pd\cone test 2\cut_protrusion.stl', r'C:\Users\miao1\Data\h3pd\cone test 2\cone_protrusion.stl')
     
     cell_prop = sm.get_volume_surface_area(r'C:\Users\miao1\Data\h3pd\cone test 2\cell.stl')
     cut_cell_prop = sm.get_volume_surface_area(r'C:\Users\miao1\Data\h3pd\cone test 2\cut_cell.stl')
