@@ -14,17 +14,24 @@ from llsmvis.extensions.hp3d import masscenter
 from skimage import io
 import numpy as np
 import copy
+import sys
 
 
 class HP3Ddata:
-    def __init__(self, fpath, dfnamehead, initialize=False):
+    def __init__(self, fpath, dfnamehead, initialize=False, verbose=True):
+        self.verbose=verbose
         self.fpath = fpath
         self.dfnamehead = dfnamehead
         # first initialize the datafile path
-        print('Try to create the following file path:')
-        print(fpath)
+        if verbose:
+            print('Try to create the following file path:')
+            print(fpath)
         self.mcoop=False  # plot masss center trajectory output option
         self.mcop='./mass_center_trajectory.png'  # plot mass center trajectory output path
+        self.vcoop=False  # plot masss center trajectory output option
+        self.vcop='./volume_center_trajectory.png'  # plot mass center trajectory output path
+        self.roop=False  # plot roughness trajectory output option
+        self.rop='./roughness.png'  # plot roughness trajectory output path
         self.insptoop = False  # inspect thresholds output option
         self.insptop = './inspect_thresholds.png'  # inspect thresholds output path
         # check mass center on smip options
@@ -33,20 +40,25 @@ class HP3Ddata:
         # inspect rgbas save options
         self.inspect_rgbas_oop = False
         self.inspect_rgbas_op = './inspect_rgbas.png'
-
+        self.inject_signature_points_vcount_profile = False
+        self.signatures=[]
+        self.signatures_to_inject=[]
         if os.path.isdir(fpath):
-            print('the file path exists')
+            if verbose:
+                print('the file path exists')
         else:
             try:
                 os.mkdir(fpath)
             except:
-                print('make' + fpath + 'failed')
+                if verbose:
+                    print('make' + fpath + 'failed')
                 pass
 
         if initialize is True:
             # Initialize the hdf5 file
             if os.path.isfile(os.path.join(fpath, dfnamehead + '.hdf5')):
-                print('deleting existing hdf5 file')
+                if verbose:
+                    print('deleting existing hdf5 file')
                 fname = os.path.join(fpath, dfnamehead + '.hdf5')
                 print(fname)
                 os.remove(fname)
@@ -56,21 +68,26 @@ class HP3Ddata:
                 f = h5py.File(os.path.join(fpath, dfnamehead + '.hdf5'), 'w')
                 self.h5f = f
             except:
-                print('creating the file object for h5py file failed, file exists')
+                if verbose:
+                    print('creating the file object for h5py file failed, file exists')
                 pass
 
         if initialize is False:
             if os.path.isfile(os.path.join(fpath, dfnamehead + '.hdf5')):
-                print('found the hdf5 file:')
+                if verbose:
+                    print('found the hdf5 file:')
                 fname = os.path.join(fpath, dfnamehead + '.hdf5')
-                print(fname)
+                if verbose:
+                    print(fname)
 
             try:
                 f = h5py.File(os.path.join(fpath, dfnamehead + '.hdf5'), 'a')
                 self.h5f = f
-                print('successfully opened the hp3d data object and the associated hdf5 file')
+                if verbose:
+                    print('successfully opened the hp3d data object and the associated hdf5 file')
             except:
-                print('opening the hp3d hdf5 file failed')
+                if verbose:
+                    print('opening the hp3d hdf5 file failed')
                 pass
 
         if initialize is True:
@@ -152,20 +169,33 @@ class HP3Ddata:
         list_thres_lbind = []
         list_thres_ind = []
         list_thres_cperilb = []
-        for t in tlist:
+        if len(self.signatures) == 0:
+            self.signatures = [np.nan] * 50
+
+        for tindex, t in enumerate(tlist):
             print(t)
             # load in the time point
             k = io.imread(t)
-            # find the intensity threshold
-            [threshold, tind, bc, counts, upper_bound, upper_bound_ind, cell_peripheral_lb] = \
-                masscenter.find_threshold_saddle_point(k,
-                                                       pvbin=pvbin,
-                                                       pvrange=pvrange,
-                                                       show_plots=show_plots_saddle_point,
-                                                       search_range=search_range,
-                                                       debug=debug,
-                                                       minbins=minbins,
-                                                       peripheral_ratio=peripheral_ratio)
+            if self.inject_signature_points_vcount_profile is False:
+                # find the intensity threshold
+                [threshold, tind, bc, counts, upper_bound, upper_bound_ind, cell_peripheral_lb] = \
+                    masscenter.find_threshold_saddle_point(k,
+                                                           pvbin=pvbin,
+                                                           pvrange=pvrange,
+                                                           show_plots=show_plots_saddle_point,
+                                                           search_range=search_range,
+                                                           debug=debug,
+                                                           minbins=minbins,
+                                                           peripheral_ratio=peripheral_ratio)
+
+                self.signatures[tindex]=[threshold, tind, bc, counts, upper_bound, upper_bound_ind, cell_peripheral_lb]
+
+            if self.inject_signature_points_vcount_profile is True:
+                print('injecting signature points for time point '+str(tindex))
+                [threshold, tind, bc, counts, upper_bound, upper_bound_ind, cell_peripheral_lb]= \
+                    self.signatures_to_inject[tindex]
+
+            print('l0 - thres is' +str(threshold))
             list_thres.append(copy.deepcopy(threshold))
             list_thres_ind.append(copy.deepcopy(tind))
             list_thres_ub.append(upper_bound)
@@ -282,6 +312,14 @@ class HP3Ddata:
         plot_mass_center_trajectory(hp3ddata_h=self, ttstr=self.dfnamehead, oop=self.mcoop, op=self.mcop)
         return 0
 
+    def plot_volume_center_trajectory(self):
+        plot_volume_center_trajectory(hp3ddata_h=self, ttstr=self.dfnamehead, oop=self.vcoop, op=self.vcop)
+        return 0
+
+    def plot_roughness_trajectory(self):
+        plt_rv_rs_ratio(hp3ddata_h=self, ttstr=self.dfnamehead, oop=self.roop, op=self.rop)
+        return 0
+
     def inspect_threshold(self):
         inspect_threshold(hp3ddata_h=self, oop=self.insptoop, op=self.insptop)
         return 0
@@ -296,6 +334,26 @@ class HP3Ddata:
                                                       oop=self.inspect_rgbas_oop,
                                                       op=self.inspect_rgbas_op)
         return [rgbas, mip_rgbas, tiles_50t]
+
+    def add_volume_centers_to_hdf5(self, tlist):
+        # calculate the volume centers
+        vcenters = []
+        for ind, t in enumerate(tlist):
+            sys.stdout.write('\r')
+            sys.stdout.write('update volume centers, stack ' + str(ind) + '... ')
+            sys.stdout.flush()
+            k = io.imread(t)
+            thres = self.h5f['[D2] threshold saddle point'][ind][0]
+            vc = masscenter.findvcenter(k, thres)
+            vcenters.append(vc)
+
+        # add the name to the hdf5 file
+        try:
+            del self.h5f['[D9] volume centers']
+        except:
+            pass
+        self.h5f.create_dataset("[D9] volume centers", data=vcenters, dtype='float')
+        return vcenters
 
 
 def check_histogram_thresholding(hp3ddata_h, Tind, zoffset, show_bounds=True):
@@ -333,6 +391,43 @@ def plot_mass_center_trajectory(hp3ddata_h, ttstr, oop=False, op='./mass_center_
     plt.title('Mass center trajectory - ' + ttstr, fontsize=20)
     if oop is True:
         plt.savefig(op,transparent=True)
+    plt.show()
+
+
+def plot_volume_center_trajectory(hp3ddata_h, ttstr, oop=False, op='./volume_center_traj.png'):
+    list_c = list(hp3ddata_h.h5f["[D9] volume centers"])
+    x = []
+    y = []
+    z = []
+    tt = np.arange(0, len(list_c))
+    for c in list_c:
+        x.append(c[0])
+        y.append(c[1])
+        z.append(c[2])
+    fig = plt.figure(figsize=(8, 8))
+    ax = fig.gca(projection='3d')
+    col = tt
+    ax.plot(x, y, z, 'k')
+    ax.scatter(x, y, z, marker='o', c=col, s=150, cmap='cool', edgecolors='k', alpha=0.8)
+    plt.title('Volume center trajectory - ' + ttstr, fontsize=20)
+    if oop is True:
+        plt.savefig(op,transparent=True)
+    plt.show()
+
+
+def plt_rv_rs_ratio(hp3ddata_h, ttstr='test', oop=False, op='./roughness.png'):
+    rv=np.asarray(hp3ddata_h.h5f['[D12] sphere radius with equi volume'])
+    rs=np.asarray(hp3ddata_h.h5f['[D13] sphere radius with equi surface area'])
+    tt = np.arange(0, len(rv))
+    plt.figure(figsize=(8, 8))
+    col = tt
+    plt.plot(np.arange(0,len(rv)), rv/rs, 'k')
+    plt.scatter(np.arange(0,len(rv)), rv/rs, marker='o', c=col, s=50, cmap='cool', edgecolors='w', alpha=1)
+    plt.title('Surface roughness (Rv/Rs) - ' + ttstr, fontsize=20)
+    plt.xlim(0, len(rv))
+    plt.ylim(0, 1)
+    if oop is True:
+        plt.savefig(op, transparent=True)
     plt.show()
 
 
@@ -409,6 +504,7 @@ def inspect_threshold(hp3ddata_h, oop=False, op='./inspect_threasholds.png'):
     if oop is True:
         plt.savefig(op,transparent=True)
     plt.show()
+
 
 def get_rgba_one_stack(hp3ddata_h, groupkey, timetag, cmap, total_time_N):
     # get rgba of a single stack
@@ -502,3 +598,4 @@ def inspect_rgbas(hp3ddata_h, groupkey, cmap, show_50T_tiles=False, oop=False, o
 
     print("scale bars are 8 um")
     return [rgbas, mip_rgbas, tiles_50T]
+

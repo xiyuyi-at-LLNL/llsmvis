@@ -13,7 +13,9 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 
 
-def find_threshold_saddle_point(k, pvrange=[50,1000], pvbin=5, show_plots=False, search_range=[200,700], debug=False, minbins=5, peripheral_ratio=0.5):
+def find_threshold_saddle_point(k, pvrange=[50,1000], pvbin=5, show_plots=False,
+                                search_range=[200,700], debug=False, minbins=5,
+                                peripheral_ratio=0.5):
     """
     find the mass center of an 3D volume
     :param k: 3D stack, np.ndarray
@@ -22,6 +24,14 @@ def find_threshold_saddle_point(k, pvrange=[50,1000], pvbin=5, show_plots=False,
     :param show_plots: option to show the plots.
     :return:
     """
+    threshold=np.nan
+    threshold_ind=np.nan
+    bin_centers=np.nan
+    phist_counts=np.nan
+    upper_bound=np.nan
+    upper_bound_ind=np.nan
+    cell_peripheral_lb=np.nan
+
     # first, get histogram of pixel values
     [a, b] = np.histogram(k.ravel(), bins=list(np.arange(pvrange[0], pvrange[1], pvbin)))
 
@@ -40,8 +50,11 @@ def find_threshold_saddle_point(k, pvrange=[50,1000], pvbin=5, show_plots=False,
     # find local minimal within the defined search range
     tp1 = tp0[0][np.where(tp0[0] > search_range_inds[0] - 1)]
     tp = tp1[np.where(tp1 < search_range_inds[1] + 1)]
-
+    # when there is no local minima detected, set it to be the maximum bin.
+    if len(tp)==0:
+        tp=len(b)-1
     # increase the bin size until there is only one local minimum
+    tppre=[]
     while len(tp) > 1:
         pvbin += 5
         if debug:
@@ -63,17 +76,19 @@ def find_threshold_saddle_point(k, pvrange=[50,1000], pvbin=5, show_plots=False,
             print('len tp is' + str(len(tp)))
             print(tp)
         if len(tp)==0:
-            tp = [(np.int(np.mean(np.asarray(tppre))))]
-            a = copy.deepcopy(apre)
-            b = copy.deepcopy(bpre)
+            if len(tppre)>0:
+                tp = [(np.int(np.mean(np.asarray(tppre))))]
+                a = copy.deepcopy(apre)
+                b = copy.deepcopy(bpre)
 
         # store the current a, b, tp values for next round.
         apre = copy.deepcopy(a)
         bpre = copy.deepcopy(b)
         tppre = copy.deepcopy(tp)
 
-
     # get the index of the local minimum.
+    if len(tp) == 0:
+        tp=[10]
     peaks = tp
     threshold = b[peaks]  # this will be the voxel value of the local minimum
     threshold_ind = peaks  # this is the index of the voxel value
@@ -81,28 +96,36 @@ def find_threshold_saddle_point(k, pvrange=[50,1000], pvbin=5, show_plots=False,
     phist_counts = a  # histogram counts
 
     # now find the upper_bound - the first bin that has counts lower than minbins, and after the threshold bin.
-    upper_bound_inds = np.where(phist_counts < minbins)[0]
-    if debug:
-        print('low count inds:')
-        print(upper_bound_inds)
-
-    upper_bound_inds = upper_bound_inds[np.where(upper_bound_inds > threshold_ind)]
-    upper_bound_ind = upper_bound_inds[0]
+    upper_bound_ind=len(phist_counts)-1
+    try:
+        upper_bound_inds = np.where(phist_counts < minbins)[0]
+        upper_bound_inds = upper_bound_inds[np.where(upper_bound_inds > threshold_ind)]
+        upper_bound_ind = upper_bound_inds[0]
+    except:
+        print('get upper bound ind failed')
+        pass
     upper_bound = b[upper_bound_ind]
 
     # find cell peripheral lower bound and its index.
     # this is the cell body
-    k1 = copy.deepcopy(k)
-    k1[np.where(k1 < threshold)] = 0
-    k1[np.where(k1 > upper_bound)] = 0
-    vbody = len(np.where(k1 > 0)[0])
+    vbody=1
+    try:
+        k1 = copy.deepcopy(k)
+        k1[np.where(k1 < threshold)] = 0
+        k1[np.where(k1 > upper_bound)] = 0
+        vbody = len(np.where(k1 > 0)[0])
+    except:
+        print('calculating vbody failed')
 
     # now based on the cell body, identify the peripheral region
     k2 = copy.deepcopy(k)
     k2[np.where(k2 > upper_bound)] = 0
     sorted_voxels = np.sort(k2.ravel())
-    cell_peripheral_lb = sorted_voxels[-np.int(vbody * (1 + peripheral_ratio))]
-
+    cell_peripheral_lb = threshold
+    try:
+        cell_peripheral_lb = sorted_voxels[-np.int(vbody * (1 + peripheral_ratio))]
+    except:
+        print('get cell peripheral lower bound failed')
 
     if show_plots:
         plt.figure(figsize=(3, 3))
@@ -118,6 +141,7 @@ def find_threshold_saddle_point(k, pvrange=[50,1000], pvbin=5, show_plots=False,
 
 def findmcenter(k, thres, thresmax=800, thresmin=100, thres_perilb=100, display_option=False):
     s=copy.deepcopy(k)
+    print('thres is ' + str(thres))
     s[np.where(s<thres)]=0
     s[np.where(s>thresmax)]=thresmax
 
@@ -171,6 +195,24 @@ def findmcenter(k, thres, thresmax=800, thresmin=100, thres_perilb=100, display_
         plt.imshow(smip_ax0)
         plt.plot(c[2], c[1], 'bo')
     return [c, smips, kmips, dmips, bmips, crmips]
+
+
+def findvcenter(k, thres):
+    """
+    find volume center
+    :param k:
+    :param thres:
+    :param thresmax:
+    :param thresmin:
+    :param thres_perilb:
+    :param display_option:
+    :return:
+    """
+    s=copy.deepcopy(k)
+    s[np.where(s<thres)]=0
+    s[np.where(s>thres)]=1
+    c=ndimage.measurements.center_of_mass(s)
+    return c
 
 
 def plotly_scat_3d(x,y,z):
