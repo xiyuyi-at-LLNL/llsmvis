@@ -43,7 +43,12 @@ def get_deskewed_tiff_list(tpath, thead):
     for d in p.dict_tiffs:
         t = 'Deskewed_' + d['path of tiff'].split('/')[-1]
         tlist.append(os.path.join(fpath, t))
-    return tlist
+
+    time_stamps = []
+    for t in np.arange(0, 50):
+        time_stamps.append(np.int(tlist[t].split('trimmed_stacks')[1].split('stack')[1][0:4]))
+    sorted_tlist = [t for _, t in sorted(zip(time_stamps, tlist))]
+    return sorted_tlist
 
 
 def get_trimmed_tiff_list(tpath, thead):
