@@ -105,7 +105,14 @@ def extract_surface(th, fpath, output_dir,
     return out_file
 
 
-def get_cone(output, center=(0,0,0), dir=(1,0,0), h=1.0, r=0.5, capping=True, resolution=64, return_polydata=False):
+def get_cone(output,
+             center=(0, 0, 0),
+             dir=(1, 0, 0),
+             h=1.0,
+             r=0.5,
+             capping=True,
+             resolution=64,
+             return_polydata=False):
     """returns a cone.
 
     Parameters
@@ -221,7 +228,9 @@ def get_cut(cell_surface_fpath=None,
             use_stl_filepaths=True,
             cell_polydata=None,
             cone_polydata=None,
-            write_output_as_stl=True,
+            write_output_cone_protrusion_as_stl=True,
+            write_output_protrusion_as_stl=True,
+            write_output_cell_cut_as_stl=False,
             verbose=False):
 
     if use_stl_filepaths is True:
@@ -310,12 +319,13 @@ def get_cut(cell_surface_fpath=None,
     append_protrusion_filter.Update()
     protrusion_polydata=append_protrusion_filter.GetOutput()
 
-    if write_output_as_stl is True:
+    if write_output_protrusion_as_stl is True:
         protrusion_stlWriter = vtk.vtkSTLWriter()
         protrusion_stlWriter.SetFileName(cut_protrusion_fpath)
         protrusion_stlWriter.SetInputConnection(append_protrusion_filter.GetOutputPort())
         protrusion_stlWriter.Write()
 
+    if write_output_cell_cut_as_stl is True:
         cut_cell_stlWriter = vtk.vtkSTLWriter()
         cut_cell_stlWriter.SetFileName(cut_cell_fpath)
         cut_cell_stlWriter.SetInputData(cell_polydata_list[largest_region_idx])
@@ -355,7 +365,7 @@ def get_cut(cell_surface_fpath=None,
     append_all_filter.Update()
     cone_protrusion_polydata=append_all_filter.GetOutput()
 
-    if write_output_as_stl is True:
+    if write_output_cone_protrusion_as_stl is True:
         cone_protrusion_stlWriter = vtk.vtkSTLWriter()
         cone_protrusion_stlWriter.SetFileName(cone_protrusion_fpath)
         cone_protrusion_stlWriter.SetInputConnection(append_all_filter.GetOutputPort())
@@ -495,3 +505,124 @@ def getroughness(s, v, f_norm=1):
     rs=(s/4/np.pi)**(1/2)
     roughness=rv/rs*f_norm
     return roughness
+
+def get_f_norm(apex):
+    """
+    get the normalization factor for roughness given an apex angle (unit=degree)
+
+    :param a:  apex angle of a cone (unit=degree)
+    :return: f_norm, the normalization factor
+    """
+    a=apex/180*np.pi
+    # should include the derivation of this normalization factor to SI of the paper.
+    f_norm=(4/(2-np.cos(a/2)**3))**(1/3) * ((2)/(np.sin(a/2)))**(-1/2)
+    return f_norm
+
+def get_pos_neg_vcenters(v, cone_vectors, normalize_v=False):
+    """
+    Perform noise filtering on a image stack along the time axis for each 
+    pixel independently.
+
+    Parameters
+    ----------
+    v : list
+        a list of volumes for each cone cut volumes
+    cone_vectors : list
+        a list of volumes for each cone vectors
+    normalize_v : bool
+        whether to normalize the v or not
+
+    Returns
+    -------
+    posc:  [type]
+        description
+    posstd:  [type]
+        description 
+    dvpos:  [type]
+        description 
+    negc:  [type]
+        description 
+    negstd:  [type]
+        description 
+    dvneg:  [type]
+        description 
+    polarity_vector:  [type]
+        description
+    """
+
+    xs=cone_vectors[0]
+    ys=cone_vectors[1]
+    zs=cone_vectors[2]
+    dv = v-np.average(v.ravel())
+    if normalize_v is True:
+        dv=dv/np.average(v.ravel())
+
+    dvpos=np.zeros(dv.shape)
+    dvpos[dv>0]=dv[dv>0]
+    dvneg=np.zeros(dv.shape)
+    dvneg[dv<0]=-dv[dv<0]
+    
+    
+    posc=np.asarray([np.mean(dvpos*xs), np.mean(dvpos*ys), np.mean(dvpos*zs)]) # volume center of positive delta volumes
+
+    negc=np.asarray([np.mean(dvneg*xs), np.mean(dvneg*ys), np.mean(dvneg*zs)]) # volume center of negative delta volumes
+    
+    posstd=np.asarray([np.std(dvpos[dvpos>0]*xs[dvpos>0]),
+                     np.std(dvpos[dvpos>0]*ys[dvpos>0]),
+                     np.std(dvpos[dvpos>0]*zs[dvpos>0])])
+
+    negstd=np.asarray([np.std(dvneg[dvneg>0]*xs[dvneg>0]),
+                     np.std(dvneg[dvneg>0]*ys[dvneg>0]),
+                     np.std(dvneg[dvneg>0]*zs[dvneg>0])])
+
+    polarity_vector=posc-negc
+    return [posc, posstd, dvpos, negc, negstd, dvneg, polarity_vector]
+
+def mark_local_extrema(roughnesses=[], cone_vectors=[],neighbour_n=8):
+    maximatags = []
+    minimatags = []
+    for vind  in np.arange(len(cone_vectors.T)): # cone vector index
+        dis = np.linalg.norm(cone_vectors.T - cone_vectors.T[vind],axis = 1)
+        nearest_inds = np.argsort(dis)[1:neighbour_n+1]
+        nearest_roughnesses = roughnesses[nearest_inds]
+        rself = roughnesses[vind]
+        maxima = 1 # 1 means maxima, 0 means minima
+        minima = 1 # 1 means maxima, 0 means minima
+        for r in nearest_roughnesses:
+            if rself < r:
+                maxima = 0
+            if rself > r:
+                minima = 0
+        maximatags.append(maxima)
+        minimatags.append(minima)
+        
+    return maximatags, minimatags
+
+def mark_local_extrema_on_maps(cone_vectors, thetalist, philist, roughnesses=[], roumap=[], neighbour_n=8):  
+    maximatags, minimatags = mark_local_extrema(roughnesses=roughnesses, 
+                                                cone_vectors=cone_vectors, 
+                                                neighbour_n=neighbour_n)
+    maximainds=np.argsort(maximatags)[-np.sum(maximatags):]
+    minimainds=np.argsort(minimatags)[-np.sum(minimatags):]
+    from matplotlib import pyplot as plt
+    maximathes = np.asarray(thetalist)[maximainds]
+    maximaphis = np.asarray(philist)[maximainds]
+    plt.figure(figsize=(10,10))
+    plt.imshow(roumap)
+    for i in np.arange(len(maximathes)):
+        plt.plot(maximaphis[i],maximathes[i],'ro')
+    
+    
+    minimathes = np.asarray(thetalist)[minimainds]
+    minimaphis = np.asarray(philist)[minimainds]
+    for i in np.arange(len(minimathes)):
+        plt.plot(minimaphis[i],minimathes[i],'ro',markerfacecolor='w')
+
+    maximavalues = np.asarray(roughnesses)[maximainds]
+    minimavalues = np.asarray(roughnesses)[minimainds]
+    plt.xlim(0,360)
+    plt.ylim(0,180)
+
+    return maximavalues, maximatags, maximainds, maximathes, maximaphis, minimavalues, minimatags, minimainds, minimathes, minimaphis
+    
+    

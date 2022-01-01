@@ -61,6 +61,15 @@ def get_trimmed_tiff_list(tpath, thead):
     return tlist
 
 
+def get_cell_stl_list(hp3dpath, thead):
+    cellstlspath=os.path.join(hp3dpath, thead, 'surface_extraction')
+    stlpaths = []
+    for i in np.arange(50):
+        stlfname = [x for x in os.listdir(cellstlspath) if 'stack' + str(i).zfill(4) in x and x.endswith('.stl')]
+        stlpaths.append(os.path.join(cellstlspath, stlfname[0]))
+    return stlpaths
+
+
 def get_2d_mask(m, locs):
     for i in locs:
         m[i[1], i[0]] = 1

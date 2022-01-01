@@ -1,0 +1,175 @@
+#!/g/g92/yi10/anaconda3/envs/llsmvis/bin/python
+import sys
+
+sys.path.append('/g/g92/miao1/Development/llsmvis')
+sys.path.append('/Users/yi10/Desktop/Research/Software/T-llsmvis/')
+sys.path.append('/g/g92/yi10')
+import llsmvis
+from llsmvis.extensions import hp3d
+from llsmvis.extensions.hp3d import surface_morphometrics as sm
+from llsmvis.extensions.hp3d import masscenter as mc
+from llsmvis.extensions.hp3d import croproi3d as c3d
+import h5py
+import os
+from skimage import io
+import numpy as np
+import matplotlib.pyplot as plt
+import vtk
+from vtk.util import numpy_support
+from llsmvis.extensions.hp3d import tools_vectorsets as v
+from scipy.interpolate import griddata
+
+# ticket information (the output files from the interactive trimming results, see E1 for details)
+tpath = '/p/lustre2/yi10/hp3d/CroppingData'
+
+with open('./roughness_characterization_ticket.txt', 'rb') as f:
+    fp = f.readline()
+thead = str(fp).split('\'')[1]
+
+hp3dpath = '/p/lustre2/yi10/hp3d'
+cellstlspath = os.path.join(hp3dpath, thead, 'surface_extraction')
+conecutspath = os.path.join(hp3dpath, thead, 'cone_cuts_analysis')
+try:
+    os.mkdir(conecutspath)
+except:
+    pass
+
+# define parametres for the choice of cone set:
+apex_angle = 40  # apex angle of the cone, degree.
+# fnorm_for_cone=sm.get_f_norm(40)
+fnorm_for_cone = 1
+sample_angle = 15  # sampling angle when choose semi-equal spaced points.
+conespath = '/p/lscratchh/yi10/hp3d/cones/cones_CenterSpacingAngle' + str(sample_angle) + '_ConeApexAngle' + str(
+    apex_angle)
+# Define equaliy spaced vectors to be used as the direcitonal vector for the cones
+xs, ys, zs = v.sample_points_semi_equal_space(sample_angle)
+print("total number of points: " + str(len(xs)))
+# define all cone stl paths
+with open('./timeind.txt', 'r') as f:
+    fp = f.readline()
+timeind = np.int(fp)
+
+coneind = 0
+conestlpaths = []
+for x, y, z in zip(xs, ys, zs):
+    conestlpath = os.path.join(conespath, 'cone_pos' + str(coneind) + '.stl')
+    conestlpaths.append(conestlpath)
+    coneind += 1
+
+# define mapping interpolation coordinates
+# make the current location coordinates into the format of points for interpolation
+points = np.asarray([xs, ys, zs]).T
+
+# define location points to interpolate for
+request = v.sample_points_equal_spaced_logi_lati(longitude_n=360, latitude_n=180).T
+
+# get the list of stl paths for all the cells
+allcellstls = c3d.get_cell_stl_list(hp3dpath=hp3dpath, thead=thead)
+
+cell_time_ind = timeind
+
+# input cellstlpath
+cellstlpath = allcellstls[cell_time_ind]
+
+# define output dir for the cut .stl files.
+cuts_output_dir = os.path.join(conecutspath, 'time' + str(cell_time_ind).zfill(4))
+try:
+    os.mkdir(cuts_output_dir)
+except:
+    pass
+print('cuts output dir:')
+print(cuts_output_dir)
+# define shifted cell stl path
+shiftedcellstl = os.path.join(cuts_output_dir, 'shiftedcell.stl')
+# calculate the shifted cell stl
+sm.get_shifted_cell(cellstlpath, output=shiftedcellstl, savestl=True)
+
+# loop over each cone, extract patch wise roughness and volume with all the cone-cuts
+d = {}
+d.update({'content': 'patch wise roughness and cone volume analysis results for one 3D volume'})
+
+roughnesses = []
+conevolumes = []
+for cone_index in np.arange(0, len(conestlpaths)):
+    # for cone_index in [0]:
+    print('cut with cone #' + str(cone_index))
+
+    # load the cone polydata and cell polydata
+    stlpath = conestlpaths[cone_index]
+    conepolydata = sm.stl2polydata(stlpath)
+    cellpolydata = sm.stl2polydata(shiftedcellstl)
+
+    # define the cut output file names
+    cut_cell = os.path.join(cuts_output_dir, 'cut_cell_cone' + str(cone_index) + '.stl')
+    cellprot = os.path.join(cuts_output_dir, 'protrusion_cone' + str(cone_index) + '.stl')
+    coneprot = os.path.join(cuts_output_dir, 'cone_n_protrusion_cone' + str(cone_index) + '.stl')
+    try:
+        cell_protrusion_polydata = sm.stl2polydata(cellprot)
+        cone_protrusion_polydata = sm.stl2polydata(coneprot)
+        print('successfully loaded the relevant polydata for the cuts')
+    except:
+        print('polydata for the cuts unavailable, recalculating')
+        cutresult = sm.get_cut(cut_cell_fpath=cut_cell,
+                               cut_protrusion_fpath=cellprot,
+                               cone_protrusion_fpath=coneprot,
+                               use_stl_filepaths=False,
+                               cell_polydata=cellpolydata,
+                               cone_polydata=conepolydata,
+                               write_output_cone_protrusion_as_stl=True,
+                               write_output_protrusion_as_stl=True,
+                               write_output_cell_cut_as_stl=False,
+                               verbose=False)
+        cell_protrusion_polydata = cutresult['protrusion polydata']
+        cone_protrusion_polydata = cutresult['cone protrusion polydata']
+
+    sv_protrusion_only = sm.get_volume_surface_area(polydata=cell_protrusion_polydata,
+                                                    usestl=False, returnfmt='dict', verbose=False)
+
+    sv_protrusion_cone = sm.get_volume_surface_area(polydata=cone_protrusion_polydata,
+                                                    usestl=False, returnfmt='dict', verbose=False)
+
+    regional_roughness = sm.getroughness(sv_protrusion_only['surface area'],
+                                         sv_protrusion_cone['volume'],
+                                         f_norm=fnorm_for_cone)
+
+    print('regional roughness: ' + str(regional_roughness) + ', cone #' + str(cone_index))
+    roughnesses.append(regional_roughness)
+    conevolumes.append(sv_protrusion_cone['volume'])
+
+# make the current roughnesses into the correct format of points for interpolation
+values_roughnesses = np.asarray(roughnesses)
+values_conevolumes = np.asarray(conevolumes)
+
+# Map interpolation
+roughnesses_map = griddata(points, values_roughnesses, request, 'nearest').reshape(180, 360)
+conevolumes_map = griddata(points, values_conevolumes, request, 'nearest').reshape(180, 360)
+
+d.update({'cones stl paths': conestlpaths})
+d.update({'roughnesses on cone vectors': roughnesses})
+d.update({'conevolumes on cone vectors': conevolumes})
+d.update({'roughnesses on map': roughnesses_map})
+d.update({'conevolumes on map': conevolumes_map})
+
+# we are going to have each cell and each time point to be calculated in parallel, so here it won't be directly organized in to the hp3d data.
+# we will save out the specific hdf5 files per cell per time point.
+
+h5fname = os.path.join(cuts_output_dir, 'patch-wise-roughness-volumes.hdf5')
+try:
+    os.remove(h5fname)
+except:
+    pass
+f = h5py.File(h5fname, 'w')
+f.create_dataset("roughnesses on cone vectors", data=roughnesses, dtype='float')
+f.create_dataset("cone volumes on cone vectors", data=conevolumes, dtype='float')
+f.create_dataset("roughnesses on map", data=roughnesses_map, dtype='float')
+f.create_dataset("cone volumes on map", data=conevolumes_map, dtype='float')
+f.create_dataset("cones stl paths", data=conestlpaths)
+f.close()
+
+finishtag = os.path.join(cuts_output_dir, 'finished')
+f = h5py.File(finishtag, 'w')
+f.create_dataset("done", data=[0], dtype='float')
+f.close()
+
+
+
