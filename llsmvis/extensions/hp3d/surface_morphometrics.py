@@ -598,7 +598,8 @@ def mark_local_extrema(roughnesses=[], cone_vectors=[],neighbour_n=8):
         
     return maximatags, minimatags
 
-def mark_local_extrema_on_maps(cone_vectors, thetalist, philist, roughnesses=[], roumap=[], neighbour_n=8):  
+def mark_local_extrema_on_maps(cone_vectors, thetalist, philist, roughnesses=[], \
+                                roumap=[], neighbour_n=8,show_plot=True):  
     maximatags, minimatags = mark_local_extrema(roughnesses=roughnesses, 
                                                 cone_vectors=cone_vectors, 
                                                 neighbour_n=neighbour_n)
@@ -607,21 +608,24 @@ def mark_local_extrema_on_maps(cone_vectors, thetalist, philist, roughnesses=[],
     from matplotlib import pyplot as plt
     maximathes = np.asarray(thetalist)[maximainds]
     maximaphis = np.asarray(philist)[maximainds]
-    plt.figure(figsize=(10,10))
-    plt.imshow(roumap)
-    for i in np.arange(len(maximathes)):
-        plt.plot(maximaphis[i],maximathes[i],'ro')
+    if show_plot:
+        plt.figure(figsize=(10,10))
+        plt.imshow(roumap)
+        for i in np.arange(len(maximathes)):
+            plt.plot(maximaphis[i],maximathes[i],'ro')
     
     
     minimathes = np.asarray(thetalist)[minimainds]
     minimaphis = np.asarray(philist)[minimainds]
-    for i in np.arange(len(minimathes)):
-        plt.plot(minimaphis[i],minimathes[i],'ro',markerfacecolor='w')
+    if show_plot:
+        for i in np.arange(len(minimathes)):
+            plt.plot(minimaphis[i],minimathes[i],'ro',markerfacecolor='w')
 
     maximavalues = np.asarray(roughnesses)[maximainds]
     minimavalues = np.asarray(roughnesses)[minimainds]
-    plt.xlim(0,360)
-    plt.ylim(0,180)
+    if show_plot:
+        plt.xlim(0,360)
+        plt.ylim(0,180)
 
     return maximavalues, maximatags, maximainds, maximathes, maximaphis, minimavalues, minimatags, minimainds, minimathes, minimaphis
     
