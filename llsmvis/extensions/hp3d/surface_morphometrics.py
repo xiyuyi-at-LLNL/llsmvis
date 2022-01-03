@@ -506,6 +506,7 @@ def getroughness(s, v, f_norm=1):
     roughness=rv/rs*f_norm
     return roughness
 
+
 def get_f_norm(apex):
     """
     get the normalization factor for roughness given an apex angle (unit=degree)
