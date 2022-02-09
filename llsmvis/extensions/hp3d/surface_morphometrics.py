@@ -5,11 +5,12 @@ import vtk
 import numpy as np
 import os
 
-def extract_surface(th, fpath, output_dir,
+def extract_surface(th, fpath, output_dir,output_fname=None,
                     morph_open=True, morph_close=True,
                     kernel_size=3, save_mask=False,
                     surface_smoothing_steps=0,
-                    verbose=True):
+                    verbose=True,
+                    largest_connected_component=True):
     # get reader to load tiff file
     reader = vtk.vtkTIFFReader()
     reader.SetFileName(fpath)
@@ -75,10 +76,14 @@ def extract_surface(th, fpath, output_dir,
     if verbose:
         print('Get the largest connected component')
 
+
     # We only want the largest connected component
     con = vtk.vtkPolyDataConnectivityFilter()
     con.SetInputData(mc.GetOutput())
-    con.SetExtractionModeToLargestRegion()
+    if largest_connected_component is True:
+        con.SetExtractionModeToLargestRegion()
+    else:
+        con.SetExtractionModeToAllRegions()
     con.Update()
     surface = con.GetOutput()
     if surface_smoothing_steps > 0:
@@ -93,11 +98,13 @@ def extract_surface(th, fpath, output_dir,
         surface = smooth.GetOutput()
     if verbose:
         print('save surface to', output_dir)
-
     writer = vtk.vtkSTLWriter()
     writer.SetInputData(surface)
     writer.SetFileTypeToBinary()
-    out = name + "{}_{}.stl".format(th,surface_smoothing_steps)
+    if output_fname is None:
+        out = name + "{}_{}.stl".format(th,surface_smoothing_steps)
+    else:
+        out = output_fname
     out_file = os.path.join(output_dir,out)
     writer.SetFileName(out_file)
     writer.Write()
@@ -428,7 +435,7 @@ def get_center_of_mass(polydata, verbose=True):
     return cm
 
 
-def get_shifted_cell(cellpath, output='.', savestl=False):
+def get_shifted_cell(cellpath, output=None, savestl=False, cm=None, verbose=False):
     """
     shift the mass center of the cell to the origin of the coordinate system
     return shifted_cell as a polydata
@@ -439,7 +446,8 @@ def get_shifted_cell(cellpath, output='.', savestl=False):
     cell.Update()
 
     # get the center of mass of the cell
-    cm = get_center_of_mass(cell.GetOutput(), verbose=False)
+    if cm is None:
+        cm = get_center_of_mass(cell.GetOutput(), verbose=False)
 
     # define a translation transform
     tl = vtk.vtkTransform()
@@ -456,10 +464,16 @@ def get_shifted_cell(cellpath, output='.', savestl=False):
 
     if savestl:
         # Write the stl file to disk
+        if verbose:
+            print('write '+output)
         stlWriter = vtk.vtkSTLWriter()
-        stlWriter.SetFileName(output)
         stlWriter.SetInputData(shifted_cell)
-        stlWriter.Write()
+        stlWriter.SetFileTypeToBinary()
+        stlWriter.SetFileName(output)
+        o=stlWriter.Write()
+        if verbose:
+            if o == 1:
+                print('successfully wrote '+output)
 
     return shifted_cell
 
@@ -519,6 +533,7 @@ def get_f_norm(apex):
     f_norm=(4/(2-np.cos(a/2)**3))**(1/3) * ((2)/(np.sin(a/2)))**(-1/2)
     return f_norm
 
+
 def get_pos_neg_vcenters(v, cone_vectors, normalize_v=False):
     """
     Perform noise filtering on a image stack along the time axis for each 
@@ -563,10 +578,11 @@ def get_pos_neg_vcenters(v, cone_vectors, normalize_v=False):
     dvneg=np.zeros(dv.shape)
     dvneg[dv<0]=-dv[dv<0]
     
+    # volume center of positive delta volumes
+    posc=np.asarray([np.mean(dvpos*xs), np.mean(dvpos*ys), np.mean(dvpos*zs)]) 
     
-    posc=np.asarray([np.mean(dvpos*xs), np.mean(dvpos*ys), np.mean(dvpos*zs)]) # volume center of positive delta volumes
-
-    negc=np.asarray([np.mean(dvneg*xs), np.mean(dvneg*ys), np.mean(dvneg*zs)]) # volume center of negative delta volumes
+    # volume center of negative delta volumes
+    negc=np.asarray([np.mean(dvneg*xs), np.mean(dvneg*ys), np.mean(dvneg*zs)]) 
     
     posstd=np.asarray([np.std(dvpos[dvpos>0]*xs[dvpos>0]),
                      np.std(dvpos[dvpos>0]*ys[dvpos>0]),
@@ -578,6 +594,7 @@ def get_pos_neg_vcenters(v, cone_vectors, normalize_v=False):
 
     polarity_vector=posc-negc
     return [posc, posstd, dvpos, negc, negstd, dvneg, polarity_vector]
+
 
 def mark_local_extrema(roughnesses=[], cone_vectors=[],neighbour_n=8):
     maximatags = []
@@ -598,6 +615,7 @@ def mark_local_extrema(roughnesses=[], cone_vectors=[],neighbour_n=8):
         minimatags.append(minima)
         
     return maximatags, minimatags
+
 
 def mark_local_extrema_on_maps(cone_vectors, thetalist, philist, roughnesses=[], \
                                 roumap=[], neighbour_n=8,show_plot=True):  
