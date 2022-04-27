@@ -1,0 +1,12 @@
+<div class="responsive">
+  <div class="gallery">
+    <a target="_blank"
+       href="/Users/yi10/Desktop/Research/Projects/P-HP3D-workspace/data-temp/compiled_hp3d_report_elements/hp3d/2021-09-22-cell11/peripheral_and_internal.gif">
+      <img src="/Users/yi10/Desktop/Research/Projects/P-HP3D-workspace/data-temp/compiled_hp3d_report_elements/hp3d/2021-09-22-cell11/peripheral_and_internal.gif"
+           alt="Cinque Terre"
+           width="600"
+           height="400">
+    </a>
+    <div class="desc">Add a description of the image here</div>
+  </div>
+</div>

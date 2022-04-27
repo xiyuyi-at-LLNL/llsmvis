@@ -1,0 +1,13 @@
+cd /p/lscratchh/yi10/hp3d
+
+for i in $(ls)
+do
+
+l=$(cat /g/g92/yi10/CroppingData/"$i"*fpath.txt)
+cd $l
+echo $l
+k="scp -r ./trimmed_stacks /p/lscratchh/yi10/hp3d/\$i/."
+echo $k
+eval $k
+
+done

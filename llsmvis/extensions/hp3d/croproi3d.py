@@ -28,8 +28,10 @@ def get_fpath(tpath, thead):
     return fp[0].split(' ')[1]
 
 
-def get_parser(tpath, thead):
-    fpath = get_fpath(tpath, thead)  # get the file path that is stored in the cropping output files.
+def get_parser(tpath=None, thead=None, fpath=None):
+    if fpath is None:
+        fpath = get_fpath(tpath, thead)  # get the file path that is stored in the cropping output files.
+
     pname = [i for i in os.listdir(fpath) if i.endswith('.parser')][0]  # get the file name of the parser.
     with open(os.path.join(fpath, pname), 'rb') as f:
         p = pickle.load(f)
@@ -51,13 +53,21 @@ def get_deskewed_tiff_list(tpath, thead):
     return sorted_tlist
 
 
-def get_trimmed_tiff_list(tpath, thead):
+def get_trimmed_tiff_list(thead, tpath=None, fpath=None):
     tlist = []
-    fpath = get_fpath(tpath, thead)  # get the file path that is stored in the cropping output files.
-    p = get_parser(tpath, thead)
+    if fpath is None:
+        fpath = get_fpath(tpath, thead)  # get the file path that is stored in the cropping output files.
+
+    if tpath is None:
+        p = get_parser(fpath=fpath, thead=thead)
+        
+    else:
+        p = get_parser(tpath, thead)
+
     for d in p.dict_tiffs:
         t = 'Trimmed_' + d['path of tiff'].split('/')[-1]
         tlist.append(os.path.join(fpath, 'trimmed_stacks', t))
+
     return tlist
 
 
