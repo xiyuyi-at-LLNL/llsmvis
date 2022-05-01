@@ -1,0 +1,113 @@
+{
+	"QCustomSlideMenu": [{
+		"name": "raw_img_widget",
+		"defaultSize": [{
+			"width": 0,
+			"height": "auto"
+		}],
+		"collapsedSize": [{
+			"width": 0,
+			"height": 0
+		}],
+		"expandedSize": [{
+			"width": 1024,
+			"height": 1024
+		}],
+		"toggleButton": [{
+			"buttonName": "raw_img_btn",
+			"icons": [{
+				"whenMenuIsCollapsed": ":/icons/icons/chevron-up.svg",
+				"whenMenuIsExpanded": ":/icons/icons/chevron-down.svg"
+			}]
+		}],
+		"menuTransitionAnimation": [{
+			"animationDuration": 500,
+			"animationEasingCurve": "Linear",
+			"whenCollapsing": [{
+				"animationDuration": 100,
+				"animationEasingCurve": "Linear"
+			}],
+			"whenExpanding": [{
+				"animationDuration": 100,
+				"animationEasingCurve": "Linear"
+			}]
+		}],
+		"menuContainerStyle": [{
+			"whenMenuIsCollapsed": [
+				"border: 2px solid transparent"
+			],
+			"whenMenuIsExpanded": [
+				"border: 2px solid rgb(65, 0, 100); background-color: rgb(240, 240, 240)"
+			]
+		}],
+		"floatPosition": [
+			{
+				"relativeTo": "main_body_contents",
+				"position": "center-right",
+				"shadow":[
+					{
+						"color": "#000",
+						"blurRadius": 50,
+						"xOffset": 0,
+						"yOffset": 0
+					}
+				]
+			}
+		]
+	},{
+		"name": "compare_samples",
+		"defaultSize": [{
+			"width": 0,
+			"height": "auto"
+		}],
+		"collapsedSize": [{
+			"width": 0,
+			"height": 0
+		}],
+		"expandedSize": [{
+			"width": 1000,
+			"height": "auto"
+		}],
+		"toggleButton": [{
+			"buttonName": "two_columns",
+			"icons": [{
+				"whenMenuIsCollapsed": ":/icons/icons/chevrons-up.svg",
+				"whenMenuIsExpanded": ":/icons/icons/chevrons-down.svg"
+			}]
+		}],
+		"menuTransitionAnimation": [{
+			"animationDuration": 500,
+			"animationEasingCurve": "Linear",
+			"whenCollapsing": [{
+				"animationDuration": 100,
+				"animationEasingCurve": "Linear"
+			}],
+			"whenExpanding": [{
+				"animationDuration": 100,
+				"animationEasingCurve": "OutInBack"
+			}]
+		}],
+		"menuContainerStyle": [{
+			"whenMenuIsCollapsed": [
+				"border: 2px solid transparent"
+			],
+			"whenMenuIsExpanded": [
+				"border: 2px solid rgb(100, 100, 100); background-color: rgb(13, 0, 20)"
+			]
+		}],
+		"floatPosition": [
+			{
+				"relativeTo": "main_body_contents",
+				"position": "center-right",
+				"shadow":[
+					{
+						"color": "#000",
+						"blurRadius": 0,
+						"xOffset": 0,
+						"yOffset": 0
+					}
+				]
+			}
+		]
+	}]
+}
