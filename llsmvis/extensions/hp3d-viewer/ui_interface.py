@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfaceDZhOss.ui'
+## Form generated from reading UI file 'interfacevAHnHB.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -98,7 +98,7 @@ class Ui_MainWindow(object):
         self.toolBox.setLineWidth(2)
         self.page = QWidget()
         self.page.setObjectName(u"page")
-        self.page.setGeometry(QRect(0, 0, 340, 425))
+        self.page.setGeometry(QRect(0, 0, 292, 425))
         self.page.setStyleSheet(u"")
         self.verticalLayout_5 = QVBoxLayout(self.page)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
@@ -144,7 +144,7 @@ class Ui_MainWindow(object):
         self.toolBox.addItem(self.page, icon, u"Directory list")
         self.page_3 = QWidget()
         self.page_3.setObjectName(u"page_3")
-        self.page_3.setGeometry(QRect(0, 0, 340, 425))
+        self.page_3.setGeometry(QRect(0, 0, 292, 425))
         self.verticalLayout_6 = QVBoxLayout(self.page_3)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.frame_12 = QFrame(self.page_3)
@@ -247,7 +247,7 @@ class Ui_MainWindow(object):
         self.toolBox.addItem(self.page_3, icon4, u"Options for comparison")
         self.page_2 = QWidget()
         self.page_2.setObjectName(u"page_2")
-        self.page_2.setGeometry(QRect(0, 0, 340, 425))
+        self.page_2.setGeometry(QRect(0, 0, 292, 425))
         self.verticalLayout_7 = QVBoxLayout(self.page_2)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
@@ -488,14 +488,14 @@ class Ui_MainWindow(object):
 
         self.compare_samples = QCustomSlideMenu(self.main_body_contents)
         self.compare_samples.setObjectName(u"compare_samples")
-        self.compare_samples.setMaximumSize(QSize(10, 16777215))
+        self.compare_samples.setMaximumSize(QSize(16777215, 16777215))
         self.horizontalLayout_17 = QHBoxLayout(self.compare_samples)
         self.horizontalLayout_17.setSpacing(0)
         self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
         self.horizontalLayout_17.setContentsMargins(0, 0, 0, 0)
         self.sample1 = QListWidget(self.compare_samples)
         self.sample1.setObjectName(u"sample1")
-        self.sample1.setMaximumSize(QSize(10, 16777215))
+        self.sample1.setMaximumSize(QSize(16777215, 16777215))
 
         self.horizontalLayout_17.addWidget(self.sample1)
 

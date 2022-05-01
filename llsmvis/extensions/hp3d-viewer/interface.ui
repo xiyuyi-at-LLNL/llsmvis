@@ -209,7 +209,7 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>340</width>
+                  <width>292</width>
                   <height>425</height>
                  </rect>
                 </property>
@@ -305,7 +305,7 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>340</width>
+                  <width>292</width>
                   <height>425</height>
                  </rect>
                 </property>
@@ -482,7 +482,7 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>340</width>
+                  <width>292</width>
                   <height>425</height>
                  </rect>
                 </property>
@@ -1014,7 +1014,7 @@
            <widget class="QCustomSlideMenu" name="compare_samples" native="true">
             <property name="maximumSize">
              <size>
-              <width>10</width>
+              <width>16777215</width>
               <height>16777215</height>
              </size>
             </property>
@@ -1038,7 +1038,7 @@
               <widget class="QListWidget" name="sample1">
                <property name="maximumSize">
                 <size>
-                 <width>10</width>
+                 <width>16777215</width>
                  <height>16777215</height>
                 </size>
                </property>
