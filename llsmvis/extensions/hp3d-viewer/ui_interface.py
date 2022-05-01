@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfacegHPMxz.ui'
+## Form generated from reading UI file 'interfaceDZhOss.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -20,7 +20,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(853, 626)
+        MainWindow.resize(889, 626)
         MainWindow.setStyleSheet(u"background-color: rgb(13, 0, 20);")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
@@ -98,7 +98,7 @@ class Ui_MainWindow(object):
         self.toolBox.setLineWidth(2)
         self.page = QWidget()
         self.page.setObjectName(u"page")
-        self.page.setGeometry(QRect(0, 0, 292, 425))
+        self.page.setGeometry(QRect(0, 0, 340, 425))
         self.page.setStyleSheet(u"")
         self.verticalLayout_5 = QVBoxLayout(self.page)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
@@ -144,85 +144,121 @@ class Ui_MainWindow(object):
         self.toolBox.addItem(self.page, icon, u"Directory list")
         self.page_3 = QWidget()
         self.page_3.setObjectName(u"page_3")
-        self.page_3.setGeometry(QRect(0, 0, 292, 425))
-        self.verticalLayout_2 = QVBoxLayout(self.page_3)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.page_3.setGeometry(QRect(0, 0, 340, 425))
+        self.verticalLayout_6 = QVBoxLayout(self.page_3)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.frame_12 = QFrame(self.page_3)
         self.frame_12.setObjectName(u"frame_12")
+        sizePolicy.setHeightForWidth(self.frame_12.sizePolicy().hasHeightForWidth())
+        self.frame_12.setSizePolicy(sizePolicy)
         self.frame_12.setFrameShape(QFrame.StyledPanel)
         self.frame_12.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_6 = QVBoxLayout(self.frame_12)
-        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.checkBox = QCheckBox(self.frame_12)
-        self.checkBox.setObjectName(u"checkBox")
+        self.verticalLayout_2 = QVBoxLayout(self.frame_12)
+        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.simp = QCheckBox(self.frame_12)
+        self.simp.setObjectName(u"simp")
 
-        self.verticalLayout_6.addWidget(self.checkBox)
+        self.verticalLayout_2.addWidget(self.simp)
 
         self.lb2sp = QCheckBox(self.frame_12)
         self.lb2sp.setObjectName(u"lb2sp")
 
-        self.verticalLayout_6.addWidget(self.lb2sp)
+        self.verticalLayout_2.addWidget(self.lb2sp)
 
         self.sp2ub = QCheckBox(self.frame_12)
         self.sp2ub.setObjectName(u"sp2ub")
 
-        self.verticalLayout_6.addWidget(self.sp2ub)
+        self.verticalLayout_2.addWidget(self.sp2ub)
 
         self.peri2sp = QCheckBox(self.frame_12)
         self.peri2sp.setObjectName(u"peri2sp")
 
-        self.verticalLayout_6.addWidget(self.peri2sp)
+        self.verticalLayout_2.addWidget(self.peri2sp)
 
         self.gif = QCheckBox(self.frame_12)
         self.gif.setObjectName(u"gif")
 
-        self.verticalLayout_6.addWidget(self.gif)
+        self.verticalLayout_2.addWidget(self.gif)
 
         self.cropping = QCheckBox(self.frame_12)
         self.cropping.setObjectName(u"cropping")
 
-        self.verticalLayout_6.addWidget(self.cropping)
+        self.verticalLayout_2.addWidget(self.cropping)
 
         self.roughness = QCheckBox(self.frame_12)
         self.roughness.setObjectName(u"roughness")
 
-        self.verticalLayout_6.addWidget(self.roughness)
+        self.verticalLayout_2.addWidget(self.roughness)
 
         self.COM_traj = QCheckBox(self.frame_12)
         self.COM_traj.setObjectName(u"COM_traj")
 
-        self.verticalLayout_6.addWidget(self.COM_traj)
+        self.verticalLayout_2.addWidget(self.COM_traj)
 
         self.volume_traj = QCheckBox(self.frame_12)
         self.volume_traj.setObjectName(u"volume_traj")
 
-        self.verticalLayout_6.addWidget(self.volume_traj)
+        self.verticalLayout_2.addWidget(self.volume_traj)
 
         self.threshold = QCheckBox(self.frame_12)
         self.threshold.setObjectName(u"threshold")
 
-        self.verticalLayout_6.addWidget(self.threshold)
+        self.verticalLayout_2.addWidget(self.threshold)
 
 
-        self.verticalLayout_2.addWidget(self.frame_12)
+        self.verticalLayout_6.addWidget(self.frame_12)
 
+        self.frame_15 = QFrame(self.page_3)
+        self.frame_15.setObjectName(u"frame_15")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.frame_15.sizePolicy().hasHeightForWidth())
+        self.frame_15.setSizePolicy(sizePolicy1)
+        self.frame_15.setFrameShape(QFrame.StyledPanel)
+        self.frame_15.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_19 = QHBoxLayout(self.frame_15)
+        self.horizontalLayout_19.setSpacing(0)
+        self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
+        self.horizontalLayout_19.setContentsMargins(0, 0, 0, 0)
+        self.same_filetype_panel_btn = QPushButton(self.frame_15)
+        self.same_filetype_panel_btn.setObjectName(u"same_filetype_panel_btn")
         icon2 = QIcon()
-        icon2.addFile(u":/icons/icons/file-text.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.toolBox.addItem(self.page_3, icon2, u"Options for comparison")
+        icon2.addFile(u":/icons/icons/pause.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.same_filetype_panel_btn.setIcon(icon2)
+
+        self.horizontalLayout_19.addWidget(self.same_filetype_panel_btn)
+
+        self.compare_btn = QPushButton(self.frame_15)
+        self.compare_btn.setObjectName(u"compare_btn")
+        icon3 = QIcon()
+        icon3.addFile(u":/icons/icons/sliders.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.compare_btn.setIcon(icon3)
+
+        self.horizontalLayout_19.addWidget(self.compare_btn, 0, Qt.AlignBottom)
+
+
+        self.verticalLayout_6.addWidget(self.frame_15, 0, Qt.AlignBottom)
+
+        icon4 = QIcon()
+        icon4.addFile(u":/icons/icons/file-text.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.toolBox.addItem(self.page_3, icon4, u"Options for comparison")
         self.page_2 = QWidget()
         self.page_2.setObjectName(u"page_2")
-        self.page_2.setGeometry(QRect(0, 0, 292, 425))
-        self.gridLayout = QGridLayout(self.page_2)
-        self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.page_2.setGeometry(QRect(0, 0, 340, 425))
+        self.verticalLayout_7 = QVBoxLayout(self.page_2)
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.tableWidget = QTableWidget(self.page_2)
         self.tableWidget.setObjectName(u"tableWidget")
 
-        self.gridLayout.addWidget(self.tableWidget, 0, 0, 1, 1)
+        self.verticalLayout_7.addWidget(self.tableWidget)
 
-        icon3 = QIcon()
-        icon3.addFile(u":/icons/icons/info.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.toolBox.addItem(self.page_2, icon3, u"Info")
+        icon5 = QIcon()
+        icon5.addFile(u":/icons/icons/info.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.toolBox.addItem(self.page_2, icon5, u"Info")
 
         self.horizontalLayout_10.addWidget(self.toolBox)
 
@@ -239,10 +275,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.exit_button = QPushButton(self.frame_10)
         self.exit_button.setObjectName(u"exit_button")
+        font1 = QFont()
+        font1.setPointSize(10)
+        self.exit_button.setFont(font1)
         self.exit_button.setStyleSheet(u"color: rgb(255, 255, 255);")
-        icon4 = QIcon()
-        icon4.addFile(u":/icons/icons/external-link.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.exit_button.setIcon(icon4)
+        icon6 = QIcon()
+        icon6.addFile(u":/icons/icons/external-link.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.exit_button.setIcon(icon6)
         self.exit_button.setIconSize(QSize(32, 23))
 
         self.horizontalLayout_8.addWidget(self.exit_button)
@@ -284,18 +323,22 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.open_close_side_bar_btn = QPushButton(self.frame_6)
         self.open_close_side_bar_btn.setObjectName(u"open_close_side_bar_btn")
-        icon5 = QIcon()
-        icon5.addFile(u":/icons/icons/align-left.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.open_close_side_bar_btn.setIcon(icon5)
+        self.open_close_side_bar_btn.setFont(font1)
+        self.open_close_side_bar_btn.setStyleSheet(u"color: rgb(255, 255, 255);")
+        icon7 = QIcon()
+        icon7.addFile(u":/icons/icons/align-left.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.open_close_side_bar_btn.setIcon(icon7)
         self.open_close_side_bar_btn.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_6.addWidget(self.open_close_side_bar_btn, 0, Qt.AlignLeft)
 
         self.home = QPushButton(self.frame_6)
         self.home.setObjectName(u"home")
-        icon6 = QIcon()
-        icon6.addFile(u":/icons/icons/home.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.home.setIcon(icon6)
+        self.home.setFont(font1)
+        self.home.setStyleSheet(u"color: rgb(255, 255, 255);")
+        icon8 = QIcon()
+        icon8.addFile(u":/icons/icons/home.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.home.setIcon(icon8)
         self.home.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_6.addWidget(self.home)
@@ -312,11 +355,11 @@ class Ui_MainWindow(object):
 
         self.frame_3 = QFrame(self.header_frame)
         self.frame_3.setObjectName(u"frame_3")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.frame_3.sizePolicy().hasHeightForWidth())
-        self.frame_3.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.frame_3.sizePolicy().hasHeightForWidth())
+        self.frame_3.setSizePolicy(sizePolicy2)
         self.frame_3.setMaximumSize(QSize(16777215, 16777215))
         self.frame_3.setFrameShape(QFrame.StyledPanel)
         self.frame_3.setFrameShadow(QFrame.Raised)
@@ -329,11 +372,8 @@ class Ui_MainWindow(object):
 
         self.frame_2 = QFrame(self.header_frame)
         self.frame_2.setObjectName(u"frame_2")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.frame_2.sizePolicy().hasHeightForWidth())
-        self.frame_2.setSizePolicy(sizePolicy2)
+        sizePolicy1.setHeightForWidth(self.frame_2.sizePolicy().hasHeightForWidth())
+        self.frame_2.setSizePolicy(sizePolicy1)
         self.frame_2.setFrameShape(QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_11 = QHBoxLayout(self.frame_2)
@@ -342,20 +382,22 @@ class Ui_MainWindow(object):
         self.horizontalLayout_11.setContentsMargins(0, 0, 50, 0)
         self.raw_img_btn = QPushButton(self.frame_2)
         self.raw_img_btn.setObjectName(u"raw_img_btn")
+        self.raw_img_btn.setFont(font1)
         self.raw_img_btn.setStyleSheet(u"color: rgb(255, 255, 255);")
-        icon7 = QIcon()
-        icon7.addFile(u":/icons/icons/chevron-down.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.raw_img_btn.setIcon(icon7)
+        icon9 = QIcon()
+        icon9.addFile(u":/icons/icons/chevron-down.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.raw_img_btn.setIcon(icon9)
         self.raw_img_btn.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_11.addWidget(self.raw_img_btn)
 
         self.two_columns = QPushButton(self.frame_2)
         self.two_columns.setObjectName(u"two_columns")
+        self.two_columns.setFont(font1)
         self.two_columns.setStyleSheet(u"color: rgb(255, 255, 255);")
-        icon8 = QIcon()
-        icon8.addFile(u":/icons/icons/chevrons-down.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.two_columns.setIcon(icon8)
+        icon10 = QIcon()
+        icon10.addFile(u":/icons/icons/chevrons-down.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.two_columns.setIcon(icon10)
         self.two_columns.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_11.addWidget(self.two_columns)
@@ -373,25 +415,25 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.minimize_window_button = QPushButton(self.frame)
         self.minimize_window_button.setObjectName(u"minimize_window_button")
-        icon9 = QIcon()
-        icon9.addFile(u":/icons/icons/arrow-down-left.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.minimize_window_button.setIcon(icon9)
+        icon11 = QIcon()
+        icon11.addFile(u":/icons/icons/arrow-down-left.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.minimize_window_button.setIcon(icon11)
 
         self.horizontalLayout_5.addWidget(self.minimize_window_button, 0, Qt.AlignRight|Qt.AlignTop)
 
         self.restore_window_button = QPushButton(self.frame)
         self.restore_window_button.setObjectName(u"restore_window_button")
-        icon10 = QIcon()
-        icon10.addFile(u":/icons/icons/maximize-2.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.restore_window_button.setIcon(icon10)
+        icon12 = QIcon()
+        icon12.addFile(u":/icons/icons/maximize-2.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.restore_window_button.setIcon(icon12)
 
         self.horizontalLayout_5.addWidget(self.restore_window_button, 0, Qt.AlignRight|Qt.AlignTop)
 
         self.close_window_button = QPushButton(self.frame)
         self.close_window_button.setObjectName(u"close_window_button")
-        icon11 = QIcon()
-        icon11.addFile(u":/icons/icons/x.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.close_window_button.setIcon(icon11)
+        icon13 = QIcon()
+        icon13.addFile(u":/icons/icons/x.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.close_window_button.setIcon(icon13)
 
         self.horizontalLayout_5.addWidget(self.close_window_button, 0, Qt.AlignRight|Qt.AlignTop)
 
@@ -411,30 +453,49 @@ class Ui_MainWindow(object):
         self.horizontalLayout_13 = QHBoxLayout(self.main_body_contents)
         self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
         self.horizontalLayout_13.setContentsMargins(0, 10, 0, 5)
-        self.thumbnail_Widget = QWidget(self.main_body_contents)
-        self.thumbnail_Widget.setObjectName(u"thumbnail_Widget")
-        self.thumbnail_Widget.setMaximumSize(QSize(16777215, 16777215))
-        self.horizontalLayout_15 = QHBoxLayout(self.thumbnail_Widget)
+        self.sameType_widget = QCustomSlideMenu(self.main_body_contents)
+        self.sameType_widget.setObjectName(u"sameType_widget")
+        self.sameType_widget.setMaximumSize(QSize(100, 16777215))
+        self.horizontalLayout_14 = QHBoxLayout(self.sameType_widget)
+        self.horizontalLayout_14.setSpacing(0)
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.horizontalLayout_14.setContentsMargins(0, 0, 0, 0)
+        self.sameType_list = QListWidget(self.sameType_widget)
+        self.sameType_list.setObjectName(u"sameType_list")
+        self.sameType_list.setMaximumSize(QSize(16777215, 16777215))
+        self.sameType_list.setStyleSheet(u"border-color: rgb(240, 240, 240);")
+
+        self.horizontalLayout_14.addWidget(self.sameType_list)
+
+
+        self.horizontalLayout_13.addWidget(self.sameType_widget)
+
+        self.thumbnail_widget = QWidget(self.main_body_contents)
+        self.thumbnail_widget.setObjectName(u"thumbnail_widget")
+        self.thumbnail_widget.setMaximumSize(QSize(16777215, 16777215))
+        self.horizontalLayout_15 = QHBoxLayout(self.thumbnail_widget)
         self.horizontalLayout_15.setSpacing(0)
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
         self.horizontalLayout_15.setContentsMargins(0, 0, 0, 0)
-        self.thumbnail = QListWidget(self.thumbnail_Widget)
+        self.thumbnail = QListWidget(self.thumbnail_widget)
         self.thumbnail.setObjectName(u"thumbnail")
         self.thumbnail.setMaximumSize(QSize(16777215, 16777215))
 
         self.horizontalLayout_15.addWidget(self.thumbnail)
 
 
-        self.horizontalLayout_13.addWidget(self.thumbnail_Widget)
+        self.horizontalLayout_13.addWidget(self.thumbnail_widget)
 
         self.compare_samples = QCustomSlideMenu(self.main_body_contents)
         self.compare_samples.setObjectName(u"compare_samples")
+        self.compare_samples.setMaximumSize(QSize(10, 16777215))
         self.horizontalLayout_17 = QHBoxLayout(self.compare_samples)
         self.horizontalLayout_17.setSpacing(0)
         self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
         self.horizontalLayout_17.setContentsMargins(0, 0, 0, 0)
         self.sample1 = QListWidget(self.compare_samples)
         self.sample1.setObjectName(u"sample1")
+        self.sample1.setMaximumSize(QSize(10, 16777215))
 
         self.horizontalLayout_17.addWidget(self.sample1)
 
@@ -499,9 +560,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
         self.about_btn = QPushButton(self.frame_5)
         self.about_btn.setObjectName(u"about_btn")
-        icon12 = QIcon()
-        icon12.addFile(u":/icons/icons/help-circle.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.about_btn.setIcon(icon12)
+        self.about_btn.setFont(font1)
+        self.about_btn.setStyleSheet(u"color: rgb(255, 255, 255);")
+        icon14 = QIcon()
+        icon14.addFile(u":/icons/icons/help-circle.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.about_btn.setIcon(icon14)
         self.about_btn.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_9.addWidget(self.about_btn)
@@ -528,7 +591,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.toolBox.setCurrentIndex(1)
+        self.toolBox.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -548,7 +611,7 @@ class Ui_MainWindow(object):
         self.comparison.setText(QCoreApplication.translate("MainWindow", u"Comparison", None))
         self.clear_btn.setText(QCoreApplication.translate("MainWindow", u"Clear", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page), QCoreApplication.translate("MainWindow", u"Directory list", None))
-        self.checkBox.setText(QCoreApplication.translate("MainWindow", u"simp", None))
+        self.simp.setText(QCoreApplication.translate("MainWindow", u"simp", None))
         self.lb2sp.setText(QCoreApplication.translate("MainWindow", u"lb2sp", None))
         self.sp2ub.setText(QCoreApplication.translate("MainWindow", u"sp2ub", None))
         self.peri2sp.setText(QCoreApplication.translate("MainWindow", u"peri2sp", None))
@@ -558,18 +621,20 @@ class Ui_MainWindow(object):
         self.COM_traj.setText(QCoreApplication.translate("MainWindow", u"COM trajectory", None))
         self.volume_traj.setText(QCoreApplication.translate("MainWindow", u"Volume Center trajectory", None))
         self.threshold.setText(QCoreApplication.translate("MainWindow", u"threshold", None))
+        self.same_filetype_panel_btn.setText(QCoreApplication.translate("MainWindow", u"Same filetype panel", None))
+        self.compare_btn.setText(QCoreApplication.translate("MainWindow", u"Compare", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_3), QCoreApplication.translate("MainWindow", u"Options for comparison", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_2), QCoreApplication.translate("MainWindow", u"Info", None))
         self.exit_button.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
-        self.open_close_side_bar_btn.setText("")
-        self.home.setText("")
-        self.raw_img_btn.setText("")
-        self.two_columns.setText("")
+        self.open_close_side_bar_btn.setText(QCoreApplication.translate("MainWindow", u"Left Menu", None))
+        self.home.setText(QCoreApplication.translate("MainWindow", u"Home", None))
+        self.raw_img_btn.setText(QCoreApplication.translate("MainWindow", u"Raw Image", None))
+        self.two_columns.setText(QCoreApplication.translate("MainWindow", u"Comparison", None))
         self.minimize_window_button.setText("")
         self.restore_window_button.setText("")
         self.close_window_button.setText("")
         self.plot_img.setText("")
         self.label.setText(QCoreApplication.translate("MainWindow", u"Yuliang Zhang & Xiyu Yi  @ LLNL. Version 1.0", None))
-        self.about_btn.setText("")
+        self.about_btn.setText(QCoreApplication.translate("MainWindow", u"Help", None))
     # retranslateUi
 

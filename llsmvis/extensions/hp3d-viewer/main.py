@@ -1,6 +1,6 @@
 ########################################################################
 # LLSM Viewer DESIGN CODE
-# Yuliang Zhang @ LLNL. April 29, 2020
+# Yuliang Zhang & Xiyu Yi @ LLNL. April 29, 2020
 # Adapted from the template at github https://github.com/KhamisiKibet/QT-PyQt-PySide-Custom-Widgets
 #
 ########################################################################
@@ -13,7 +13,6 @@ from enum import auto
 from fileinput import filename
 import sys
 import os
-import numpy as np
 from PySide2 import *
 from PyQt5.QtWidgets import QFileDialog
 import glob
@@ -69,6 +68,7 @@ class MainWindow(QMainWindow):
         self.ui.close_window_button.clicked.connect(lambda: self.close())
         self.ui.exit_button.clicked.connect(lambda: self.close())
         self.ui.comparison.setChecked(False)
+        self.ui.gif.setChecked(False)
 
         #######################################################################
         #Restore/Maximize window
@@ -127,7 +127,17 @@ class MainWindow(QMainWindow):
         # Reset multiple selection
         #######################################################################
         self.ui.clear_btn.clicked.connect(lambda: self.clear())
-        
+
+        #######################################################################
+        # Plot sample type of file
+        #######################################################################        
+        self.ui.compare_btn.clicked.connect(lambda: self.gifTotal())
+        #######################################################################
+        # Plot raw gif
+        #######################################################################       
+        self.ui.sameType_list.itemClicked.connect(lambda: self.showRawGif())
+        self.ui.sameType_list.itemSelectionChanged.connect(lambda: self.showRawGif())
+
         self.ui.about_btn.clicked.connect(lambda: self.messgaeBox())
         
         self.show()
@@ -269,6 +279,7 @@ class MainWindow(QMainWindow):
     ####################################################################       
     def showRawImage(self):
         self.ui.plot_img.clear()
+        self.ui.plot_img.setStyleSheet('background-color: rgb(240, 240, 240)') 
         filename=self.ui.thumbnail.currentItem().text()
         fext=filename[-3:]
         folder=self.ui.dir_listWidget.currentItem().text()
@@ -297,6 +308,39 @@ class MainWindow(QMainWindow):
         else:
             self.ui.dir_listWidget.setSelectionMode(QtWidgets.QListWidget.SingleSelection)
             print(self.ui.dir_listWidget.selectedItems(0))
+
+    def gifTotal(self):
+        self.ui.sameType_list.clear()
+        self.ui.sameType_list.setViewMode(QtWidgets.QListWidget.IconMode)
+        self.ui.sameType_list.setIconSize(QtCore.QSize(256,256))
+        self.ui.sameType_list.setSpacing(100)
+        # self.ui.thumbnail.setResizeMode(QtWidgets.QListWidget.Adjust)
+        self.ui.sameType_list.setStyleSheet('font-size:18px')
+        self.ui.sameType_list.setStyleSheet('color: rgb(0, 255, 255)')  
+        if self.ui.gif.isChecked() == False:
+            print('Display all images')
+        else:
+            folderList=os.listdir(folderpath)
+            for i in range(len(folderList)):
+                folders=folderList[i]
+                path=os.path.join(folderpath,folders)
+                # global gif_fileList
+                gif_fileList=glob.glob(path+'\*.gif')
+                # fileNameList=os.listdir(path)
+                image_items = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir),fdir) for fdir in gif_fileList]
+                for image_item in image_items:
+                    self.ui.sameType_list.addItem(image_item)
+    ####################################################################
+    # Plot raw iamge data
+    ####################################################################       
+    def showRawGif(self):
+        self.ui.sample1.setStyleSheet('background-color: rgb(13, 0, 20)')  
+        self.ui.plot_img.clear()
+        path=self.ui.sameType_list.currentItem().text()
+        movie = QtGui.QMovie(path)
+        self.ui.plot_img.setMovie(movie)
+        movie.start()
+
 
     def messgaeBox(self):
         msgBox = QMessageBox()

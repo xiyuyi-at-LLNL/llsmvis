@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>853</width>
+    <width>889</width>
     <height>626</height>
    </rect>
   </property>
@@ -202,14 +202,14 @@
                 <number>2</number>
                </property>
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <widget class="QWidget" name="page">
                 <property name="geometry">
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>292</width>
+                  <width>340</width>
                   <height>425</height>
                  </rect>
                 </property>
@@ -305,7 +305,7 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>292</width>
+                  <width>340</width>
                   <height>425</height>
                  </rect>
                 </property>
@@ -316,18 +316,39 @@
                 <attribute name="label">
                  <string>Options for comparison</string>
                 </attribute>
-                <layout class="QVBoxLayout" name="verticalLayout_2">
+                <layout class="QVBoxLayout" name="verticalLayout_6">
                  <item>
                   <widget class="QFrame" name="frame_12">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
                    <property name="frameShape">
                     <enum>QFrame::StyledPanel</enum>
                    </property>
                    <property name="frameShadow">
                     <enum>QFrame::Raised</enum>
                    </property>
-                   <layout class="QVBoxLayout" name="verticalLayout_6">
+                   <layout class="QVBoxLayout" name="verticalLayout_2">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
                     <item>
-                     <widget class="QCheckBox" name="checkBox">
+                     <widget class="QCheckBox" name="simp">
                       <property name="text">
                        <string>simp</string>
                       </property>
@@ -399,6 +420,61 @@
                    </layout>
                   </widget>
                  </item>
+                 <item alignment="Qt::AlignBottom">
+                  <widget class="QFrame" name="frame_15">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_19">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QPushButton" name="same_filetype_panel_btn">
+                      <property name="text">
+                       <string>Same filetype panel</string>
+                      </property>
+                      <property name="icon">
+                       <iconset resource="icons.qrc">
+                        <normaloff>:/icons/icons/pause.svg</normaloff>:/icons/icons/pause.svg</iconset>
+                      </property>
+                     </widget>
+                    </item>
+                    <item alignment="Qt::AlignBottom">
+                     <widget class="QPushButton" name="compare_btn">
+                      <property name="text">
+                       <string>Compare</string>
+                      </property>
+                      <property name="icon">
+                       <iconset resource="icons.qrc">
+                        <normaloff>:/icons/icons/sliders.svg</normaloff>:/icons/icons/sliders.svg</iconset>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
                 </layout>
                </widget>
                <widget class="QWidget" name="page_2">
@@ -406,7 +482,7 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>292</width>
+                  <width>340</width>
                   <height>425</height>
                  </rect>
                 </property>
@@ -417,7 +493,7 @@
                 <attribute name="label">
                  <string>Info</string>
                 </attribute>
-                <layout class="QGridLayout" name="gridLayout">
+                <layout class="QVBoxLayout" name="verticalLayout_7">
                  <property name="leftMargin">
                   <number>0</number>
                  </property>
@@ -430,7 +506,7 @@
                  <property name="bottomMargin">
                   <number>0</number>
                  </property>
-                 <item row="0" column="0">
+                 <item>
                   <widget class="QTableWidget" name="tableWidget"/>
                  </item>
                 </layout>
@@ -466,6 +542,11 @@
              </property>
              <item>
               <widget class="QPushButton" name="exit_button">
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
                <property name="styleSheet">
                 <string notr="true">color: rgb(255, 255, 255);</string>
                </property>
@@ -576,8 +657,16 @@
              </property>
              <item alignment="Qt::AlignLeft">
               <widget class="QPushButton" name="open_close_side_bar_btn">
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);</string>
+               </property>
                <property name="text">
-                <string/>
+                <string>Left Menu</string>
                </property>
                <property name="icon">
                 <iconset resource="icons.qrc">
@@ -593,8 +682,16 @@
              </item>
              <item>
               <widget class="QPushButton" name="home">
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);</string>
+               </property>
                <property name="text">
-                <string/>
+                <string>Home</string>
                </property>
                <property name="icon">
                 <iconset resource="icons.qrc">
@@ -692,11 +789,16 @@
              </property>
              <item>
               <widget class="QPushButton" name="raw_img_btn">
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
                <property name="styleSheet">
                 <string notr="true">color: rgb(255, 255, 255);</string>
                </property>
                <property name="text">
-                <string/>
+                <string>Raw Image</string>
                </property>
                <property name="icon">
                 <iconset resource="icons.qrc">
@@ -712,11 +814,16 @@
              </item>
              <item>
               <widget class="QPushButton" name="two_columns">
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
                <property name="styleSheet">
                 <string notr="true">color: rgb(255, 255, 255);</string>
                </property>
                <property name="text">
-                <string/>
+                <string>Comparison</string>
                </property>
                <property name="icon">
                 <iconset resource="icons.qrc">
@@ -827,7 +934,47 @@
            <number>5</number>
           </property>
           <item>
-           <widget class="QWidget" name="thumbnail_Widget" native="true">
+           <widget class="QCustomSlideMenu" name="sameType_widget" native="true">
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_14">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QListWidget" name="sameType_list">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">border-color: rgb(240, 240, 240);</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="thumbnail_widget" native="true">
             <property name="maximumSize">
              <size>
               <width>16777215</width>
@@ -865,6 +1012,12 @@
           </item>
           <item>
            <widget class="QCustomSlideMenu" name="compare_samples" native="true">
+            <property name="maximumSize">
+             <size>
+              <width>10</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <layout class="QHBoxLayout" name="horizontalLayout_17">
              <property name="spacing">
               <number>0</number>
@@ -882,7 +1035,14 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QListWidget" name="sample1"/>
+              <widget class="QListWidget" name="sample1">
+               <property name="maximumSize">
+                <size>
+                 <width>10</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
              </item>
              <item>
               <widget class="QListWidget" name="sample2"/>
@@ -1014,8 +1174,16 @@
              </property>
              <item>
               <widget class="QPushButton" name="about_btn">
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);</string>
+               </property>
                <property name="text">
-                <string/>
+                <string>Help</string>
                </property>
                <property name="icon">
                 <iconset resource="icons.qrc">
