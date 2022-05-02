@@ -1,5 +1,5 @@
 ########################################################################
-# LLSM Viewer DESIGN CODE
+# HP3D Viewer DESIGN CODE
 # Yuliang Zhang & Xiyu Yi @ LLNL. April 29, 2022
 # Adapted from the template at github https://github.com/KhamisiKibet/QT-PyQt-PySide-Custom-Widgets
 #
