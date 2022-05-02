@@ -15,6 +15,9 @@
 2. Create a virtual environment for llsmvis under folder llsmvis:	
    >> bash llsmvis-setup
 
+## Dataset
+The dataset is being uploaded to figshare (find it [here](https://figshare.com/articles/journal_contribution/Datasets_for_the_manuscript_titled_A_Tailored_Approach_to_Study_Legionella_Infection_Using_Lattice_Light_Sheet_Microscope_LLSM_/19694809?file=34982371)).
+
 ### Processing
 To process all the raw ata after an imaging session with multiple stacks and various imaging conditions.
 1. activate the llsmv conda environment 
