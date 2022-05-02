@@ -1,6 +1,6 @@
 ########################################################################
 # LLSM Viewer DESIGN CODE
-# Yuliang Zhang & Xiyu Yi @ LLNL. April 29, 2020
+# Yuliang Zhang & Xiyu Yi @ LLNL. April 29, 2022
 # Adapted from the template at github https://github.com/KhamisiKibet/QT-PyQt-PySide-Custom-Widgets
 #
 ########################################################################
@@ -19,6 +19,8 @@ import glob
 from PyQt5.QtCore import Qt
 
 from Custom_Widgets.Widgets import *
+
+from PIL import Image
 
 ########################################################################
 # IMPORT GUI FILE
@@ -140,6 +142,14 @@ class MainWindow(QMainWindow):
 
         self.ui.about_btn.clicked.connect(lambda: self.messgaeBox())
         
+
+        self.vs1 = self.ui.sample1.verticalScrollBar()
+        self.vs2 = self.ui.sample2.verticalScrollBar()
+
+        self.vs1.valueChanged.connect(self.move_scrollbar)
+        self.vs2.valueChanged.connect(self.move_scrollbar)
+
+
         self.show()
 
 
@@ -221,26 +231,28 @@ class MainWindow(QMainWindow):
         self.ui.sample2.clear()
         self.ui.plot_img.clear()
         self.ui.thumbnail.setViewMode(QtWidgets.QListWidget.IconMode)
-        self.ui.thumbnail.setIconSize(QtCore.QSize(256,256))
-        # self.ui.thumbnail.setResizeMode(QtWidgets.QListWidget.Adjust)
-        self.ui.thumbnail.setSpacing(100)
-        self.ui.thumbnail.setStyleSheet('font-size:18px')
-        self.ui.thumbnail.setStyleSheet('color: rgb(0, 255, 0)')
+        self.ui.thumbnail.setIconSize(QtCore.QSize(1024,256))
+        self.ui.thumbnail.setResizeMode(QtWidgets.QListWidget.Adjust)
+ 
+        self.ui.thumbnail.setSpacing(2)
+        self.ui.thumbnail.setStyleSheet('font-size:8px')
+        self.ui.thumbnail.setStyleSheet('color: rgb(0, 0, 0)')
 
         self.ui.sample1.setViewMode(QtWidgets.QListWidget.IconMode)
-        self.ui.sample1.setIconSize(QtCore.QSize(256,256))
-        self.ui.sample1.setSpacing(100)
-        # self.ui.thumbnail.setResizeMode(QtWidgets.QListWidget.Adjust)
+        self.ui.sample1.setIconSize(QtCore.QSize(1024,256))
+        self.ui.sample1.setSpacing(2)
+        self.ui.thumbnail.setResizeMode(QtWidgets.QListWidget.Adjust)
+        
         self.ui.sample1.setStyleSheet('font-size:18px')
-        self.ui.sample1.setStyleSheet('color: rgb(255, 255, 0)')  
+        self.ui.sample1.setStyleSheet('color: rgbrgb(0, 0, 0)')  
 
 
         self.ui.sample2.setViewMode(QtWidgets.QListWidget.IconMode)
-        self.ui.sample2.setIconSize(QtCore.QSize(256,256))
-        self.ui.sample2.setSpacing(100)
-        # self.ui.thumbnail.setResizeMode(QtWidgets.QListWidget.Adjust)
+        self.ui.sample2.setIconSize(QtCore.QSize(1024,256))
+        self.ui.sample2.setSpacing(2)
+        self.ui.thumbnail.setResizeMode(QtWidgets.QListWidget.Adjust)
         self.ui.sample2.setStyleSheet('font-size:18px')
-        self.ui.sample2.setStyleSheet('color: rgb(255, 255, 0)')
+        self.ui.sample2.setStyleSheet('color: rgbrgb(0, 0, 0)')
 
         items = self.ui.dir_listWidget.selectedItems()
         folders = []
@@ -253,9 +265,13 @@ class MainWindow(QMainWindow):
             fileList=glob.glob(path+'\*')
             fileNameList=os.listdir(path)
             image_items = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir),fn) for fdir,fn in zip(fileList,fileNameList)]
-            for image_item in image_items:
-                self.ui.thumbnail.addItem(image_item)
-                # print(self.ui.thumbnail.getIconSize())
+            # for image_item in image_items:
+            for image_item, i in zip(image_items, range(len(fileList))):
+                filename=fileList[i]
+                if filename[-3:] == 'png' or filename[-3:] == 'gif':
+                    image_item.setBackground(QtGui.QColor('#C0C0C0'))
+                    image_item.setTextAlignment(QtGui.Qt.AlignCenter)
+                    self.ui.thumbnail.addItem(image_item)
         elif len(folders) == 2:
             folder1=folders[0]
             path1=os.path.join(folderpath,folder1)
@@ -268,11 +284,12 @@ class MainWindow(QMainWindow):
             image_items1 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir1),fn1) for fdir1,fn1 in zip(fileList1,fileNameList1)]
             image_items2 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir2),fn2) for fdir2,fn2 in zip(fileList2,fileNameList2)]
             for image_item1 in image_items1:
-                self.ui.thumbnail.addItem(image_item1)
-            image_items1 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir1),fn1) for fdir1,fn1 in zip(fileList1,fileNameList1)]
-            for image_item1 in image_items1:
+                image_item1.setBackground(QtGui.QColor('#C0C0C0'))
+                image_item1.setTextAlignment(QtGui.Qt.AlignCenter)
                 self.ui.sample1.addItem(image_item1)
             for image_item2 in image_items2:
+                image_item2.setBackground(QtGui.QColor('#C0C0C0'))
+                image_item2.setTextAlignment(QtGui.Qt.AlignCenter)
                 self.ui.sample2.addItem(image_item2)
     ####################################################################
     # Plot raw iamge data
@@ -313,10 +330,10 @@ class MainWindow(QMainWindow):
         self.ui.sameType_list.clear()
         self.ui.sameType_list.setViewMode(QtWidgets.QListWidget.IconMode)
         self.ui.sameType_list.setIconSize(QtCore.QSize(256,256))
-        self.ui.sameType_list.setSpacing(100)
+        self.ui.sameType_list.setSpacing(1)
         # self.ui.thumbnail.setResizeMode(QtWidgets.QListWidget.Adjust)
         self.ui.sameType_list.setStyleSheet('font-size:18px')
-        self.ui.sameType_list.setStyleSheet('color: rgb(0, 255, 255)')  
+        self.ui.sameType_list.setStyleSheet('color: rgb(0, 0, 0)')  
         if self.ui.gif.isChecked() == False:
             print('Display all images')
         else:
@@ -324,23 +341,29 @@ class MainWindow(QMainWindow):
             for i in range(len(folderList)):
                 folders=folderList[i]
                 path=os.path.join(folderpath,folders)
-                # global gif_fileList
                 gif_fileList=glob.glob(path+'\*.gif')
-                # fileNameList=os.listdir(path)
                 image_items = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir),fdir) for fdir in gif_fileList]
                 for image_item in image_items:
+                    image_item.setBackground(QtGui.QColor('#C0C0C0'))
+                    image_item.setTextAlignment(QtGui.Qt.AlignCenter)
                     self.ui.sameType_list.addItem(image_item)
+
     ####################################################################
-    # Plot raw iamge data
+    # Plot raw gif data
     ####################################################################       
     def showRawGif(self):
-        self.ui.sample1.setStyleSheet('background-color: rgb(13, 0, 20)')  
+        self.ui.plot_img.setStyleSheet('background-color: rgb(13, 0, 20)')  
         self.ui.plot_img.clear()
         path=self.ui.sameType_list.currentItem().text()
         movie = QtGui.QMovie(path)
         self.ui.plot_img.setMovie(movie)
+        self.ui.plot_img.setAlignment(QtGui.Qt.AlignCenter)
         movie.start()
 
+
+    def move_scrollbar(self, value):
+        self.vs1.setValue(value)
+        self.vs2.setValue(value)
 
     def messgaeBox(self):
         msgBox = QMessageBox()
