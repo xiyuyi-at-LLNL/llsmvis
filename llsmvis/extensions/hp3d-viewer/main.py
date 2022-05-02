@@ -360,7 +360,9 @@ class MainWindow(QMainWindow):
         self.ui.plot_img.setAlignment(QtGui.Qt.AlignCenter)
         movie.start()
 
-
+    ######################################################################
+    # Vertical scrollbar synchronization. It will be useful for comparison
+    ######################################################################
     def move_scrollbar(self, value):
         self.vs1.setValue(value)
         self.vs2.setValue(value)
