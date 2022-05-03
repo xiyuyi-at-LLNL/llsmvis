@@ -202,14 +202,14 @@
                 <number>2</number>
                </property>
                <property name="currentIndex">
-                <number>0</number>
+                <number>1</number>
                </property>
                <widget class="QWidget" name="page">
                 <property name="geometry">
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>292</width>
+                  <width>335</width>
                   <height>425</height>
                  </rect>
                 </property>
@@ -305,7 +305,7 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>292</width>
+                  <width>335</width>
                   <height>425</height>
                  </rect>
                 </property>
@@ -348,73 +348,177 @@
                      <number>0</number>
                     </property>
                     <item>
-                     <widget class="QCheckBox" name="simp">
-                      <property name="text">
-                       <string>simp</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QCheckBox" name="lb2sp">
-                      <property name="text">
-                       <string>lb2sp</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QCheckBox" name="sp2ub">
-                      <property name="text">
-                       <string>sp2ub</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QCheckBox" name="peri2sp">
-                      <property name="text">
-                       <string>peri2sp</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QCheckBox" name="gif">
-                      <property name="text">
-                       <string>gif</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QCheckBox" name="cropping">
-                      <property name="text">
-                       <string>cropping</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QCheckBox" name="roughness">
-                      <property name="text">
-                       <string>roughness</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QCheckBox" name="COM_traj">
-                      <property name="text">
-                       <string>COM trajectory</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QCheckBox" name="volume_traj">
-                      <property name="text">
-                       <string>Volume Center trajectory</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QCheckBox" name="threshold">
-                      <property name="text">
-                       <string>threshold</string>
-                      </property>
+                     <widget class="QListWidget" name="same_type_name">
+                      <item>
+                       <property name="text">
+                        <string>check_mass_center_on_smip_XY.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>check_mass_center_on_smip_XZ.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>check_mass_center_on_smip_YZ.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_lb2sp_XY.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_lb2sp_XY_overlay.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_lb2sp_XZ.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_lb2sp_XZ_overlay.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_lb2sp_YZ.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_lb2sp_YZ_overlay.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_peri2sp_XY.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_peri2sp_XY_overlay.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_peri2sp_XZ.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_peri2sp_XZ_overlay.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_peri2sp_YZ.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_peri2sp_YZ_overlay.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_sp2ub_XY.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_sp2ub_XZ.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_sp2ub_XZ_overlay.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_sp2ub_YZ.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_sp2ub_YZ_overlay.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_before_cropping_XY.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_before_cropping_XY_overlay.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_before_cropping_XZ.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_before_cropping_XZ_overlay.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_before_cropping_YZ.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_before_cropping_YZ_overlay.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>internal.gif</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>mass_center_trajecotry.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>MyRep_data_specifics.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>peripheral.gif</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>peripheral_and_internal.gif</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>rouphness.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>thresholds.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>volume_center_trajectory.png</string>
+                       </property>
+                      </item>
                      </widget>
                     </item>
                    </layout>
@@ -453,22 +557,11 @@
                     <item>
                      <widget class="QPushButton" name="same_filetype_panel_btn">
                       <property name="text">
-                       <string>Same filetype panel</string>
+                       <string>Same filetype compare</string>
                       </property>
                       <property name="icon">
                        <iconset resource="icons.qrc">
                         <normaloff>:/icons/icons/pause.svg</normaloff>:/icons/icons/pause.svg</iconset>
-                      </property>
-                     </widget>
-                    </item>
-                    <item alignment="Qt::AlignBottom">
-                     <widget class="QPushButton" name="compare_btn">
-                      <property name="text">
-                       <string>Compare</string>
-                      </property>
-                      <property name="icon">
-                       <iconset resource="icons.qrc">
-                        <normaloff>:/icons/icons/sliders.svg</normaloff>:/icons/icons/sliders.svg</iconset>
                       </property>
                      </widget>
                     </item>
@@ -482,7 +575,7 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>292</width>
+                  <width>335</width>
                   <height>425</height>
                  </rect>
                 </property>
@@ -813,7 +906,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="two_columns">
+              <widget class="QPushButton" name="multi_columns">
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>
@@ -823,7 +916,7 @@
                 <string notr="true">color: rgb(255, 255, 255);</string>
                </property>
                <property name="text">
-                <string>Comparison</string>
+                <string>Multi column</string>
                </property>
                <property name="icon">
                 <iconset resource="icons.qrc">
@@ -1006,46 +1099,6 @@
                 </size>
                </property>
               </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCustomSlideMenu" name="compare_samples" native="true">
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_17">
-             <property name="spacing">
-              <number>0</number>
-             </property>
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QListWidget" name="sample1">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QListWidget" name="sample2"/>
              </item>
             </layout>
            </widget>

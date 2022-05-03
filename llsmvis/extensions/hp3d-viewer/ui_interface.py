@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfacevAHnHB.ui'
+## Form generated from reading UI file 'interfaceRuKVJZ.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -98,7 +98,7 @@ class Ui_MainWindow(object):
         self.toolBox.setLineWidth(2)
         self.page = QWidget()
         self.page.setObjectName(u"page")
-        self.page.setGeometry(QRect(0, 0, 292, 425))
+        self.page.setGeometry(QRect(0, 0, 335, 425))
         self.page.setStyleSheet(u"")
         self.verticalLayout_5 = QVBoxLayout(self.page)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
@@ -144,7 +144,7 @@ class Ui_MainWindow(object):
         self.toolBox.addItem(self.page, icon, u"Directory list")
         self.page_3 = QWidget()
         self.page_3.setObjectName(u"page_3")
-        self.page_3.setGeometry(QRect(0, 0, 292, 425))
+        self.page_3.setGeometry(QRect(0, 0, 335, 425))
         self.verticalLayout_6 = QVBoxLayout(self.page_3)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.frame_12 = QFrame(self.page_3)
@@ -157,55 +157,44 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.simp = QCheckBox(self.frame_12)
-        self.simp.setObjectName(u"simp")
+        self.same_type_name = QListWidget(self.frame_12)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        QListWidgetItem(self.same_type_name)
+        self.same_type_name.setObjectName(u"same_type_name")
 
-        self.verticalLayout_2.addWidget(self.simp)
-
-        self.lb2sp = QCheckBox(self.frame_12)
-        self.lb2sp.setObjectName(u"lb2sp")
-
-        self.verticalLayout_2.addWidget(self.lb2sp)
-
-        self.sp2ub = QCheckBox(self.frame_12)
-        self.sp2ub.setObjectName(u"sp2ub")
-
-        self.verticalLayout_2.addWidget(self.sp2ub)
-
-        self.peri2sp = QCheckBox(self.frame_12)
-        self.peri2sp.setObjectName(u"peri2sp")
-
-        self.verticalLayout_2.addWidget(self.peri2sp)
-
-        self.gif = QCheckBox(self.frame_12)
-        self.gif.setObjectName(u"gif")
-
-        self.verticalLayout_2.addWidget(self.gif)
-
-        self.cropping = QCheckBox(self.frame_12)
-        self.cropping.setObjectName(u"cropping")
-
-        self.verticalLayout_2.addWidget(self.cropping)
-
-        self.roughness = QCheckBox(self.frame_12)
-        self.roughness.setObjectName(u"roughness")
-
-        self.verticalLayout_2.addWidget(self.roughness)
-
-        self.COM_traj = QCheckBox(self.frame_12)
-        self.COM_traj.setObjectName(u"COM_traj")
-
-        self.verticalLayout_2.addWidget(self.COM_traj)
-
-        self.volume_traj = QCheckBox(self.frame_12)
-        self.volume_traj.setObjectName(u"volume_traj")
-
-        self.verticalLayout_2.addWidget(self.volume_traj)
-
-        self.threshold = QCheckBox(self.frame_12)
-        self.threshold.setObjectName(u"threshold")
-
-        self.verticalLayout_2.addWidget(self.threshold)
+        self.verticalLayout_2.addWidget(self.same_type_name)
 
 
         self.verticalLayout_6.addWidget(self.frame_12)
@@ -231,23 +220,15 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_19.addWidget(self.same_filetype_panel_btn)
 
-        self.compare_btn = QPushButton(self.frame_15)
-        self.compare_btn.setObjectName(u"compare_btn")
-        icon3 = QIcon()
-        icon3.addFile(u":/icons/icons/sliders.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.compare_btn.setIcon(icon3)
-
-        self.horizontalLayout_19.addWidget(self.compare_btn, 0, Qt.AlignBottom)
-
 
         self.verticalLayout_6.addWidget(self.frame_15, 0, Qt.AlignBottom)
 
-        icon4 = QIcon()
-        icon4.addFile(u":/icons/icons/file-text.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.toolBox.addItem(self.page_3, icon4, u"Options for comparison")
+        icon3 = QIcon()
+        icon3.addFile(u":/icons/icons/file-text.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.toolBox.addItem(self.page_3, icon3, u"Options for comparison")
         self.page_2 = QWidget()
         self.page_2.setObjectName(u"page_2")
-        self.page_2.setGeometry(QRect(0, 0, 292, 425))
+        self.page_2.setGeometry(QRect(0, 0, 335, 425))
         self.verticalLayout_7 = QVBoxLayout(self.page_2)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
@@ -256,9 +237,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_7.addWidget(self.tableWidget)
 
-        icon5 = QIcon()
-        icon5.addFile(u":/icons/icons/info.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.toolBox.addItem(self.page_2, icon5, u"Info")
+        icon4 = QIcon()
+        icon4.addFile(u":/icons/icons/info.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.toolBox.addItem(self.page_2, icon4, u"Info")
 
         self.horizontalLayout_10.addWidget(self.toolBox)
 
@@ -279,9 +260,9 @@ class Ui_MainWindow(object):
         font1.setPointSize(10)
         self.exit_button.setFont(font1)
         self.exit_button.setStyleSheet(u"color: rgb(255, 255, 255);")
-        icon6 = QIcon()
-        icon6.addFile(u":/icons/icons/external-link.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.exit_button.setIcon(icon6)
+        icon5 = QIcon()
+        icon5.addFile(u":/icons/icons/external-link.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.exit_button.setIcon(icon5)
         self.exit_button.setIconSize(QSize(32, 23))
 
         self.horizontalLayout_8.addWidget(self.exit_button)
@@ -325,9 +306,9 @@ class Ui_MainWindow(object):
         self.open_close_side_bar_btn.setObjectName(u"open_close_side_bar_btn")
         self.open_close_side_bar_btn.setFont(font1)
         self.open_close_side_bar_btn.setStyleSheet(u"color: rgb(255, 255, 255);")
-        icon7 = QIcon()
-        icon7.addFile(u":/icons/icons/align-left.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.open_close_side_bar_btn.setIcon(icon7)
+        icon6 = QIcon()
+        icon6.addFile(u":/icons/icons/align-left.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.open_close_side_bar_btn.setIcon(icon6)
         self.open_close_side_bar_btn.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_6.addWidget(self.open_close_side_bar_btn, 0, Qt.AlignLeft)
@@ -336,9 +317,9 @@ class Ui_MainWindow(object):
         self.home.setObjectName(u"home")
         self.home.setFont(font1)
         self.home.setStyleSheet(u"color: rgb(255, 255, 255);")
-        icon8 = QIcon()
-        icon8.addFile(u":/icons/icons/home.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.home.setIcon(icon8)
+        icon7 = QIcon()
+        icon7.addFile(u":/icons/icons/home.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.home.setIcon(icon7)
         self.home.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_6.addWidget(self.home)
@@ -384,23 +365,23 @@ class Ui_MainWindow(object):
         self.raw_img_btn.setObjectName(u"raw_img_btn")
         self.raw_img_btn.setFont(font1)
         self.raw_img_btn.setStyleSheet(u"color: rgb(255, 255, 255);")
-        icon9 = QIcon()
-        icon9.addFile(u":/icons/icons/chevron-down.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.raw_img_btn.setIcon(icon9)
+        icon8 = QIcon()
+        icon8.addFile(u":/icons/icons/chevron-down.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.raw_img_btn.setIcon(icon8)
         self.raw_img_btn.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_11.addWidget(self.raw_img_btn)
 
-        self.two_columns = QPushButton(self.frame_2)
-        self.two_columns.setObjectName(u"two_columns")
-        self.two_columns.setFont(font1)
-        self.two_columns.setStyleSheet(u"color: rgb(255, 255, 255);")
-        icon10 = QIcon()
-        icon10.addFile(u":/icons/icons/chevrons-down.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.two_columns.setIcon(icon10)
-        self.two_columns.setIconSize(QSize(20, 20))
+        self.multi_columns = QPushButton(self.frame_2)
+        self.multi_columns.setObjectName(u"multi_columns")
+        self.multi_columns.setFont(font1)
+        self.multi_columns.setStyleSheet(u"color: rgb(255, 255, 255);")
+        icon9 = QIcon()
+        icon9.addFile(u":/icons/icons/chevrons-down.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.multi_columns.setIcon(icon9)
+        self.multi_columns.setIconSize(QSize(20, 20))
 
-        self.horizontalLayout_11.addWidget(self.two_columns)
+        self.horizontalLayout_11.addWidget(self.multi_columns)
 
 
         self.horizontalLayout_2.addWidget(self.frame_2)
@@ -415,25 +396,25 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.minimize_window_button = QPushButton(self.frame)
         self.minimize_window_button.setObjectName(u"minimize_window_button")
-        icon11 = QIcon()
-        icon11.addFile(u":/icons/icons/arrow-down-left.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.minimize_window_button.setIcon(icon11)
+        icon10 = QIcon()
+        icon10.addFile(u":/icons/icons/arrow-down-left.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.minimize_window_button.setIcon(icon10)
 
         self.horizontalLayout_5.addWidget(self.minimize_window_button, 0, Qt.AlignRight|Qt.AlignTop)
 
         self.restore_window_button = QPushButton(self.frame)
         self.restore_window_button.setObjectName(u"restore_window_button")
-        icon12 = QIcon()
-        icon12.addFile(u":/icons/icons/maximize-2.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.restore_window_button.setIcon(icon12)
+        icon11 = QIcon()
+        icon11.addFile(u":/icons/icons/maximize-2.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.restore_window_button.setIcon(icon11)
 
         self.horizontalLayout_5.addWidget(self.restore_window_button, 0, Qt.AlignRight|Qt.AlignTop)
 
         self.close_window_button = QPushButton(self.frame)
         self.close_window_button.setObjectName(u"close_window_button")
-        icon13 = QIcon()
-        icon13.addFile(u":/icons/icons/x.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.close_window_button.setIcon(icon13)
+        icon12 = QIcon()
+        icon12.addFile(u":/icons/icons/x.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.close_window_button.setIcon(icon12)
 
         self.horizontalLayout_5.addWidget(self.close_window_button, 0, Qt.AlignRight|Qt.AlignTop)
 
@@ -485,27 +466,6 @@ class Ui_MainWindow(object):
 
 
         self.horizontalLayout_13.addWidget(self.thumbnail_widget)
-
-        self.compare_samples = QCustomSlideMenu(self.main_body_contents)
-        self.compare_samples.setObjectName(u"compare_samples")
-        self.compare_samples.setMaximumSize(QSize(16777215, 16777215))
-        self.horizontalLayout_17 = QHBoxLayout(self.compare_samples)
-        self.horizontalLayout_17.setSpacing(0)
-        self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
-        self.horizontalLayout_17.setContentsMargins(0, 0, 0, 0)
-        self.sample1 = QListWidget(self.compare_samples)
-        self.sample1.setObjectName(u"sample1")
-        self.sample1.setMaximumSize(QSize(16777215, 16777215))
-
-        self.horizontalLayout_17.addWidget(self.sample1)
-
-        self.sample2 = QListWidget(self.compare_samples)
-        self.sample2.setObjectName(u"sample2")
-
-        self.horizontalLayout_17.addWidget(self.sample2)
-
-
-        self.horizontalLayout_13.addWidget(self.compare_samples)
 
         self.raw_img_widget = QCustomSlideMenu(self.main_body_contents)
         self.raw_img_widget.setObjectName(u"raw_img_widget")
@@ -562,9 +522,9 @@ class Ui_MainWindow(object):
         self.about_btn.setObjectName(u"about_btn")
         self.about_btn.setFont(font1)
         self.about_btn.setStyleSheet(u"color: rgb(255, 255, 255);")
-        icon14 = QIcon()
-        icon14.addFile(u":/icons/icons/help-circle.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.about_btn.setIcon(icon14)
+        icon13 = QIcon()
+        icon13.addFile(u":/icons/icons/help-circle.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.about_btn.setIcon(icon13)
         self.about_btn.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_9.addWidget(self.about_btn)
@@ -591,7 +551,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.toolBox.setCurrentIndex(0)
+        self.toolBox.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -611,25 +571,87 @@ class Ui_MainWindow(object):
         self.comparison.setText(QCoreApplication.translate("MainWindow", u"Comparison", None))
         self.clear_btn.setText(QCoreApplication.translate("MainWindow", u"Clear", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page), QCoreApplication.translate("MainWindow", u"Directory list", None))
-        self.simp.setText(QCoreApplication.translate("MainWindow", u"simp", None))
-        self.lb2sp.setText(QCoreApplication.translate("MainWindow", u"lb2sp", None))
-        self.sp2ub.setText(QCoreApplication.translate("MainWindow", u"sp2ub", None))
-        self.peri2sp.setText(QCoreApplication.translate("MainWindow", u"peri2sp", None))
-        self.gif.setText(QCoreApplication.translate("MainWindow", u"gif", None))
-        self.cropping.setText(QCoreApplication.translate("MainWindow", u"cropping", None))
-        self.roughness.setText(QCoreApplication.translate("MainWindow", u"roughness", None))
-        self.COM_traj.setText(QCoreApplication.translate("MainWindow", u"COM trajectory", None))
-        self.volume_traj.setText(QCoreApplication.translate("MainWindow", u"Volume Center trajectory", None))
-        self.threshold.setText(QCoreApplication.translate("MainWindow", u"threshold", None))
-        self.same_filetype_panel_btn.setText(QCoreApplication.translate("MainWindow", u"Same filetype panel", None))
-        self.compare_btn.setText(QCoreApplication.translate("MainWindow", u"Compare", None))
+
+        __sortingEnabled = self.same_type_name.isSortingEnabled()
+        self.same_type_name.setSortingEnabled(False)
+        ___qlistwidgetitem = self.same_type_name.item(0)
+        ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u"check_mass_center_on_smip_XY.png", None));
+        ___qlistwidgetitem1 = self.same_type_name.item(1)
+        ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWindow", u"check_mass_center_on_smip_XZ.png", None));
+        ___qlistwidgetitem2 = self.same_type_name.item(2)
+        ___qlistwidgetitem2.setText(QCoreApplication.translate("MainWindow", u"check_mass_center_on_smip_YZ.png", None));
+        ___qlistwidgetitem3 = self.same_type_name.item(3)
+        ___qlistwidgetitem3.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_XY.png", None));
+        ___qlistwidgetitem4 = self.same_type_name.item(4)
+        ___qlistwidgetitem4.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_XY_overlay.png", None));
+        ___qlistwidgetitem5 = self.same_type_name.item(5)
+        ___qlistwidgetitem5.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_XZ.png", None));
+        ___qlistwidgetitem6 = self.same_type_name.item(6)
+        ___qlistwidgetitem6.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_XZ_overlay.png", None));
+        ___qlistwidgetitem7 = self.same_type_name.item(7)
+        ___qlistwidgetitem7.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_YZ.png", None));
+        ___qlistwidgetitem8 = self.same_type_name.item(8)
+        ___qlistwidgetitem8.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_YZ_overlay.png", None));
+        ___qlistwidgetitem9 = self.same_type_name.item(9)
+        ___qlistwidgetitem9.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_XY.png", None));
+        ___qlistwidgetitem10 = self.same_type_name.item(10)
+        ___qlistwidgetitem10.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_XY_overlay.png", None));
+        ___qlistwidgetitem11 = self.same_type_name.item(11)
+        ___qlistwidgetitem11.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_XZ.png", None));
+        ___qlistwidgetitem12 = self.same_type_name.item(12)
+        ___qlistwidgetitem12.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_XZ_overlay.png", None));
+        ___qlistwidgetitem13 = self.same_type_name.item(13)
+        ___qlistwidgetitem13.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_YZ.png", None));
+        ___qlistwidgetitem14 = self.same_type_name.item(14)
+        ___qlistwidgetitem14.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_YZ_overlay.png", None));
+        ___qlistwidgetitem15 = self.same_type_name.item(15)
+        ___qlistwidgetitem15.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_sp2ub_XY.png", None));
+        ___qlistwidgetitem16 = self.same_type_name.item(16)
+        ___qlistwidgetitem16.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_sp2ub_XZ.png", None));
+        ___qlistwidgetitem17 = self.same_type_name.item(17)
+        ___qlistwidgetitem17.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_sp2ub_XZ_overlay.png", None));
+        ___qlistwidgetitem18 = self.same_type_name.item(18)
+        ___qlistwidgetitem18.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_sp2ub_YZ.png", None));
+        ___qlistwidgetitem19 = self.same_type_name.item(19)
+        ___qlistwidgetitem19.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_sp2ub_YZ_overlay.png", None));
+        ___qlistwidgetitem20 = self.same_type_name.item(20)
+        ___qlistwidgetitem20.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_XY.png", None));
+        ___qlistwidgetitem21 = self.same_type_name.item(21)
+        ___qlistwidgetitem21.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_XY_overlay.png", None));
+        ___qlistwidgetitem22 = self.same_type_name.item(22)
+        ___qlistwidgetitem22.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_XZ.png", None));
+        ___qlistwidgetitem23 = self.same_type_name.item(23)
+        ___qlistwidgetitem23.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_XZ_overlay.png", None));
+        ___qlistwidgetitem24 = self.same_type_name.item(24)
+        ___qlistwidgetitem24.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_YZ.png", None));
+        ___qlistwidgetitem25 = self.same_type_name.item(25)
+        ___qlistwidgetitem25.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_YZ_overlay.png", None));
+        ___qlistwidgetitem26 = self.same_type_name.item(26)
+        ___qlistwidgetitem26.setText(QCoreApplication.translate("MainWindow", u"internal.gif", None));
+        ___qlistwidgetitem27 = self.same_type_name.item(27)
+        ___qlistwidgetitem27.setText(QCoreApplication.translate("MainWindow", u"mass_center_trajecotry.png", None));
+        ___qlistwidgetitem28 = self.same_type_name.item(28)
+        ___qlistwidgetitem28.setText(QCoreApplication.translate("MainWindow", u"MyRep_data_specifics.png", None));
+        ___qlistwidgetitem29 = self.same_type_name.item(29)
+        ___qlistwidgetitem29.setText(QCoreApplication.translate("MainWindow", u"peripheral.gif", None));
+        ___qlistwidgetitem30 = self.same_type_name.item(30)
+        ___qlistwidgetitem30.setText(QCoreApplication.translate("MainWindow", u"peripheral_and_internal.gif", None));
+        ___qlistwidgetitem31 = self.same_type_name.item(31)
+        ___qlistwidgetitem31.setText(QCoreApplication.translate("MainWindow", u"rouphness.png", None));
+        ___qlistwidgetitem32 = self.same_type_name.item(32)
+        ___qlistwidgetitem32.setText(QCoreApplication.translate("MainWindow", u"thresholds.png", None));
+        ___qlistwidgetitem33 = self.same_type_name.item(33)
+        ___qlistwidgetitem33.setText(QCoreApplication.translate("MainWindow", u"volume_center_trajectory.png", None));
+        self.same_type_name.setSortingEnabled(__sortingEnabled)
+
+        self.same_filetype_panel_btn.setText(QCoreApplication.translate("MainWindow", u"Same filetype compare", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_3), QCoreApplication.translate("MainWindow", u"Options for comparison", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_2), QCoreApplication.translate("MainWindow", u"Info", None))
         self.exit_button.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.open_close_side_bar_btn.setText(QCoreApplication.translate("MainWindow", u"Left Menu", None))
         self.home.setText(QCoreApplication.translate("MainWindow", u"Home", None))
         self.raw_img_btn.setText(QCoreApplication.translate("MainWindow", u"Raw Image", None))
-        self.two_columns.setText(QCoreApplication.translate("MainWindow", u"Comparison", None))
+        self.multi_columns.setText(QCoreApplication.translate("MainWindow", u"Multi column", None))
         self.minimize_window_button.setText("")
         self.restore_window_button.setText("")
         self.close_window_button.setText("")

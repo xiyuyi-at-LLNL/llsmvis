@@ -1,0 +1,30 @@
+If the files were deleted, 
+git reset
+conda env export > environment.yml
+git status
+cd llsmvis
+
+git add llsmvis\extensions\hp3d-viewer
+
+git status
+
+Note:got to github and generate a token
+
+git commit -m “adding hp3d viewer initial commit“
+
+add github gmail and user name to get token
+git config --global user.email "ylzhang.nano@gmail.com"
+git config --global user.name "Yuliang-LLNL"
+
+git commit -m “adding hp3d viewer initial commit“
+git push
+
+(gui) F:\Papers\Xiyu\QT-PyQt-PySide-Custom-Widgets\llsmvis>git push
+Enumerating objects: 17, done.
+Counting objects: 100% (17/17), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (9/9), 895 bytes | 223.00 KiB/s, done.
+Total 9 (delta 7), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (7/7), completed with 7 local objects.
+To https://github.com/xiyuyi-at-LLNL/llsm
