@@ -64,7 +64,8 @@ class MainWindow(QMainWindow):
         #################################################################################
         # Window Size grip to resize window
         #################################################################################
-        QSizeGrip(self.ui.size_grip)
+        QSizeGrip(self.ui.size_grip_bottom_right)
+        QSizeGrip(self.ui.size_grip_top_right)
         
         #######################################################################
         #Minimize window
@@ -105,6 +106,7 @@ class MainWindow(QMainWindow):
         # Add click event/Mouse move event/drag event to the top header to move the window
         #######################################################################
         self.ui.header_frame.mouseMoveEvent = moveWindow
+        self.ui.top_left.mouseMoveEvent = moveWindow
         #######################################################################
 
 

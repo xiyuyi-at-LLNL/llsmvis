@@ -91,7 +91,7 @@
            <number>0</number>
           </property>
           <item alignment="Qt::AlignLeft|Qt::AlignTop">
-           <widget class="QFrame" name="frame_8">
+           <widget class="QFrame" name="top_left">
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
             </property>
@@ -202,15 +202,15 @@
                 <number>2</number>
                </property>
                <property name="currentIndex">
-                <number>0</number>
+                <number>2</number>
                </property>
                <widget class="QWidget" name="page">
                 <property name="geometry">
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>335</width>
-                  <height>425</height>
+                  <width>325</width>
+                  <height>432</height>
                  </rect>
                 </property>
                 <property name="styleSheet">
@@ -305,8 +305,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>335</width>
-                  <height>425</height>
+                  <width>325</width>
+                  <height>432</height>
                  </rect>
                 </property>
                 <attribute name="icon">
@@ -771,8 +771,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>83</width>
-                  <height>71</height>
+                  <width>325</width>
+                  <height>432</height>
                  </rect>
                 </property>
                 <attribute name="icon">
@@ -843,7 +843,7 @@
                 <string>Exit</string>
                </property>
                <property name="icon">
-                <iconset resource="icons.qrc">
+                <iconset>
                  <normaloff>:/icons/icons/external-link.svg</normaloff>:/icons/icons/external-link.svg</iconset>
                </property>
                <property name="iconSize">
@@ -1130,7 +1130,7 @@
            </widget>
           </item>
           <item alignment="Qt::AlignRight|Qt::AlignTop">
-           <widget class="QFrame" name="frame">
+           <widget class="QFrame" name="top">
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
             </property>
@@ -1164,6 +1164,17 @@
                </property>
               </widget>
              </item>
+             <item>
+              <widget class="QPushButton" name="close_window_button">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="icons.qrc">
+                 <normaloff>:/icons/icons/x.svg</normaloff>:/icons/icons/x.svg</iconset>
+               </property>
+              </widget>
+             </item>
              <item alignment="Qt::AlignRight|Qt::AlignTop">
               <widget class="QPushButton" name="restore_window_button">
                <property name="text">
@@ -1176,13 +1187,24 @@
               </widget>
              </item>
              <item alignment="Qt::AlignRight|Qt::AlignTop">
-              <widget class="QPushButton" name="close_window_button">
-               <property name="text">
-                <string/>
+              <widget class="QFrame" name="size_grip_top_right">
+               <property name="minimumSize">
+                <size>
+                 <width>10</width>
+                 <height>10</height>
+                </size>
                </property>
-               <property name="icon">
-                <iconset resource="icons.qrc">
-                 <normaloff>:/icons/icons/x.svg</normaloff>:/icons/icons/x.svg</iconset>
+               <property name="maximumSize">
+                <size>
+                 <width>10</width>
+                 <height>10</height>
+                </size>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
                </property>
               </widget>
              </item>
@@ -1450,17 +1472,17 @@
            </widget>
           </item>
           <item alignment="Qt::AlignRight|Qt::AlignBottom">
-           <widget class="QFrame" name="size_grip">
+           <widget class="QFrame" name="size_grip_bottom_right">
             <property name="minimumSize">
              <size>
-              <width>10</width>
-              <height>10</height>
+              <width>20</width>
+              <height>20</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>10</width>
-              <height>10</height>
+              <width>20</width>
+              <height>20</height>
              </size>
             </property>
             <property name="frameShape">
