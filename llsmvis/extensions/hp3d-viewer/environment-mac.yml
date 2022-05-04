@@ -92,4 +92,4 @@ dependencies:
     - typing==3.7.4
     - urllib3==1.25.11
     - webencodings==0.5.1
-prefix: /Users/zhang42/miniconda3/envs/gui
+prefix: /Users/your_directory/miniconda3/envs/gui

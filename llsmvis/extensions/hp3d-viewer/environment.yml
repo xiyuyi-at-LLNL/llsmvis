@@ -36,6 +36,7 @@ dependencies:
     - matplotlib==3.5.1
     - mock==4.0.3
     - numpy==1.22.3
+    - opencv-python==4.5.5.64
     - packaging==21.3
     - pefile==2021.9.3
     - pillow==9.1.0
@@ -60,4 +61,4 @@ dependencies:
     - typing==3.7.4
     - urllib3==1.25.11
     - webencodings==0.5.1
-prefix: C:\Users\YL_2\miniconda3\envs\gui
+prefix: C:\Users\your_directory\miniconda3\envs\gui
