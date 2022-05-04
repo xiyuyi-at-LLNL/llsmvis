@@ -70,7 +70,9 @@ class MainWindow(QMainWindow):
         #######################################################################
         #Close window
         self.ui.close_window_button.clicked.connect(lambda: self.close())
+        self.ui.close_window_button.clicked.connect(lambda: self.popWin.close())
         self.ui.exit_button.clicked.connect(lambda: self.close())
+        self.ui.exit_button.clicked.connect(lambda: self.popWin.close())
         self.ui.comparison.setChecked(False)
         # self.ui.gif.setChecked(False)
 
@@ -118,7 +120,8 @@ class MainWindow(QMainWindow):
         # Plot thumbnail
         #######################################################################
         self.ui.dir_listWidget.itemClicked.connect(lambda: self.showThumbnail())
-        self.ui.dir_listWidget.itemDoubleClicked.connect(lambda: self.multiSel())
+        # self.ui.dir_listWidget.itemDoubleClicked.connect(lambda: self.multiSel())
+        self.ui.comparison.clicked.connect(lambda: self.multiSel())
         self.ui.dir_listWidget.itemSelectionChanged.connect(lambda: self.showThumbnail())
         self.ui.raw_img_btn.clicked.connect(lambda: self.showThumbnail())
         
@@ -1018,17 +1021,20 @@ class MainWindow(QMainWindow):
     def showRawImage(self):
         self.ui.plot_img.clear()
         self.ui.plot_img.setStyleSheet('background-color: rgb(240, 240, 240)') 
-        filename=self.ui.thumbnail.currentItem().text()
+        samplename=self.ui.thumbnail.currentItem().text()
+        filename=self.originalName(samplename)
         fext=filename[-3:]
         folder=self.ui.dir_listWidget.currentItem().text()
         path=os.path.join(folderpath,folder,filename)
         if fext == 'png':
-            self.ui.plot_img.setPixmap(QtGui.QPixmap(path))
-            self.ui.plot_img.setScaledContents(True)
+            label_img=self.ui.plot_img.setPixmap(QtGui.QPixmap(path))
+            # self.ui.plot_img.setScaledContents(True)
+            self.ui.plot_img.setAlignment(QtGui.Qt.AlignCenter)
             self.ui.plot_img.show()
         elif fext == 'gif':
             movie = QtGui.QMovie(path)
             self.ui.plot_img.setMovie(movie)
+            self.ui.plot_img.setAlignment(QtGui.Qt.AlignCenter)
             movie.start()
         else:
             print('Not a image')
@@ -1084,7 +1090,7 @@ class MainWindow(QMainWindow):
             path=os.path.join(folderpath,folders)
             # fileList=glob.glob(path+'\*'+truncate_fn)# run faster
             fileList=glob.glob(path+'\\'+fname)# run faster
-            print(fileList)
+            # print(fileList)
             image_items = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir),folders) for fdir in fileList]# run faster
             # path=os.path.join(folderpath,folders,fname)# run slowly
             # image_items = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir),folders) for fdir in path]# run slowly
@@ -1198,6 +1204,84 @@ class MainWindow(QMainWindow):
         elif fname=='volume_center_trajectory.png':
             simpleName='VC trajectory'
         return simpleName
+
+    def originalName(self,fname):
+        fullName=''
+        if fname=='MC_XY':
+            fullName='check_mass_center_on_smip_XY.png'
+        elif fname=='MC_XZ':
+            fullName='check_mass_center_on_smip_XZ.png'
+        elif fname=='MC_YZ':
+            fullName='check_mass_center_on_smip_YZ.png'
+        elif fname=='lb2sp_XY':
+            fullName='inspect_rgbas_after_cropping_lb2sp_XY.png'
+        elif fname=='lb2sp_XY_overlay':
+            fullName='inspect_rgbas_after_cropping_lb2sp_XY_overlay.png'
+        elif fname=='lb2sp_XZ':
+            fullName='inspect_rgbas_after_cropping_lb2sp_XZ.png'
+        elif fname=='lb2sp_XZ_overlay':
+            fullName='inspect_rgbas_after_cropping_lb2sp_XZ_overlay.png'
+        elif fname=='lb2sp_YZ':
+            fullName='inspect_rgbas_after_cropping_lb2sp_YZ.png'
+        elif fname=='YZ_overlay':
+            fullName='inspect_rgbas_after_cropping_lb2sp_YZ_overlay.png'
+        elif fname=='peri2sp_XY':
+            fullName='inspect_rgbas_after_cropping_peri2sp_XY.png'
+        elif fname=='peri2sp_XY_overlay':
+            fullName='inspect_rgbas_after_cropping_peri2sp_XY_overlay.png'
+        elif fname=='peri2sp_XZ':
+            fullName='inspect_rgbas_after_cropping_peri2sp_XZ.png'
+        elif fname=='peri2sp_XZ_overlay':
+            fullName='inspect_rgbas_after_cropping_peri2sp_XZ_overlay.png'
+        elif fname=='peri2sp_YZ':
+            fullName='inspect_rgbas_after_cropping_peri2sp_YZ.png'
+        elif fname=='peri2sp_YZ_overlay':
+            fullName='inspect_rgbas_after_cropping_peri2sp_YZ_overlay.png'
+        elif fname=='sp2ub_XY':
+            fullName='inspect_rgbas_after_cropping_sp2ub_XY.png'
+        elif fname=='sp2ub_XY_overlay':
+            fullName='inspect_rgbas_after_cropping_sp2ub_XY_overlay.png'
+        if fname=='sp2ub_XZ':
+            fullName='inspect_rgbas_after_cropping_sp2ub_XZ.png'
+        elif fname=='sp2ub_XZ_overlay':
+            fullName='inspect_rgbas_after_cropping_sp2ub_XZ_overlay.png'
+        elif fname=='sp2ub_YZ':
+            fullName='inspect_rgbas_after_cropping_sp2ub_YZ.png'
+        elif fname=='sp2ub_YZ_overlay':
+            fullName='inspect_rgbas_after_cropping_sp2ub_YZ_overlay.png'
+        elif fname=='before_X_XY':
+            fullName='inspect_rgbas_before_cropping_XY.png'
+        elif fname=='before_X_XY_overlay':
+            fullName='inspect_rgbas_before_cropping_XY_overlay.png'
+        elif fname=='before_X_XZ':
+            fullName='inspect_rgbas_before_cropping_XZ.png'
+        elif fname=='before_X_XZ_overlay':
+            fullName='inspect_rgbas_before_cropping_XZ_overlay.png'
+        elif fname=='before_X_YZ':
+            fullName='inspect_rgbas_before_cropping_YZ.png'
+        elif fname=='before_X_YZ_overlay':
+            fullName='inspect_rgbas_before_cropping_YZ_overlay.png'
+        elif fname=='internal':
+            fullName='internal.gif'
+        elif fname=='MC trajecotry':
+            fullName='mass_center_trajecotry.png'
+        elif fname=='N.A.':
+            fullName='MyParser_cell3_Iter_0.parser'
+        elif fname=='Data specifics':
+            fullName='MyRep_data_specifics.png'
+        elif fname=='N.A.':
+            fullName='MyRep_MIP_channel0_wLabels.mp4'
+        elif fname=='peripheral':
+            fullName='peripheral.gif'
+        elif fname=='peripheral_and_internal':
+            fullName='peripheral_and_internal.gif'          
+        elif fname=='rouphness':
+            fullName='rouphness.png'
+        elif fname=='thresholds':
+            fullName='thresholds.png'
+        elif fname=='VC trajectory':
+            fullName='volume_center_trajectory.png'
+        return fullName
 
     def reset(self):
 

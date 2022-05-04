@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfaceOCqPoq.ui'
+## Form generated from reading UI file 'interfacepYhPYU.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -594,7 +594,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.toolBox.setCurrentIndex(1)
+        self.toolBox.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
