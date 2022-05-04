@@ -209,8 +209,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>335</width>
-                  <height>425</height>
+                  <width>233</width>
+                  <height>104</height>
                  </rect>
                 </property>
                 <property name="styleSheet">
@@ -331,7 +331,7 @@
                    <property name="frameShadow">
                     <enum>QFrame::Raised</enum>
                    </property>
-                   <layout class="QVBoxLayout" name="verticalLayout_2">
+                   <layout class="QHBoxLayout" name="horizontalLayout_17">
                     <property name="spacing">
                      <number>0</number>
                     </property>
@@ -347,6 +347,197 @@
                     <property name="bottomMargin">
                      <number>0</number>
                     </property>
+                    <item>
+                     <widget class="QListWidget" name="short_file_name">
+                      <property name="minimumSize">
+                       <size>
+                        <width>150</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>150</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <item>
+                       <property name="text">
+                        <string>MC_XY</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>MC_XZ</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>MC_YZ</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>lb2sp_XY</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>lb2sp_XY_overlay</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>lb2sp_XZ</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>lb2sp_XZ_overlay</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>lb2sp_YZ</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>YZ_overlay</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>peri2sp_XY</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>peri2sp_XY_overlay</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>peri2sp_XZ</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>peri2sp_XZ_overlay</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>peri2sp_YZ</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>peri2sp_YZ_overlay</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>sp2ub_XY</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>sp2ub_XY_overlay</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>sp2ub_XZ</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>sp2ub_XZ_overlay</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>sp2ub_YZ</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>sp2ub_YZ_overlay</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>before_X_XY</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>before_X_XY_overlay</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>before_X_XZ</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>before_X_XZ_overlay</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>before_X_YZ</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>before_X_YZ_overlay</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>internal</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>MC trajecotry</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Data specifics</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>peripheral</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>peripheral_and_internal</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>rouphness</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>thresholds</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>VC trajectory</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
                     <item>
                      <widget class="QListWidget" name="same_type_name">
                       <item>
@@ -427,6 +618,11 @@
                       <item>
                        <property name="text">
                         <string>inspect_rgbas_after_cropping_sp2ub_XY.png</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>inspect_rgbas_after_cropping_peri2sp_XY_overlay.png</string>
                        </property>
                       </item>
                       <item>
@@ -575,8 +771,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>335</width>
-                  <height>425</height>
+                  <width>83</width>
+                  <height>71</height>
                  </rect>
                 </property>
                 <attribute name="icon">
@@ -774,7 +970,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="home">
+              <widget class="QPushButton" name="home_btn">
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>

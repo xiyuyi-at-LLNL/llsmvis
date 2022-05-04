@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfaceRuKVJZ.ui'
+## Form generated from reading UI file 'interfaceOCqPoq.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -153,11 +153,54 @@ class Ui_MainWindow(object):
         self.frame_12.setSizePolicy(sizePolicy)
         self.frame_12.setFrameShape(QFrame.StyledPanel)
         self.frame_12.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_2 = QVBoxLayout(self.frame_12)
-        self.verticalLayout_2.setSpacing(0)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_17 = QHBoxLayout(self.frame_12)
+        self.horizontalLayout_17.setSpacing(0)
+        self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
+        self.horizontalLayout_17.setContentsMargins(0, 0, 0, 0)
+        self.short_file_name = QListWidget(self.frame_12)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        QListWidgetItem(self.short_file_name)
+        self.short_file_name.setObjectName(u"short_file_name")
+        self.short_file_name.setMinimumSize(QSize(150, 0))
+        self.short_file_name.setMaximumSize(QSize(150, 16777215))
+
+        self.horizontalLayout_17.addWidget(self.short_file_name)
+
         self.same_type_name = QListWidget(self.frame_12)
+        QListWidgetItem(self.same_type_name)
         QListWidgetItem(self.same_type_name)
         QListWidgetItem(self.same_type_name)
         QListWidgetItem(self.same_type_name)
@@ -194,7 +237,7 @@ class Ui_MainWindow(object):
         QListWidgetItem(self.same_type_name)
         self.same_type_name.setObjectName(u"same_type_name")
 
-        self.verticalLayout_2.addWidget(self.same_type_name)
+        self.horizontalLayout_17.addWidget(self.same_type_name)
 
 
         self.verticalLayout_6.addWidget(self.frame_12)
@@ -313,16 +356,16 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_6.addWidget(self.open_close_side_bar_btn, 0, Qt.AlignLeft)
 
-        self.home = QPushButton(self.frame_6)
-        self.home.setObjectName(u"home")
-        self.home.setFont(font1)
-        self.home.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.home_btn = QPushButton(self.frame_6)
+        self.home_btn.setObjectName(u"home_btn")
+        self.home_btn.setFont(font1)
+        self.home_btn.setStyleSheet(u"color: rgb(255, 255, 255);")
         icon7 = QIcon()
         icon7.addFile(u":/icons/icons/home.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.home.setIcon(icon7)
-        self.home.setIconSize(QSize(20, 20))
+        self.home_btn.setIcon(icon7)
+        self.home_btn.setIconSize(QSize(20, 20))
 
-        self.horizontalLayout_6.addWidget(self.home)
+        self.horizontalLayout_6.addWidget(self.home_btn)
 
 
         self.horizontalLayout_2.addWidget(self.frame_6)
@@ -572,84 +615,161 @@ class Ui_MainWindow(object):
         self.clear_btn.setText(QCoreApplication.translate("MainWindow", u"Clear", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page), QCoreApplication.translate("MainWindow", u"Directory list", None))
 
-        __sortingEnabled = self.same_type_name.isSortingEnabled()
+        __sortingEnabled = self.short_file_name.isSortingEnabled()
+        self.short_file_name.setSortingEnabled(False)
+        ___qlistwidgetitem = self.short_file_name.item(0)
+        ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u"MC_XY", None));
+        ___qlistwidgetitem1 = self.short_file_name.item(1)
+        ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWindow", u"MC_XZ", None));
+        ___qlistwidgetitem2 = self.short_file_name.item(2)
+        ___qlistwidgetitem2.setText(QCoreApplication.translate("MainWindow", u"MC_YZ", None));
+        ___qlistwidgetitem3 = self.short_file_name.item(3)
+        ___qlistwidgetitem3.setText(QCoreApplication.translate("MainWindow", u"lb2sp_XY", None));
+        ___qlistwidgetitem4 = self.short_file_name.item(4)
+        ___qlistwidgetitem4.setText(QCoreApplication.translate("MainWindow", u"lb2sp_XY_overlay", None));
+        ___qlistwidgetitem5 = self.short_file_name.item(5)
+        ___qlistwidgetitem5.setText(QCoreApplication.translate("MainWindow", u"lb2sp_XZ", None));
+        ___qlistwidgetitem6 = self.short_file_name.item(6)
+        ___qlistwidgetitem6.setText(QCoreApplication.translate("MainWindow", u"lb2sp_XZ_overlay", None));
+        ___qlistwidgetitem7 = self.short_file_name.item(7)
+        ___qlistwidgetitem7.setText(QCoreApplication.translate("MainWindow", u"lb2sp_YZ", None));
+        ___qlistwidgetitem8 = self.short_file_name.item(8)
+        ___qlistwidgetitem8.setText(QCoreApplication.translate("MainWindow", u"YZ_overlay", None));
+        ___qlistwidgetitem9 = self.short_file_name.item(9)
+        ___qlistwidgetitem9.setText(QCoreApplication.translate("MainWindow", u"peri2sp_XY", None));
+        ___qlistwidgetitem10 = self.short_file_name.item(10)
+        ___qlistwidgetitem10.setText(QCoreApplication.translate("MainWindow", u"peri2sp_XY_overlay", None));
+        ___qlistwidgetitem11 = self.short_file_name.item(11)
+        ___qlistwidgetitem11.setText(QCoreApplication.translate("MainWindow", u"peri2sp_XZ", None));
+        ___qlistwidgetitem12 = self.short_file_name.item(12)
+        ___qlistwidgetitem12.setText(QCoreApplication.translate("MainWindow", u"peri2sp_XZ_overlay", None));
+        ___qlistwidgetitem13 = self.short_file_name.item(13)
+        ___qlistwidgetitem13.setText(QCoreApplication.translate("MainWindow", u"peri2sp_YZ", None));
+        ___qlistwidgetitem14 = self.short_file_name.item(14)
+        ___qlistwidgetitem14.setText(QCoreApplication.translate("MainWindow", u"peri2sp_YZ_overlay", None));
+        ___qlistwidgetitem15 = self.short_file_name.item(15)
+        ___qlistwidgetitem15.setText(QCoreApplication.translate("MainWindow", u"sp2ub_XY", None));
+        ___qlistwidgetitem16 = self.short_file_name.item(16)
+        ___qlistwidgetitem16.setText(QCoreApplication.translate("MainWindow", u"sp2ub_XY_overlay", None));
+        ___qlistwidgetitem17 = self.short_file_name.item(17)
+        ___qlistwidgetitem17.setText(QCoreApplication.translate("MainWindow", u"sp2ub_XZ", None));
+        ___qlistwidgetitem18 = self.short_file_name.item(18)
+        ___qlistwidgetitem18.setText(QCoreApplication.translate("MainWindow", u"sp2ub_XZ_overlay", None));
+        ___qlistwidgetitem19 = self.short_file_name.item(19)
+        ___qlistwidgetitem19.setText(QCoreApplication.translate("MainWindow", u"sp2ub_YZ", None));
+        ___qlistwidgetitem20 = self.short_file_name.item(20)
+        ___qlistwidgetitem20.setText(QCoreApplication.translate("MainWindow", u"sp2ub_YZ_overlay", None));
+        ___qlistwidgetitem21 = self.short_file_name.item(21)
+        ___qlistwidgetitem21.setText(QCoreApplication.translate("MainWindow", u"before_X_XY", None));
+        ___qlistwidgetitem22 = self.short_file_name.item(22)
+        ___qlistwidgetitem22.setText(QCoreApplication.translate("MainWindow", u"before_X_XY_overlay", None));
+        ___qlistwidgetitem23 = self.short_file_name.item(23)
+        ___qlistwidgetitem23.setText(QCoreApplication.translate("MainWindow", u"before_X_XZ", None));
+        ___qlistwidgetitem24 = self.short_file_name.item(24)
+        ___qlistwidgetitem24.setText(QCoreApplication.translate("MainWindow", u"before_X_XZ_overlay", None));
+        ___qlistwidgetitem25 = self.short_file_name.item(25)
+        ___qlistwidgetitem25.setText(QCoreApplication.translate("MainWindow", u"before_X_YZ", None));
+        ___qlistwidgetitem26 = self.short_file_name.item(26)
+        ___qlistwidgetitem26.setText(QCoreApplication.translate("MainWindow", u"before_X_YZ_overlay", None));
+        ___qlistwidgetitem27 = self.short_file_name.item(27)
+        ___qlistwidgetitem27.setText(QCoreApplication.translate("MainWindow", u"internal", None));
+        ___qlistwidgetitem28 = self.short_file_name.item(28)
+        ___qlistwidgetitem28.setText(QCoreApplication.translate("MainWindow", u"MC trajecotry", None));
+        ___qlistwidgetitem29 = self.short_file_name.item(29)
+        ___qlistwidgetitem29.setText(QCoreApplication.translate("MainWindow", u"Data specifics", None));
+        ___qlistwidgetitem30 = self.short_file_name.item(30)
+        ___qlistwidgetitem30.setText(QCoreApplication.translate("MainWindow", u"peripheral", None));
+        ___qlistwidgetitem31 = self.short_file_name.item(31)
+        ___qlistwidgetitem31.setText(QCoreApplication.translate("MainWindow", u"peripheral_and_internal", None));
+        ___qlistwidgetitem32 = self.short_file_name.item(32)
+        ___qlistwidgetitem32.setText(QCoreApplication.translate("MainWindow", u"rouphness", None));
+        ___qlistwidgetitem33 = self.short_file_name.item(33)
+        ___qlistwidgetitem33.setText(QCoreApplication.translate("MainWindow", u"thresholds", None));
+        ___qlistwidgetitem34 = self.short_file_name.item(34)
+        ___qlistwidgetitem34.setText(QCoreApplication.translate("MainWindow", u"VC trajectory", None));
+        self.short_file_name.setSortingEnabled(__sortingEnabled)
+
+
+        __sortingEnabled1 = self.same_type_name.isSortingEnabled()
         self.same_type_name.setSortingEnabled(False)
-        ___qlistwidgetitem = self.same_type_name.item(0)
-        ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u"check_mass_center_on_smip_XY.png", None));
-        ___qlistwidgetitem1 = self.same_type_name.item(1)
-        ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWindow", u"check_mass_center_on_smip_XZ.png", None));
-        ___qlistwidgetitem2 = self.same_type_name.item(2)
-        ___qlistwidgetitem2.setText(QCoreApplication.translate("MainWindow", u"check_mass_center_on_smip_YZ.png", None));
-        ___qlistwidgetitem3 = self.same_type_name.item(3)
-        ___qlistwidgetitem3.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_XY.png", None));
-        ___qlistwidgetitem4 = self.same_type_name.item(4)
-        ___qlistwidgetitem4.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_XY_overlay.png", None));
-        ___qlistwidgetitem5 = self.same_type_name.item(5)
-        ___qlistwidgetitem5.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_XZ.png", None));
-        ___qlistwidgetitem6 = self.same_type_name.item(6)
-        ___qlistwidgetitem6.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_XZ_overlay.png", None));
-        ___qlistwidgetitem7 = self.same_type_name.item(7)
-        ___qlistwidgetitem7.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_YZ.png", None));
-        ___qlistwidgetitem8 = self.same_type_name.item(8)
-        ___qlistwidgetitem8.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_YZ_overlay.png", None));
-        ___qlistwidgetitem9 = self.same_type_name.item(9)
-        ___qlistwidgetitem9.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_XY.png", None));
-        ___qlistwidgetitem10 = self.same_type_name.item(10)
-        ___qlistwidgetitem10.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_XY_overlay.png", None));
-        ___qlistwidgetitem11 = self.same_type_name.item(11)
-        ___qlistwidgetitem11.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_XZ.png", None));
-        ___qlistwidgetitem12 = self.same_type_name.item(12)
-        ___qlistwidgetitem12.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_XZ_overlay.png", None));
-        ___qlistwidgetitem13 = self.same_type_name.item(13)
-        ___qlistwidgetitem13.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_YZ.png", None));
-        ___qlistwidgetitem14 = self.same_type_name.item(14)
-        ___qlistwidgetitem14.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_YZ_overlay.png", None));
-        ___qlistwidgetitem15 = self.same_type_name.item(15)
-        ___qlistwidgetitem15.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_sp2ub_XY.png", None));
-        ___qlistwidgetitem16 = self.same_type_name.item(16)
-        ___qlistwidgetitem16.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_sp2ub_XZ.png", None));
-        ___qlistwidgetitem17 = self.same_type_name.item(17)
-        ___qlistwidgetitem17.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_sp2ub_XZ_overlay.png", None));
-        ___qlistwidgetitem18 = self.same_type_name.item(18)
-        ___qlistwidgetitem18.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_sp2ub_YZ.png", None));
-        ___qlistwidgetitem19 = self.same_type_name.item(19)
-        ___qlistwidgetitem19.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_sp2ub_YZ_overlay.png", None));
-        ___qlistwidgetitem20 = self.same_type_name.item(20)
-        ___qlistwidgetitem20.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_XY.png", None));
-        ___qlistwidgetitem21 = self.same_type_name.item(21)
-        ___qlistwidgetitem21.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_XY_overlay.png", None));
-        ___qlistwidgetitem22 = self.same_type_name.item(22)
-        ___qlistwidgetitem22.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_XZ.png", None));
-        ___qlistwidgetitem23 = self.same_type_name.item(23)
-        ___qlistwidgetitem23.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_XZ_overlay.png", None));
-        ___qlistwidgetitem24 = self.same_type_name.item(24)
-        ___qlistwidgetitem24.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_YZ.png", None));
-        ___qlistwidgetitem25 = self.same_type_name.item(25)
-        ___qlistwidgetitem25.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_YZ_overlay.png", None));
-        ___qlistwidgetitem26 = self.same_type_name.item(26)
-        ___qlistwidgetitem26.setText(QCoreApplication.translate("MainWindow", u"internal.gif", None));
-        ___qlistwidgetitem27 = self.same_type_name.item(27)
-        ___qlistwidgetitem27.setText(QCoreApplication.translate("MainWindow", u"mass_center_trajecotry.png", None));
-        ___qlistwidgetitem28 = self.same_type_name.item(28)
-        ___qlistwidgetitem28.setText(QCoreApplication.translate("MainWindow", u"MyRep_data_specifics.png", None));
-        ___qlistwidgetitem29 = self.same_type_name.item(29)
-        ___qlistwidgetitem29.setText(QCoreApplication.translate("MainWindow", u"peripheral.gif", None));
-        ___qlistwidgetitem30 = self.same_type_name.item(30)
-        ___qlistwidgetitem30.setText(QCoreApplication.translate("MainWindow", u"peripheral_and_internal.gif", None));
-        ___qlistwidgetitem31 = self.same_type_name.item(31)
-        ___qlistwidgetitem31.setText(QCoreApplication.translate("MainWindow", u"rouphness.png", None));
-        ___qlistwidgetitem32 = self.same_type_name.item(32)
-        ___qlistwidgetitem32.setText(QCoreApplication.translate("MainWindow", u"thresholds.png", None));
-        ___qlistwidgetitem33 = self.same_type_name.item(33)
-        ___qlistwidgetitem33.setText(QCoreApplication.translate("MainWindow", u"volume_center_trajectory.png", None));
-        self.same_type_name.setSortingEnabled(__sortingEnabled)
+        ___qlistwidgetitem35 = self.same_type_name.item(0)
+        ___qlistwidgetitem35.setText(QCoreApplication.translate("MainWindow", u"check_mass_center_on_smip_XY.png", None));
+        ___qlistwidgetitem36 = self.same_type_name.item(1)
+        ___qlistwidgetitem36.setText(QCoreApplication.translate("MainWindow", u"check_mass_center_on_smip_XZ.png", None));
+        ___qlistwidgetitem37 = self.same_type_name.item(2)
+        ___qlistwidgetitem37.setText(QCoreApplication.translate("MainWindow", u"check_mass_center_on_smip_YZ.png", None));
+        ___qlistwidgetitem38 = self.same_type_name.item(3)
+        ___qlistwidgetitem38.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_XY.png", None));
+        ___qlistwidgetitem39 = self.same_type_name.item(4)
+        ___qlistwidgetitem39.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_XY_overlay.png", None));
+        ___qlistwidgetitem40 = self.same_type_name.item(5)
+        ___qlistwidgetitem40.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_XZ.png", None));
+        ___qlistwidgetitem41 = self.same_type_name.item(6)
+        ___qlistwidgetitem41.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_XZ_overlay.png", None));
+        ___qlistwidgetitem42 = self.same_type_name.item(7)
+        ___qlistwidgetitem42.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_YZ.png", None));
+        ___qlistwidgetitem43 = self.same_type_name.item(8)
+        ___qlistwidgetitem43.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_lb2sp_YZ_overlay.png", None));
+        ___qlistwidgetitem44 = self.same_type_name.item(9)
+        ___qlistwidgetitem44.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_XY.png", None));
+        ___qlistwidgetitem45 = self.same_type_name.item(10)
+        ___qlistwidgetitem45.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_XY_overlay.png", None));
+        ___qlistwidgetitem46 = self.same_type_name.item(11)
+        ___qlistwidgetitem46.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_XZ.png", None));
+        ___qlistwidgetitem47 = self.same_type_name.item(12)
+        ___qlistwidgetitem47.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_XZ_overlay.png", None));
+        ___qlistwidgetitem48 = self.same_type_name.item(13)
+        ___qlistwidgetitem48.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_YZ.png", None));
+        ___qlistwidgetitem49 = self.same_type_name.item(14)
+        ___qlistwidgetitem49.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_YZ_overlay.png", None));
+        ___qlistwidgetitem50 = self.same_type_name.item(15)
+        ___qlistwidgetitem50.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_sp2ub_XY.png", None));
+        ___qlistwidgetitem51 = self.same_type_name.item(16)
+        ___qlistwidgetitem51.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_peri2sp_XY_overlay.png", None));
+        ___qlistwidgetitem52 = self.same_type_name.item(17)
+        ___qlistwidgetitem52.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_sp2ub_XZ.png", None));
+        ___qlistwidgetitem53 = self.same_type_name.item(18)
+        ___qlistwidgetitem53.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_sp2ub_XZ_overlay.png", None));
+        ___qlistwidgetitem54 = self.same_type_name.item(19)
+        ___qlistwidgetitem54.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_sp2ub_YZ.png", None));
+        ___qlistwidgetitem55 = self.same_type_name.item(20)
+        ___qlistwidgetitem55.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_after_cropping_sp2ub_YZ_overlay.png", None));
+        ___qlistwidgetitem56 = self.same_type_name.item(21)
+        ___qlistwidgetitem56.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_XY.png", None));
+        ___qlistwidgetitem57 = self.same_type_name.item(22)
+        ___qlistwidgetitem57.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_XY_overlay.png", None));
+        ___qlistwidgetitem58 = self.same_type_name.item(23)
+        ___qlistwidgetitem58.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_XZ.png", None));
+        ___qlistwidgetitem59 = self.same_type_name.item(24)
+        ___qlistwidgetitem59.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_XZ_overlay.png", None));
+        ___qlistwidgetitem60 = self.same_type_name.item(25)
+        ___qlistwidgetitem60.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_YZ.png", None));
+        ___qlistwidgetitem61 = self.same_type_name.item(26)
+        ___qlistwidgetitem61.setText(QCoreApplication.translate("MainWindow", u"inspect_rgbas_before_cropping_YZ_overlay.png", None));
+        ___qlistwidgetitem62 = self.same_type_name.item(27)
+        ___qlistwidgetitem62.setText(QCoreApplication.translate("MainWindow", u"internal.gif", None));
+        ___qlistwidgetitem63 = self.same_type_name.item(28)
+        ___qlistwidgetitem63.setText(QCoreApplication.translate("MainWindow", u"mass_center_trajecotry.png", None));
+        ___qlistwidgetitem64 = self.same_type_name.item(29)
+        ___qlistwidgetitem64.setText(QCoreApplication.translate("MainWindow", u"MyRep_data_specifics.png", None));
+        ___qlistwidgetitem65 = self.same_type_name.item(30)
+        ___qlistwidgetitem65.setText(QCoreApplication.translate("MainWindow", u"peripheral.gif", None));
+        ___qlistwidgetitem66 = self.same_type_name.item(31)
+        ___qlistwidgetitem66.setText(QCoreApplication.translate("MainWindow", u"peripheral_and_internal.gif", None));
+        ___qlistwidgetitem67 = self.same_type_name.item(32)
+        ___qlistwidgetitem67.setText(QCoreApplication.translate("MainWindow", u"rouphness.png", None));
+        ___qlistwidgetitem68 = self.same_type_name.item(33)
+        ___qlistwidgetitem68.setText(QCoreApplication.translate("MainWindow", u"thresholds.png", None));
+        ___qlistwidgetitem69 = self.same_type_name.item(34)
+        ___qlistwidgetitem69.setText(QCoreApplication.translate("MainWindow", u"volume_center_trajectory.png", None));
+        self.same_type_name.setSortingEnabled(__sortingEnabled1)
 
         self.same_filetype_panel_btn.setText(QCoreApplication.translate("MainWindow", u"Same filetype compare", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_3), QCoreApplication.translate("MainWindow", u"Options for comparison", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_2), QCoreApplication.translate("MainWindow", u"Info", None))
         self.exit_button.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.open_close_side_bar_btn.setText(QCoreApplication.translate("MainWindow", u"Left Menu", None))
-        self.home.setText(QCoreApplication.translate("MainWindow", u"Home", None))
+        self.home_btn.setText(QCoreApplication.translate("MainWindow", u"Home", None))
         self.raw_img_btn.setText(QCoreApplication.translate("MainWindow", u"Raw Image", None))
         self.multi_columns.setText(QCoreApplication.translate("MainWindow", u"Multi column", None))
         self.minimize_window_button.setText("")

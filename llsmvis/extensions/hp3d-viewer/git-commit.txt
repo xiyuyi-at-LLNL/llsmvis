@@ -27,4 +27,9 @@ Compressing objects: 100% (9/9), done.
 Writing objects: 100% (9/9), 895 bytes | 223.00 KiB/s, done.
 Total 9 (delta 7), reused 0 (delta 0), pack-reused 0
 remote: Resolving deltas: 100% (7/7), completed with 7 local objects.
+
+
+git stage llsmvis/extensions/hp3d-viewer
+
+>git commit -m "modifying hp3d viewer commit"
 To https://github.com/xiyuyi-at-LLNL/llsm

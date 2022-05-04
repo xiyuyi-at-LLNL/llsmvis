@@ -149,8 +149,9 @@ class MainWindow(QMainWindow):
         self.ui.sameType_list.itemClicked.connect(lambda: self.showRawCompareData())
         self.ui.sameType_list.itemSelectionChanged.connect(lambda: self.showRawCompareData())
 
+        self.ui.home_btn.clicked.connect(lambda: self.reset())
         self.ui.about_btn.clicked.connect(lambda: self.messgaeBox())
-        
+        self.multiCompare()
 
         self.show()
 
@@ -277,7 +278,7 @@ class MainWindow(QMainWindow):
         space = 10
 
         self.ui.thumbnail.setViewMode(QtWidgets.QListWidget.IconMode)
-        self.ui.thumbnail.setIconSize(QtCore.QSize(256,256))
+        self.ui.thumbnail.setIconSize(QtCore.QSize(128,128))
         self.ui.thumbnail.setResizeMode(QtWidgets.QListWidget.Adjust)
         self.ui.thumbnail.setSpacing(space)
         self.ui.thumbnail.setStyleSheet('font-size:8px')
@@ -1048,6 +1049,14 @@ class MainWindow(QMainWindow):
         self.popupsUi.sample6.clear()
         self.popupsUi.sample7.clear()
         self.popupsUi.sample8.clear()
+        self.popupsUi.lineEdit1.clear()
+        self.popupsUi.lineEdit2.clear()
+        self.popupsUi.lineEdit3.clear()
+        self.popupsUi.lineEdit4.clear()
+        self.popupsUi.lineEdit5.clear()
+        self.popupsUi.lineEdit6.clear()
+        self.popupsUi.lineEdit7.clear()
+        self.popupsUi.lineEdit8.clear()
 
     def multiSel(self):
         if self.ui.comparison.isChecked() == True:
@@ -1066,13 +1075,16 @@ class MainWindow(QMainWindow):
         self.ui.sameType_list.setStyleSheet('font-size:18px')
         self.ui.sameType_list.setStyleSheet('color: rgb(0, 0, 0)')
         fname=self.ui.same_type_name.currentItem().text()
-        truncate_fn=fname[-9:]
+        # backSlash='\\'
+        # truncate_fn=fname[:-3]
         # print(truncate_fn)
         folderList=os.listdir(folderpath)
         for i in range(len(folderList)):
             folders=folderList[i]
             path=os.path.join(folderpath,folders)
-            fileList=glob.glob(path+'\*'+truncate_fn)# run faster
+            # fileList=glob.glob(path+'\*'+truncate_fn)# run faster
+            fileList=glob.glob(path+'\\'+fname)# run faster
+            print(fileList)
             image_items = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir),folders) for fdir in fileList]# run faster
             # path=os.path.join(folderpath,folders,fname)# run slowly
             # image_items = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir),folders) for fdir in path]# run slowly
@@ -1114,9 +1126,9 @@ class MainWindow(QMainWindow):
         if fname=='check_mass_center_on_smip_XY.png':
             simpleName='MC_XY'
         elif fname=='check_mass_center_on_smip_XZ.png':
-            simpleName='MC_XY'
+            simpleName='MC_XZ'
         elif fname=='check_mass_center_on_smip_YZ.png':
-            simpleName='MC_XY'
+            simpleName='MC_YZ'
         elif fname=='inspect_rgbas_after_cropping_lb2sp_XY.png':
             simpleName='lb2sp_XY'
         elif fname=='inspect_rgbas_after_cropping_lb2sp_XY_overlay.png':
@@ -1132,11 +1144,11 @@ class MainWindow(QMainWindow):
         elif fname=='inspect_rgbas_after_cropping_peri2sp_XY.png':
             simpleName='peri2sp_XY'
         elif fname=='inspect_rgbas_after_cropping_peri2sp_XY_overlay.png':
-            simpleName='XY_overlay.png'
+            simpleName='peri2sp_XY_overlay'
         elif fname=='inspect_rgbas_after_cropping_peri2sp_XZ.png':
             simpleName='peri2sp_XZ'
         elif fname=='inspect_rgbas_after_cropping_peri2sp_XZ_overlay.png':
-            simpleName='XZ_overlay'
+            simpleName='peri2sp_XZ_overlay'
         elif fname=='inspect_rgbas_after_cropping_peri2sp_YZ.png':
             simpleName='peri2sp_YZ'
         elif fname=='inspect_rgbas_after_cropping_peri2sp_YZ_overlay.png':
@@ -1150,9 +1162,9 @@ class MainWindow(QMainWindow):
         elif fname=='inspect_rgbas_after_cropping_sp2ub_XZ_overlay.png':
             simpleName='sp2ub_XZ_overlay'
         elif fname=='inspect_rgbas_after_cropping_sp2ub_YZ.png':
-            simpleName='smip_XY'
-        elif fname=='inspect_rgbas_after_cropping_sp2ub_YZ_overlay.png':
             simpleName='sp2ub_YZ'
+        elif fname=='inspect_rgbas_after_cropping_sp2ub_YZ_overlay.png':
+            simpleName='sp2ub_YZ_overlay'
         elif fname=='inspect_rgbas_before_cropping_XY.png':
             simpleName='before_X_XY'
         elif fname=='inspect_rgbas_before_cropping_XY_overlay.png':
@@ -1166,9 +1178,9 @@ class MainWindow(QMainWindow):
         elif fname=='inspect_rgbas_before_cropping_YZ_overlay.png':
             simpleName='before_X_YZ_overlay'
         elif fname=='internal.gif':
-            simpleName='internal_XY'
+            simpleName='internal'
         elif fname=='mass_center_trajecotry.png':
-            simpleName='trajecotry'
+            simpleName='MC trajecotry'
         elif fname=='MyParser_cell3_Iter_0.parser':
             simpleName='N.A.'
         elif fname=='MyRep_data_specifics.png':
@@ -1180,12 +1192,37 @@ class MainWindow(QMainWindow):
         elif fname=='peripheral_and_internal.gif':
             simpleName='peripheral_and_internal'          
         elif fname=='rouphness.png':
-            simpleName='smip_XY'
+            simpleName='rouphness'
         elif fname=='thresholds.png':
             simpleName='thresholds'
         elif fname=='volume_center_trajectory.png':
-            simpleName='trajectory'
+            simpleName='VC trajectory'
         return simpleName
+
+    def reset(self):
+
+        self.ui.thumbnail.clear()
+        self.ui.plot_img.clear()
+        self.ui.dir_listWidget.clear()
+        self.ui.sameType_list.clear()
+        self.ui.dir_listWidget.clear()
+        self.ui.tableWidget.clear()
+        self.popupsUi.sample1.clear()
+        self.popupsUi.sample2.clear()
+        self.popupsUi.sample3.clear()
+        self.popupsUi.sample4.clear()
+        self.popupsUi.sample5.clear()
+        self.popupsUi.sample6.clear()
+        self.popupsUi.sample7.clear()
+        self.popupsUi.sample8.clear()
+        self.popupsUi.lineEdit1.clear()
+        self.popupsUi.lineEdit2.clear()
+        self.popupsUi.lineEdit3.clear()
+        self.popupsUi.lineEdit4.clear()
+        self.popupsUi.lineEdit5.clear()
+        self.popupsUi.lineEdit6.clear()
+        self.popupsUi.lineEdit7.clear()
+        self.popupsUi.lineEdit8.clear()
 
     def messgaeBox(self):
         msgBox = QMessageBox()
@@ -1201,7 +1238,6 @@ class MainWindow(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
-    # compare = ComparisonWindow()
     sys.exit(app.exec_())
 ########################################################################
 ## END===>
