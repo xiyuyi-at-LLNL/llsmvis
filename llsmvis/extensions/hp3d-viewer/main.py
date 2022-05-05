@@ -23,6 +23,8 @@ from Custom_Widgets.Widgets import *
 from PIL import Image
 import cv2
 
+import platform
+
 ########################################################################
 # IMPORT GUI FILE
 from ui_interface import *
@@ -62,7 +64,8 @@ class MainWindow(QMainWindow):
         #################################################################################
         # Window Size grip to resize window
         #################################################################################
-        QSizeGrip(self.ui.size_grip)
+        QSizeGrip(self.ui.size_grip_bottom_right)
+        QSizeGrip(self.ui.size_grip_top_right)
         
         #######################################################################
         #Minimize window
@@ -103,6 +106,7 @@ class MainWindow(QMainWindow):
         # Add click event/Mouse move event/drag event to the top header to move the window
         #######################################################################
         self.ui.header_frame.mouseMoveEvent = moveWindow
+        self.ui.top_left.mouseMoveEvent = moveWindow
         #######################################################################
 
 
@@ -156,6 +160,13 @@ class MainWindow(QMainWindow):
         self.ui.about_btn.clicked.connect(lambda: self.messgaeBox())
         self.multiCompare()
 
+        if platform.system()=='Darwin' or platform.system()=='Linux':
+            self.char='/*'
+            self.char2='/'
+        elif platform.system()=='Windows':
+            self.char='\*'
+            self.char2='\\'
+        
         self.show()
 
 
@@ -174,7 +185,9 @@ class MainWindow(QMainWindow):
         self.vs6 = self.popupsUi.sample6.verticalScrollBar()
         self.vs7 = self.popupsUi.sample7.verticalScrollBar()
         self.vs8 = self.popupsUi.sample8.verticalScrollBar()
-
+        self.vs9 = self.ui.short_file_name.verticalScrollBar()
+        self.vs10 = self.ui.same_type_name.verticalScrollBar()
+        
         self.vs1.valueChanged.connect(self.move_scrollbar)
         self.vs2.valueChanged.connect(self.move_scrollbar)
         self.vs3.valueChanged.connect(self.move_scrollbar)
@@ -183,7 +196,9 @@ class MainWindow(QMainWindow):
         self.vs6.valueChanged.connect(self.move_scrollbar)
         self.vs7.valueChanged.connect(self.move_scrollbar)
         self.vs8.valueChanged.connect(self.move_scrollbar)
-
+        self.vs9.valueChanged.connect(self.move_scrollbar)
+        self.vs10.valueChanged.connect(self.move_scrollbar)
+        
         self.popupsUi.sample1.clear()
         self.popupsUi.sample2.clear()
         self.popupsUi.sample3.clear()
@@ -356,7 +371,8 @@ class MainWindow(QMainWindow):
         if  len(folders) == 1:
             folders=self.ui.dir_listWidget.currentItem().text()
             path=os.path.join(folderpath,folders)
-            fileList=glob.glob(path+'\*')
+            #fileList=glob.glob(path+'\*')
+            fileList=glob.glob(path+self.char)
             fileNameList=os.listdir(path)
             image_items = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir),fn) for fdir,fn in zip(fileList,fileNameList)]
             # for image_item in image_items:
@@ -374,14 +390,14 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit1.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit1.setAlignment(QtGui.Qt.AlignCenter)           
             path1=os.path.join(folderpath,folder1)
-            fileList1=glob.glob(path1+'\*')
+            fileList1=glob.glob(path1+self.char)
             fileNameList1=os.listdir(path1)
             folder2=folders[1]
             self.popupsUi.lineEdit2.setText(folder2)
             self.popupsUi.lineEdit2.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit2.setAlignment(QtGui.Qt.AlignCenter)
             path2=os.path.join(folderpath,folder2)
-            fileList2=glob.glob(path2+'\*')
+            fileList2=glob.glob(path2+self.char)
 
             # ##################################################################
             # # Padding method
@@ -438,7 +454,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit1.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit1.setAlignment(QtGui.Qt.AlignCenter)           
             path1=os.path.join(folderpath,folder1)
-            fileList1=glob.glob(path1+'\*')
+            fileList1=glob.glob(path1+self.char)
             fileNameList1=os.listdir(path1)
             image_items1 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir1),fn1) for fdir1,fn1 in zip(fileList1,fileNameList1)]
             folder2=folders[1]
@@ -446,7 +462,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit2.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit2.setAlignment(QtGui.Qt.AlignCenter)
             path2=os.path.join(folderpath,folder2)
-            fileList2=glob.glob(path2+'\*')
+            fileList2=glob.glob(path2+self.char)
             fileNameList2=os.listdir(path2)
             image_items2 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir2),fn2) for fdir2,fn2 in zip(fileList2,fileNameList2)]
 
@@ -455,7 +471,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit3.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit3.setAlignment(QtGui.Qt.AlignCenter)           
             path3=os.path.join(folderpath,folder3)
-            fileList3=glob.glob(path3+'\*')
+            fileList3=glob.glob(path3+self.char)
             fileNameList3=os.listdir(path3)
             image_items3 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir3),fn3) for fdir3,fn3 in zip(fileList3,fileNameList3)]
 
@@ -493,7 +509,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit1.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit1.setAlignment(QtGui.Qt.AlignCenter)           
             path1=os.path.join(folderpath,folder1)
-            fileList1=glob.glob(path1+'\*')
+            fileList1=glob.glob(path1+self.char)
             fileNameList1=os.listdir(path1)
             image_items1 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir1),fn1) for fdir1,fn1 in zip(fileList1,fileNameList1)]
             folder2=folders[1]
@@ -501,7 +517,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit2.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit2.setAlignment(QtGui.Qt.AlignCenter)
             path2=os.path.join(folderpath,folder2)
-            fileList2=glob.glob(path2+'\*')
+            fileList2=glob.glob(path2+self.char)
             fileNameList2=os.listdir(path2)
             image_items2 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir2),fn2) for fdir2,fn2 in zip(fileList2,fileNameList2)]
 
@@ -510,7 +526,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit3.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit3.setAlignment(QtGui.Qt.AlignCenter)           
             path3=os.path.join(folderpath,folder3)
-            fileList3=glob.glob(path3+'\*')
+            fileList3=glob.glob(path3+self.char)
             fileNameList3=os.listdir(path3)
             image_items3 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir3),fn3) for fdir3,fn3 in zip(fileList3,fileNameList3)]
             folder4=folders[3]
@@ -518,7 +534,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit4.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit4.setAlignment(QtGui.Qt.AlignCenter)
             path4=os.path.join(folderpath,folder4)
-            fileList4=glob.glob(path4+'\*')
+            fileList4=glob.glob(path4+self.char)
             fileNameList4=os.listdir(path4)
             image_items4 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir4),fn4) for fdir4,fn4 in zip(fileList4,fileNameList4)]
 
@@ -565,7 +581,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit1.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit1.setAlignment(QtGui.Qt.AlignCenter)           
             path1=os.path.join(folderpath,folder1)
-            fileList1=glob.glob(path1+'\*')
+            fileList1=glob.glob(path1+self.char)
             fileNameList1=os.listdir(path1)
             image_items1 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir1),fn1) for fdir1,fn1 in zip(fileList1,fileNameList1)]
             folder2=folders[1]
@@ -573,7 +589,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit2.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit2.setAlignment(QtGui.Qt.AlignCenter)
             path2=os.path.join(folderpath,folder2)
-            fileList2=glob.glob(path2+'\*')
+            fileList2=glob.glob(path2+self.char)
             fileNameList2=os.listdir(path2)
             image_items2 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir2),fn2) for fdir2,fn2 in zip(fileList2,fileNameList2)]
 
@@ -582,7 +598,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit3.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit3.setAlignment(QtGui.Qt.AlignCenter)           
             path3=os.path.join(folderpath,folder3)
-            fileList3=glob.glob(path3+'\*')
+            fileList3=glob.glob(path3+self.char)
             fileNameList3=os.listdir(path3)
             image_items3 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir3),fn3) for fdir3,fn3 in zip(fileList3,fileNameList3)]
             folder4=folders[3]
@@ -590,7 +606,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit4.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit4.setAlignment(QtGui.Qt.AlignCenter)
             path4=os.path.join(folderpath,folder4)
-            fileList4=glob.glob(path4+'\*')
+            fileList4=glob.glob(path4+self.char)
             fileNameList4=os.listdir(path4)
             image_items4 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir4),fn4) for fdir4,fn4 in zip(fileList4,fileNameList4)]
 
@@ -599,7 +615,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit5.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit5.setAlignment(QtGui.Qt.AlignCenter)           
             path5=os.path.join(folderpath,folder5)
-            fileList5=glob.glob(path5+'\*')
+            fileList5=glob.glob(path5+self.char)
             fileNameList5=os.listdir(path5)
             image_items5 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir5),fn5) for fdir5,fn5 in zip(fileList5,fileNameList5)]
 
@@ -653,7 +669,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit1.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit1.setAlignment(QtGui.Qt.AlignCenter)           
             path1=os.path.join(folderpath,folder1)
-            fileList1=glob.glob(path1+'\*')
+            fileList1=glob.glob(path1+self.char)
             fileNameList1=os.listdir(path1)
             image_items1 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir1),fn1) for fdir1,fn1 in zip(fileList1,fileNameList1)]
             folder2=folders[1]
@@ -661,7 +677,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit2.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit2.setAlignment(QtGui.Qt.AlignCenter)
             path2=os.path.join(folderpath,folder2)
-            fileList2=glob.glob(path2+'\*')
+            fileList2=glob.glob(path2+self.char)
             fileNameList2=os.listdir(path2)
             image_items2 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir2),fn2) for fdir2,fn2 in zip(fileList2,fileNameList2)]
 
@@ -670,7 +686,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit3.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit3.setAlignment(QtGui.Qt.AlignCenter)           
             path3=os.path.join(folderpath,folder3)
-            fileList3=glob.glob(path3+'\*')
+            fileList3=glob.glob(path3+self.char)
             fileNameList3=os.listdir(path3)
             image_items3 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir3),fn3) for fdir3,fn3 in zip(fileList3,fileNameList3)]
             folder4=folders[3]
@@ -678,7 +694,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit4.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit4.setAlignment(QtGui.Qt.AlignCenter)
             path4=os.path.join(folderpath,folder4)
-            fileList4=glob.glob(path4+'\*')
+            fileList4=glob.glob(path4+self.char)
             fileNameList4=os.listdir(path4)
             image_items4 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir4),fn4) for fdir4,fn4 in zip(fileList4,fileNameList4)]
 
@@ -687,7 +703,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit5.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit5.setAlignment(QtGui.Qt.AlignCenter)           
             path5=os.path.join(folderpath,folder5)
-            fileList5=glob.glob(path5+'\*')
+            fileList5=glob.glob(path5+self.char)
             fileNameList5=os.listdir(path5)
             image_items5 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir5),fn5) for fdir5,fn5 in zip(fileList5,fileNameList5)]
             folder6=folders[5]
@@ -695,7 +711,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit6.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit6.setAlignment(QtGui.Qt.AlignCenter)
             path6=os.path.join(folderpath,folder6)
-            fileList6=glob.glob(path6+'\*')
+            fileList6=glob.glob(path6+self.char)
             fileNameList6=os.listdir(path6)
             image_items6 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir6),fn6) for fdir6,fn6 in zip(fileList6,fileNameList6)]
 
@@ -759,7 +775,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit1.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit1.setAlignment(QtGui.Qt.AlignCenter)           
             path1=os.path.join(folderpath,folder1)
-            fileList1=glob.glob(path1+'\*')
+            fileList1=glob.glob(path1+self.char)
             fileNameList1=os.listdir(path1)
             image_items1 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir1),fn1) for fdir1,fn1 in zip(fileList1,fileNameList1)]
             folder2=folders[1]
@@ -767,7 +783,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit2.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit2.setAlignment(QtGui.Qt.AlignCenter)
             path2=os.path.join(folderpath,folder2)
-            fileList2=glob.glob(path2+'\*')
+            fileList2=glob.glob(path2+self.char)
             fileNameList2=os.listdir(path2)
             image_items2 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir2),fn2) for fdir2,fn2 in zip(fileList2,fileNameList2)]
 
@@ -776,7 +792,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit3.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit3.setAlignment(QtGui.Qt.AlignCenter)           
             path3=os.path.join(folderpath,folder3)
-            fileList3=glob.glob(path3+'\*')
+            fileList3=glob.glob(path3+self.char)
             fileNameList3=os.listdir(path3)
             image_items3 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir3),fn3) for fdir3,fn3 in zip(fileList3,fileNameList3)]
             folder4=folders[3]
@@ -784,7 +800,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit4.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit4.setAlignment(QtGui.Qt.AlignCenter)
             path4=os.path.join(folderpath,folder4)
-            fileList4=glob.glob(path4+'\*')
+            fileList4=glob.glob(path4+self.char)
             fileNameList4=os.listdir(path4)
             image_items4 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir4),fn4) for fdir4,fn4 in zip(fileList4,fileNameList4)]
 
@@ -793,7 +809,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit5.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit5.setAlignment(QtGui.Qt.AlignCenter)           
             path5=os.path.join(folderpath,folder5)
-            fileList5=glob.glob(path5+'\*')
+            fileList5=glob.glob(path5+self.char)
             fileNameList5=os.listdir(path5)
             image_items5 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir5),fn5) for fdir5,fn5 in zip(fileList5,fileNameList5)]
             folder6=folders[5]
@@ -801,7 +817,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit6.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit6.setAlignment(QtGui.Qt.AlignCenter)
             path6=os.path.join(folderpath,folder6)
-            fileList6=glob.glob(path6+'\*')
+            fileList6=glob.glob(path6+self.char)
             fileNameList6=os.listdir(path6)
             image_items6 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir6),fn6) for fdir6,fn6 in zip(fileList6,fileNameList6)]
 
@@ -810,7 +826,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit7.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit7.setAlignment(QtGui.Qt.AlignCenter)           
             path7=os.path.join(folderpath,folder7)
-            fileList7=glob.glob(path7+'\*')
+            fileList7=glob.glob(path7+self.char)
             fileNameList7=os.listdir(path7)
             image_items7 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir7),fn7) for fdir7,fn7 in zip(fileList7,fileNameList7)]
 
@@ -881,7 +897,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit1.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit1.setAlignment(QtGui.Qt.AlignCenter)           
             path1=os.path.join(folderpath,folder1)
-            fileList1=glob.glob(path1+'\*')
+            fileList1=glob.glob(path1+self.char)
             fileNameList1=os.listdir(path1)
             image_items1 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir1),fn1) for fdir1,fn1 in zip(fileList1,fileNameList1)]
             folder2=folders[1]
@@ -889,7 +905,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit2.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit2.setAlignment(QtGui.Qt.AlignCenter)
             path2=os.path.join(folderpath,folder2)
-            fileList2=glob.glob(path2+'\*')
+            fileList2=glob.glob(path2+self.char)
             fileNameList2=os.listdir(path2)
             image_items2 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir2),fn2) for fdir2,fn2 in zip(fileList2,fileNameList2)]
 
@@ -898,7 +914,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit3.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit3.setAlignment(QtGui.Qt.AlignCenter)           
             path3=os.path.join(folderpath,folder3)
-            fileList3=glob.glob(path3+'\*')
+            fileList3=glob.glob(path3+self.char)
             fileNameList3=os.listdir(path3)
             image_items3 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir3),fn3) for fdir3,fn3 in zip(fileList3,fileNameList3)]
             folder4=folders[3]
@@ -906,7 +922,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit4.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit4.setAlignment(QtGui.Qt.AlignCenter)
             path4=os.path.join(folderpath,folder4)
-            fileList4=glob.glob(path4+'\*')
+            fileList4=glob.glob(path4+self.char)
             fileNameList4=os.listdir(path4)
             image_items4 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir4),fn4) for fdir4,fn4 in zip(fileList4,fileNameList4)]
 
@@ -915,7 +931,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit5.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit5.setAlignment(QtGui.Qt.AlignCenter)           
             path5=os.path.join(folderpath,folder5)
-            fileList5=glob.glob(path5+'\*')
+            fileList5=glob.glob(path5+self.char)
             fileNameList5=os.listdir(path5)
             image_items5 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir5),fn5) for fdir5,fn5 in zip(fileList5,fileNameList5)]
             folder6=folders[5]
@@ -923,7 +939,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit6.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit6.setAlignment(QtGui.Qt.AlignCenter)
             path6=os.path.join(folderpath,folder6)
-            fileList6=glob.glob(path6+'\*')
+            fileList6=glob.glob(path6+self.char)
             fileNameList6=os.listdir(path6)
             image_items6 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir6),fn6) for fdir6,fn6 in zip(fileList6,fileNameList6)]
 
@@ -932,7 +948,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit7.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit7.setAlignment(QtGui.Qt.AlignCenter)           
             path7=os.path.join(folderpath,folder7)
-            fileList7=glob.glob(path7+'\*')
+            fileList7=glob.glob(path7+self.char)
             fileNameList7=os.listdir(path7)
             image_items7 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir7),fn7) for fdir7,fn7 in zip(fileList7,fileNameList7)]
             folder8=folders[7]
@@ -940,7 +956,7 @@ class MainWindow(QMainWindow):
             self.popupsUi.lineEdit8.setStyleSheet('color: rgb(255, 255, 255)')
             self.popupsUi.lineEdit8.setAlignment(QtGui.Qt.AlignCenter)
             path8=os.path.join(folderpath,folder8)
-            fileList8=glob.glob(path8+'\*')
+            fileList8=glob.glob(path8+self.char)
             fileNameList8=os.listdir(path8)
             image_items8 = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir8),fn8) for fdir8,fn8 in zip(fileList8,fileNameList8)]
 
@@ -1088,8 +1104,8 @@ class MainWindow(QMainWindow):
         for i in range(len(folderList)):
             folders=folderList[i]
             path=os.path.join(folderpath,folders)
-            # fileList=glob.glob(path+'\*'+truncate_fn)# run faster
-            fileList=glob.glob(path+'\\'+fname)# run faster
+            # fileList=glob.glob(path+self.char+truncate_fn)# run faster
+            fileList=glob.glob(path+self.char2+fname)# run faster
             # print(fileList)
             image_items = [QtWidgets.QListWidgetItem(QtGui.QIcon(fdir),folders) for fdir in fileList]# run faster
             # path=os.path.join(folderpath,folders,fname)# run slowly
@@ -1126,6 +1142,8 @@ class MainWindow(QMainWindow):
         self.vs6.setValue(value)
         self.vs7.setValue(value)
         self.vs8.setValue(value)
+        self.vs9.setValue(value)
+        self.vs10.setValue(value)
 
     def changeName(self,fname):
         simpleName=''
