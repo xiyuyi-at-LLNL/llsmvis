@@ -209,7 +209,7 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>325</width>
+                  <width>295</width>
                   <height>432</height>
                  </rect>
                 </property>
@@ -305,7 +305,7 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>325</width>
+                  <width>295</width>
                   <height>432</height>
                  </rect>
                 </property>
@@ -771,7 +771,7 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>325</width>
+                  <width>295</width>
                   <height>432</height>
                  </rect>
                 </property>
@@ -1139,7 +1139,7 @@
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <property name="spacing">
-              <number>0</number>
+              <number>10</number>
              </property>
              <property name="leftMargin">
               <number>0</number>
@@ -1165,17 +1165,6 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="close_window_button">
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="icons.qrc">
-                 <normaloff>:/icons/icons/x.svg</normaloff>:/icons/icons/x.svg</iconset>
-               </property>
-              </widget>
-             </item>
-             <item alignment="Qt::AlignRight|Qt::AlignTop">
               <widget class="QPushButton" name="restore_window_button">
                <property name="text">
                 <string/>
@@ -1183,6 +1172,17 @@
                <property name="icon">
                 <iconset resource="icons.qrc">
                  <normaloff>:/icons/icons/maximize-2.svg</normaloff>:/icons/icons/maximize-2.svg</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="close_window_button">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="icons.qrc">
+                 <normaloff>:/icons/icons/x.svg</normaloff>:/icons/icons/x.svg</iconset>
                </property>
               </widget>
              </item>

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfacezkleuj.ui'
+## Form generated from reading UI file 'interfaceeCKWch.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -98,7 +98,7 @@ class Ui_MainWindow(object):
         self.toolBox.setLineWidth(2)
         self.page = QWidget()
         self.page.setObjectName(u"page")
-        self.page.setGeometry(QRect(0, 0, 325, 432))
+        self.page.setGeometry(QRect(0, 0, 295, 432))
         self.page.setStyleSheet(u"")
         self.verticalLayout_5 = QVBoxLayout(self.page)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
@@ -144,7 +144,7 @@ class Ui_MainWindow(object):
         self.toolBox.addItem(self.page, icon, u"Directory list")
         self.page_3 = QWidget()
         self.page_3.setObjectName(u"page_3")
-        self.page_3.setGeometry(QRect(0, 0, 325, 432))
+        self.page_3.setGeometry(QRect(0, 0, 295, 432))
         self.verticalLayout_6 = QVBoxLayout(self.page_3)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.frame_12 = QFrame(self.page_3)
@@ -271,7 +271,7 @@ class Ui_MainWindow(object):
         self.toolBox.addItem(self.page_3, icon3, u"Options for comparison")
         self.page_2 = QWidget()
         self.page_2.setObjectName(u"page_2")
-        self.page_2.setGeometry(QRect(0, 0, 325, 432))
+        self.page_2.setGeometry(QRect(0, 0, 295, 432))
         self.verticalLayout_7 = QVBoxLayout(self.page_2)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
@@ -434,7 +434,7 @@ class Ui_MainWindow(object):
         self.top.setFrameShape(QFrame.StyledPanel)
         self.top.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_5 = QHBoxLayout(self.top)
-        self.horizontalLayout_5.setSpacing(0)
+        self.horizontalLayout_5.setSpacing(10)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.minimize_window_button = QPushButton(self.top)
@@ -445,21 +445,21 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_5.addWidget(self.minimize_window_button, 0, Qt.AlignRight|Qt.AlignTop)
 
-        self.close_window_button = QPushButton(self.top)
-        self.close_window_button.setObjectName(u"close_window_button")
-        icon11 = QIcon()
-        icon11.addFile(u":/icons/icons/x.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.close_window_button.setIcon(icon11)
-
-        self.horizontalLayout_5.addWidget(self.close_window_button)
-
         self.restore_window_button = QPushButton(self.top)
         self.restore_window_button.setObjectName(u"restore_window_button")
-        icon12 = QIcon()
-        icon12.addFile(u":/icons/icons/maximize-2.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.restore_window_button.setIcon(icon12)
+        icon11 = QIcon()
+        icon11.addFile(u":/icons/icons/maximize-2.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.restore_window_button.setIcon(icon11)
 
-        self.horizontalLayout_5.addWidget(self.restore_window_button, 0, Qt.AlignRight|Qt.AlignTop)
+        self.horizontalLayout_5.addWidget(self.restore_window_button)
+
+        self.close_window_button = QPushButton(self.top)
+        self.close_window_button.setObjectName(u"close_window_button")
+        icon12 = QIcon()
+        icon12.addFile(u":/icons/icons/x.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.close_window_button.setIcon(icon12)
+
+        self.horizontalLayout_5.addWidget(self.close_window_button)
 
         self.size_grip_top_right = QFrame(self.top)
         self.size_grip_top_right.setObjectName(u"size_grip_top_right")
@@ -782,8 +782,8 @@ class Ui_MainWindow(object):
         self.raw_img_btn.setText(QCoreApplication.translate("MainWindow", u"Raw Image", None))
         self.multi_columns.setText(QCoreApplication.translate("MainWindow", u"Multi column", None))
         self.minimize_window_button.setText("")
-        self.close_window_button.setText("")
         self.restore_window_button.setText("")
+        self.close_window_button.setText("")
         self.plot_img.setText("")
         self.label.setText(QCoreApplication.translate("MainWindow", u"Yuliang Zhang & Xiyu Yi  @ LLNL. Version 1.0", None))
         self.about_btn.setText(QCoreApplication.translate("MainWindow", u"Help", None))
