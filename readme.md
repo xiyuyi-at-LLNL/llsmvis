@@ -4,7 +4,7 @@ llsmvis is a collection of codes that we used to analyze the datasets acquired i
 Yi, X., Miao, H., Lo, J.K.Y., Elsheikh, M., Lee, T.H., Jiang, C., Segelke, B.W., Overton, K.W., Bremer, P.T. and Laurence, T.A., 2022. A Tailored Approach To Study Legionella Infection Using Lattice Light Sheet Microscope (LLSM). bioRxiv.
 doi: https://doi.org/10.1101/2022.03.20.485032 
 
-####= Prerequisits: Python, Conda, Git, Jupyter notebook.
+#### Prerequisits: Python, Conda, Git, Jupyter notebook.
 
 ## Relevant datasets.
 The dataset is being uploaded to figshare (find it [here](https://figshare.com/articles/journal_contribution/Datasets_for_the_manuscript_titled_A_Tailored_Approach_to_Study_Legionella_Infection_Using_Lattice_Light_Sheet_Microscope_LLSM_/19694809?file=34982371)).
