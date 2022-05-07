@@ -47,3 +47,6 @@ answer the prompted questions accordingly, and you'll find the results under fol
 ## Note
 This work was produced under the auspices of the U.S. Department of Energy by
 Lawrence Livermore National Laboratory under Contract DE-AC52-07NA27344. Release number: LLNL-CODE-834237
+
+#### Developers (update on 2022-05-06):
+Yi, Xiyu; Miao, Haichao; Chenfanfu Jiang; Bremer, Peer-Timo; Laurence, Ted A.; Zhang Yuliang
