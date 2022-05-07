@@ -18,7 +18,7 @@ The dataset is being uploaded to figshare (find it [here](https://figshare.com/a
 `conda env create -f mac_env.yml` (tested for MacOS Majave 10.14.3)`
 
 
-## for LC users
+## For LC users
 1. Install anaconda:
    on LC:
    After login onto LC, go to the path of anaconda installers:
