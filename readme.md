@@ -10,15 +10,12 @@ doi: https://doi.org/10.1101/2022.03.20.485032
 The dataset is being uploaded to figshare (find it [here](https://figshare.com/articles/journal_contribution/Datasets_for_the_manuscript_titled_A_Tailored_Approach_to_Study_Legionella_Infection_Using_Lattice_Light_Sheet_Microscope_LLSM_/19694809?file=34982371)).
 
 
-## 1. Getting started.
-### 1.1. Install [Anaconda](https://docs.anaconda.com/anaconda/install/).
-
-### 1.2. Clone the repository.
+## Getting started.
+1. Install [Anaconda](https://docs.anaconda.com/anaconda/install/).
+2. Clone the repository.
 `git clone https://github.com/xiyuyi-at-LLNL/llsmvis.git`
-
-### 1.3. Configure the conda virtual environment.
+3. Configure the conda virtual environment.
 `conda env create -f mac_env.yml` (tested for MacOS Majave 10.14.3)`
-
 
 
 ## for LC users:
