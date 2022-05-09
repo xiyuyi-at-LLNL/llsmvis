@@ -1,7 +1,24 @@
-### setup the conda environment for llsmvis
+## llsmvis
+llsmvis is a collection of codes that we used to analyze the datasets acquired in the following study:
 
-## This repository is under development.
+Yi, X., Miao, H., Lo, J.K.Y., Elsheikh, M., Lee, T.H., Jiang, C., Segelke, B.W., Overton, K.W., Bremer, P.T. and Laurence, T.A., 2022. A Tailored Approach To Study Legionella Infection Using Lattice Light Sheet Microscope (LLSM). bioRxiv.
+doi: https://doi.org/10.1101/2022.03.20.485032 
 
+#### Prerequisits: Python, Conda, Git, Jupyter notebook
+
+## Relevant datasets
+The dataset is being uploaded to figshare (find it [here](https://figshare.com/articles/journal_contribution/Datasets_for_the_manuscript_titled_A_Tailored_Approach_to_Study_Legionella_Infection_Using_Lattice_Light_Sheet_Microscope_LLSM_/19694809?file=34982371)).
+
+
+## Getting started
+1. Install [Anaconda](https://docs.anaconda.com/anaconda/install/).
+2. Clone the repository.
+`git clone https://github.com/xiyuyi-at-LLNL/llsmvis.git`
+3. Configure the conda virtual environment.
+`conda env create -f mac_env.yml` (tested for MacOS Majave 10.14.3)`
+
+
+## For LC users
 1. Install anaconda:
    on LC:
    After login onto LC, go to the path of anaconda installers:
@@ -15,10 +32,9 @@
 2. Create a virtual environment for llsmvis under folder llsmvis:	
    >> bash llsmvis-setup
 
-## Dataset
-The dataset is being uploaded to figshare (find it [here](https://figshare.com/articles/journal_contribution/Datasets_for_the_manuscript_titled_A_Tailored_Approach_to_Study_Legionella_Infection_Using_Lattice_Light_Sheet_Microscope_LLSM_/19694809?file=34982371)).
 
-### Processing
+
+### Data processing for LC users (to deskew acquired datasetes)
 To process all the raw ata after an imaging session with multiple stacks and various imaging conditions.
 1. activate the llsmv conda environment 
     >> conda activate llsmvis 
@@ -27,7 +43,10 @@ To process all the raw ata after an imaging session with multiple stacks and var
 
 answer the prompted questions accordingly, and you'll find the results under folder 'results_dsk'
 
-Find developing notes [here](./documents/docs_main.md).
 
+## Note
 This work was produced under the auspices of the U.S. Department of Energy by
 Lawrence Livermore National Laboratory under Contract DE-AC52-07NA27344. Release number: LLNL-CODE-834237
+
+#### Developers (update on 2022-05-06):
+Yi, Xiyu; Miao, Haichao; Chenfanfu Jiang; Bremer, Peer-Timo; Laurence, Ted A.; Zhang Yuliang.
