@@ -7,7 +7,7 @@ doi: https://doi.org/10.1101/2022.03.20.485032
 #### Prerequisits: Python, Conda, Git, Jupyter notebook
 
 ## Relevant datasets
-The dataset is being uploaded to figshare (find it [here](https://figshare.com/articles/journal_contribution/Datasets_for_the_manuscript_titled_A_Tailored_Approach_to_Study_Legionella_Infection_Using_Lattice_Light_Sheet_Microscope_LLSM_/19694809?file=34982371)).
+The datasets are available on figshare (find it [here](https://figshare.com/articles/journal_contribution/Datasets_for_the_manuscript_titled_A_Tailored_Approach_to_Study_Legionella_Infection_Using_Lattice_Light_Sheet_Microscope_LLSM_/19694809?file=34982371)).
 
 
 ## Getting started
